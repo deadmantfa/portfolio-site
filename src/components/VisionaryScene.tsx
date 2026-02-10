@@ -2,7 +2,6 @@
 
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Float } from '@react-three/drei'
 import * as THREE from 'three'
 
 const ArchitecturalGrid = () => {
@@ -21,11 +20,9 @@ const ArchitecturalGrid = () => {
         const z = (j / count - 0.5) * 10
         positions.set([x, 0, z], k * 3)
         
-        // Horizontal connection
         if (i < count - 1) {
           lineIndices.push(k, k + count)
         }
-        // Vertical connection
         if (j < count - 1) {
           lineIndices.push(k, k + 1)
         }
@@ -43,8 +40,6 @@ const ArchitecturalGrid = () => {
     for (let i = 0; i < count * count; i++) {
       const x = positions[i * 3]
       const z = positions[i * 3 + 2]
-      
-      // Wave motion
       const y = Math.sin(x * 0.5 + time) * Math.cos(z * 0.5 + time) * 0.5
       positions[i * 3 + 1] = y
     }
@@ -52,7 +47,6 @@ const ArchitecturalGrid = () => {
     pointsRef.current.geometry.attributes.position.needsUpdate = true
     lineRef.current.geometry.attributes.position.needsUpdate = true
     
-    // Subtle rotation
     pointsRef.current.rotation.y = time * 0.05
     lineRef.current.rotation.y = time * 0.05
   })
@@ -68,7 +62,7 @@ const ArchitecturalGrid = () => {
             itemSize={3}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.05} color="#6366f1" transparent opacity={0.4} />
+        <pointsMaterial size={0.08} color="#6366f1" transparent opacity={0.6} sizeAttenuation />
       </points>
       
       <lineSegments ref={lineRef}>
@@ -86,7 +80,7 @@ const ArchitecturalGrid = () => {
             itemSize={1}
           />
         </bufferGeometry>
-        <lineBasicMaterial color="#6366f1" transparent opacity={0.1} />
+        <lineBasicMaterial color="#6366f1" transparent opacity={0.2} />
       </lineSegments>
     </group>
   )

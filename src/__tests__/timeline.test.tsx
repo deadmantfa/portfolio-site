@@ -22,6 +22,7 @@ vi.mock('@react-three/drei', () => ({
   Float: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-float">{children}</div>,
   Text: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-text">{children}</div>,
   Box: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-box">{children}</div>,
+  Sphere: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-sphere">{children}</div>,
   Center: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-center">{children}</div>,
 }))
 
