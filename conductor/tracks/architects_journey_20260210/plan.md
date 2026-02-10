@@ -19,7 +19,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: 3D Scene Integration' (f13dcf5)
 
 ## Phase 3: Content & Timeline
-- [~] Task: Data Ingestion
+- [x] Task: Data Ingestion (9e5219c)
     - [ ] Extract and format career data from CV and additional.md
 - [ ] Task: 3D Timeline Implementation
     - [ ] Create scroll-controlled camera transitions between 'career nodes'
