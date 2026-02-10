@@ -4,7 +4,7 @@
 - [x] Task: Skill Data Extension (54905d0)
     - [ ] Update \src/data/skills.ts\ with \"Strategic Importance\" notes
     - [ ] Create failing tests for the new skill data structure
-- [~] Task: Individual Skill Component
+- [x] Task: Individual Skill Component (bb2cd2f)
     - [ ] Create a 3D component for a single skill \"module\" (e.g., a glass-textured shard or box)
     - [ ] Implement hover states (eject/displacement and glow)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Skill Module Architecture' (Protocol in workflow.md)
