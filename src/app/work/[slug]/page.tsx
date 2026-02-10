@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
+import BlueprintOverlay from '@/components/BlueprintOverlay'
 
 export async function generateStaticParams() {
   return projects.map((project) => ({
@@ -31,12 +32,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="relative min-h-screen text-white pt-32 pb-20 px-8 md:px-24">
-      {/* 3D Background */}
+      {/* 3D Background - Solid layer for blueprint mode */}
       <SceneCanvas>
-        <ambientLight intensity={0.2} />
-        <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
+        <ambientLight intensity={0.1} />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#6366f1" />
         <ArchitecturalGrid />
       </SceneCanvas>
+
+      {/* Blueprint Mode Overlay */}
+      <BlueprintOverlay project={project} />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header Section */}
@@ -80,7 +84,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     <span className="text-xs font-mono text-zinc-500 block mb-4">ADR-0{i+1}</span>
                     <h4 className="text-2xl md:text-3xl font-serif italic text-white mb-4">{adr.title}</h4>
                     <p className="text-indigo-400 font-mono text-sm mb-6">{adr.decision}</p>
-                    <p className="text-zinc-400 leading-relaxed">{adr.rationale}</p>
+                    <p className="text-zinc-400 leading-relaxed font-sans">{adr.rationale}</p>
                   </div>
                 ))}
               </div>
@@ -106,7 +110,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <h3 className="text-xs font-mono text-primary uppercase tracking-widest mb-8">Technical Ecosystem</h3>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech) => (
-                  <span key={tech} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-zinc-400">
+                  <span key={tech} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-zinc-400 tracking-widest">
                     {tech}
                   </span>
                 ))}
