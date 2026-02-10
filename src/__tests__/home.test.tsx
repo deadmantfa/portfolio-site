@@ -9,12 +9,15 @@ vi.mock('@/components/SceneCanvas', () => ({
 vi.mock('@/components/VisionaryScene', () => ({
   default: () => <div data-testid="mock-scene" />
 }))
+vi.mock('@/components/Timeline', () => ({
+  default: () => <div data-testid="mock-timeline" />
+}))
 
 describe('Home Page', () => {
-  it('renders the 3D hero experience', () => {
+  it('renders the 3D canvas container', () => {
     render(<Home />)
     expect(screen.getByTestId('mock-canvas')).toBeInTheDocument()
     expect(screen.getByTestId('mock-scene')).toBeInTheDocument()
-    expect(screen.getByText(/Architect/i)).toBeInTheDocument()
+    expect(screen.getByTestId('mock-timeline')).toBeInTheDocument()
   })
 })

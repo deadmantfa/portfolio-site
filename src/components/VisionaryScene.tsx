@@ -1,43 +1,95 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Points, PointMaterial } from '@react-three/drei'
+import { Float } from '@react-three/drei'
 import * as THREE from 'three'
 
-const VisionaryScene = () => {
-  const ref = useRef<THREE.Points>(null!)
-  const [sphere] = useState(() => {
-    const positions = new Float32Array(5000 * 3)
-    for (let i = 0; i < 5000; i++) {
-      const theta = 2 * Math.PI * Math.random()
-      const phi = Math.acos(2 * Math.random() - 1)
-      const x = 1.5 * Math.sin(phi) * Math.cos(theta)
-      const y = 1.5 * Math.sin(phi) * Math.sin(theta)
-      const z = 1.5 * Math.cos(phi)
-      positions.set([x, y, z], i * 3)
-    }
-    return positions
-  })
+const ArchitecturalGrid = () => {
+  const pointsRef = useRef<THREE.Points>(null!)
+  const lineRef = useRef<THREE.LineSegments>(null!)
 
-  useFrame((state, delta) => {
-    ref.current.rotation.x -= delta / 10
-    ref.current.rotation.y -= delta / 15
+  const count = 20
+  const [particles, connections] = useMemo(() => {
+    const positions = new Float32Array(count * count * 3)
+    const lineIndices: number[] = []
+    
+    let k = 0
+    for (let i = 0; i < count; i++) {
+      for (let j = 0; j < count; j++) {
+        const x = (i / count - 0.5) * 10
+        const z = (j / count - 0.5) * 10
+        positions.set([x, 0, z], k * 3)
+        
+        // Horizontal connection
+        if (i < count - 1) {
+          lineIndices.push(k, k + count)
+        }
+        // Vertical connection
+        if (j < count - 1) {
+          lineIndices.push(k, k + 1)
+        }
+        k++
+      }
+    }
+    
+    return [positions, new Uint16Array(lineIndices)]
+  }, [count])
+
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime()
+    const positions = pointsRef.current.geometry.attributes.position.array as Float32Array
+    
+    for (let i = 0; i < count * count; i++) {
+      const x = positions[i * 3]
+      const z = positions[i * 3 + 2]
+      
+      // Wave motion
+      const y = Math.sin(x * 0.5 + time) * Math.cos(z * 0.5 + time) * 0.5
+      positions[i * 3 + 1] = y
+    }
+    
+    pointsRef.current.geometry.attributes.position.needsUpdate = true
+    lineRef.current.geometry.attributes.position.needsUpdate = true
+    
+    // Subtle rotation
+    pointsRef.current.rotation.y = time * 0.05
+    lineRef.current.rotation.y = time * 0.05
   })
 
   return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#6366f1"
-          size={0.005}
-          sizeAttenuation={true}
-          depthWrite={false}
-        />
-      </Points>
+    <group rotation={[Math.PI / 6, 0, 0]}>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={particles.length / 3}
+            array={particles}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={0.05} color="#6366f1" transparent opacity={0.4} />
+      </points>
+      
+      <lineSegments ref={lineRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={particles.length / 3}
+            array={particles}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="index"
+            count={connections.length}
+            array={connections}
+            itemSize={1}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial color="#6366f1" transparent opacity={0.1} />
+      </lineSegments>
     </group>
   )
 }
 
-export default VisionaryScene
+export default ArchitecturalGrid

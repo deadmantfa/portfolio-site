@@ -1,42 +1,65 @@
 'use client'
 
-import { Float, Text, ScrollControls, Scroll } from '@react-three/drei'
+import { useRef } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
+import { Float, Box } from '@react-three/drei'
 import { careerData } from '@/data/career'
+import * as THREE from 'three'
 
-const TimelineNode = ({ milestone, index }: { milestone: any, index: number }) => {
-  const position: [number, number, number] = [index % 2 === 0 ? 2 : -2, -index * 4, 0]
+const TimelineNode = ({ index }: { index: number }) => {
+  const groupRef = useRef<THREE.Group>(null!)
   
+  // Base spacing for the 3D elements
+  const yBase = -index * 15 - 10
+  
+  useFrame(() => {
+    const scrollProgress = (window as any).scrollProgress || 0
+    const totalDist = (careerData.length + 1) * 15
+    const targetY = yBase + (scrollProgress * totalDist)
+    
+    // Smooth interpolation for the 3D markers
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.08)
+    
+    // Subtle horizontal drift
+    groupRef.current.position.x = Math.sin(index + Date.now() * 0.001) * 0.5 + (index % 2 === 0 ? 5 : -5)
+    
+    const dist = Math.abs(groupRef.current.position.y)
+    groupRef.current.visible = dist < 20
+  })
+
   return (
-    <group position={position}>
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-        <mesh>
-          <sphereGeometry args={[0.2, 32, 32]} />
-          <meshStandardMaterial color="#6366f1" emissive="#6366f1" emissiveIntensity={0.5} />
-        </mesh>
+    <group ref={groupRef}>
+      <Float speed={1.5} rotationIntensity={2} floatIntensity={2}>
+        {/* Abstract Architectural Marker */}
+        <Box args={[1.5, 1.5, 1.5]}>
+          <meshStandardMaterial 
+            color="#6366f1" 
+            wireframe 
+            transparent
+            opacity={0.3}
+            emissive="#6366f1" 
+            emissiveIntensity={0.2} 
+          />
+        </Box>
+        <Box args={[0.4, 0.4, 0.4]}>
+          <meshStandardMaterial 
+            color="#fbbf24" 
+            emissive="#fbbf24" 
+            emissiveIntensity={1} 
+          />
+        </Box>
       </Float>
-      
-      <Text
-        position={[index % 2 === 0 ? 1 : -1, 0, 0]}
-        fontSize={0.3}
-        color="white"
-        anchorX={index % 2 === 0 ? "left" : "right"}
-        maxWidth={4}
-      >
-        {milestone.year}\n{milestone.role}\n{milestone.company}
-      </Text>
     </group>
   )
 }
 
 const Timeline = () => {
   return (
-    <ScrollControls pages={careerData.length} damping={0.1}>
-      <Scroll>
-        {careerData.map((milestone, index) => (
-          <TimelineNode key={index} milestone={milestone} index={index} />
-        ))}
-      </Scroll>
-    </ScrollControls>
+    <group>
+      {careerData.map((_, index) => (
+        <TimelineNode key={index} index={index} />
+      ))}
+    </group>
   )
 }
 

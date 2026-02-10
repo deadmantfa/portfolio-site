@@ -9,12 +9,12 @@ interface SceneCanvasProps {
 
 const SceneCanvas = ({ children }: SceneCanvasProps) => {
   return (
-    <div className="fixed inset-0 -z-10">
+    <div className="fixed inset-0 -z-10 bg-black">
       <Canvas
         shadows
         camera={{ position: [0, 0, 5], fov: 50 }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 2]} // Optimize for high DPI screens
+        gl={{ antialias: true, alpha: false }} // alpha: false for better performance and solid bg
+        dpr={[1, 2]}
       >
         <Suspense fallback={null}>
           {children}

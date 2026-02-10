@@ -3,15 +3,8 @@ import './globals.css'
 import Navigation from '@/components/Navigation'
 
 export const metadata: Metadata = {
-  title: 'Wenceslaus Dsilva | CTO & Technical Architect',
-  description: 'Personal portfolio of Wenceslaus Dsilva, a CTO with 20+ years of experience in software development and strategic leadership.',
-  keywords: ['CTO', 'Technical Architect', 'Software Engineering', 'Leadership', 'Portfolio'],
-  authors: [{ name: 'Wenceslaus Dsilva' }],
-  openGraph: {
-    title: 'Wenceslaus Dsilva | CTO & Technical Architect',
-    description: '20+ years of driving innovation and technical excellence.',
-    type: 'website',
-  },
+  title: 'Wenceslaus Dsilva | Architectural Leadership',
+  description: '20+ years of pioneering technical excellence and strategic leadership.',
 }
 
 export default function RootLayout({
@@ -21,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-white dark:bg-black">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+      </head>
+      <body className="antialiased bg-black">
         <Navigation />
         {children}
       </body>
