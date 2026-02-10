@@ -1,7 +1,7 @@
 # Implementation Plan: Kinetic Skill Assembly
 
 ## Phase 1: Skill Module Architecture
-- [~] Task: Skill Data Extension
+- [x] Task: Skill Data Extension (54905d0)
     - [ ] Update \src/data/skills.ts\ with \"Strategic Importance\" notes
     - [ ] Create failing tests for the new skill data structure
 - [ ] Task: Individual Skill Component
