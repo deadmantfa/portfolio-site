@@ -1,0 +1,8 @@
+{
+  "track_id": "architects_journey_20260210",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-10T22:38:00Z",
+  "updated_at": "2026-02-10T22:38:00Z",
+  "description": "Build the 'Architect's Journey' MVP: An immersive, SEO-optimized landing experience featuring a dynamic 3D Hero-to-Timeline transition using React Three Fiber, integrated global navigation with CV access, and a performance-tuned architecture."
+}
