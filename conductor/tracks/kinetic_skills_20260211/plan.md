@@ -22,6 +22,6 @@
 - [x] Task: Ecosystem Section Overhaul (b1f1898)
     - [ ] Replace the static HTML grid in \src/app/page.tsx\ with the new 3D Kinetic Assembly
     - [ ] Implement the HTML overlay for skill summaries on hover
-- [ ] Task: Performance Tuning & Glow Effects
+- [~] Task: Performance Tuning & Glow Effects
     - [ ] Optimize materials and lighting for high-end glowing effects without performance loss
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: UI Integration & Polishing' (Protocol in workflow.md)

@@ -6,13 +6,15 @@ import ArchitecturalGrid from '@/components/VisionaryScene'
 import Timeline from '@/components/Timeline'
 import AssemblyScene from '@/components/AssemblyScene'
 import { careerData } from '@/data/career'
-import { skillModules } from '@/data/skills'
+import { skillModules, SkillModule } from '@/data/skills'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
+  const [activeSkill, setActiveSkill] = useState<SkillModule | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,56 +23,58 @@ export default function Home() {
       setScrollProgress(progress)
       ;(window as any).scrollProgress = progress
 
-      // Calculate progress specifically for the Skills/Ecosystem section
       if (skillsSectionRef.current) {
         const rect = skillsSectionRef.current.getBoundingClientRect()
         const sectionHeight = rect.height
         const windowHeight = window.innerHeight
-        
-        // Progress starts when section enters bottom of viewport and ends when it leaves top
-        const start = rect.top - windowHeight
-        const end = rect.top + sectionHeight
         
         if (rect.top < windowHeight && rect.bottom > 0) {
           const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
           setSkillsProgress(p)
         }
       }
+
+      // Check for active skill update from Three.js layer
+      if ((window as any).activeSkill !== activeSkill) {
+        setActiveSkill((window as any).activeSkill)
+      }
     }
+
+    const interval = setInterval(() => {
+      if ((window as any).activeSkill !== activeSkill) {
+        setActiveSkill((window as any).activeSkill)
+      }
+    }, 100)
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearInterval(interval)
+    }
+  }, [activeSkill])
 
   return (
     <main className="relative min-h-screen text-white selection:bg-primary/30">
-      {/* 3D Background - Persistent layer */}
       <SceneCanvas>
         <ambientLight intensity={0.2} />
         <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
         <spotLight position={[-10, 20, 10]} angle={0.15} penumbra={1} intensity={2} color="#fbbf24" />
         
-        {/* Only show ArchitecturalGrid and Timeline when not deep into skills */}
         {skillsProgress < 0.1 && <ArchitecturalGrid />}
         {skillsProgress < 0.1 && <Timeline />}
-        
-        {/* Kinetic Assembly appears as we scroll to skills */}
-        {skillsProgress >= 0.1 && <AssemblyScene progress={skillsProgress * 2} />}
+        {skillsProgress >= 0.1 && <AssemblyScene progress={Math.min(skillsProgress * 2.5, 1)} />}
       </SceneCanvas>
 
-      {/* Hero Section */}
       <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
         <div className="max-w-6xl animate-reveal">
           <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[10px] tracking-[0.4em] uppercase text-primary">
             Chief Technology Officer
           </div>
-          
           <h1 className="text-[15vw] md:text-[12rem] leading-[0.8] tracking-tighter font-serif italic mb-12">
             The Visionary <br/> 
             <span className="text-primary pr-4">Architect.</span>
           </h1>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto">
             <p className="text-xl md:text-2xl font-light text-zinc-400 leading-relaxed font-sans">
               20+ years of pioneering technical excellence and strategic leadership at the intersection of high-scale engineering and business innovation.
@@ -81,41 +85,28 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
           <div className="h-24 w-px bg-gradient-to-b from-primary/50 to-transparent"></div>
           <span className="vertical-text text-[9px] font-mono uppercase tracking-[0.5em] text-zinc-600">Explore Journey</span>
         </div>
       </section>
 
-      {/* Career Epochs */}
       <div className="relative z-10 space-y-[20vh] pb-[20vh]">
         {careerData.map((milestone, index) => (
-          <section
-            key={index}
-            className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24"
-          >
+          <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24">
             <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
               <div className="relative max-w-4xl w-full">
                 <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
                   {index + 1}
                 </div>
-
                 <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group">
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
                     <span className="font-mono text-[10px] text-primary uppercase tracking-[0.3em]">{milestone.year}</span>
                     <div className="h-px w-24 bg-white/10"></div>
                     <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.3em]">{milestone.company}</span>
                   </div>
-
-                  <h2 className="text-4xl md:text-7xl font-serif italic text-white mb-6 leading-tight">
-                    {milestone.role}
-                  </h2>
-                  
-                  <p className="text-lg md:text-xl text-zinc-400 leading-relaxed mb-10 max-w-2xl font-sans">
-                    {milestone.description}
-                  </p>
-
+                  <h2 className="text-4xl md:text-7xl font-serif italic text-white mb-6 leading-tight">{milestone.role}</h2>
+                  <p className="text-lg md:text-xl text-zinc-400 leading-relaxed mb-10 max-w-2xl font-sans">{milestone.description}</p>
                   <div className="flex flex-col md:flex-row justify-between items-end gap-8 pt-10 border-t border-white/5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
                       {milestone.highlights?.slice(0, 2).map((h, i) => (
@@ -125,16 +116,10 @@ export default function Home() {
                         </div>
                       ))}
                     </div>
-                    
                     {(index === 0 || index === 1 || index === 2) && (
-                      <Link 
-                        href={`/work/${index === 0 ? 'rooftop' : index === 1 ? 'food-darzee' : 'onfees'}`}
-                        className="inline-flex items-center gap-2 group/btn"
-                      >
+                      <Link href={`/work/${index === 0 ? 'rooftop' : index === 1 ? 'food-darzee' : 'onfees'}`} className="inline-flex items-center gap-2 group/btn">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
-                        <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">
-                          →
-                        </div>
+                        <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
                       </Link>
                     )}
                   </div>
@@ -144,31 +129,46 @@ export default function Home() {
           </section>
         ))}
 
-        {/* Technical Authority: Kinetic Assembly Section */}
-        <section 
-          id="skills" 
-          ref={skillsSectionRef}
-          className="min-h-[300vh] flex flex-col items-center px-8 relative"
-        >
-          {/* Sticky Header for Skills */}
+        <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
             <div className="max-w-5xl w-full text-center z-20">
-              <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-20">The <span className="text-primary">Ecosystem.</span></h2>
+              <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-10">Ecosystem.</h2>
               
-              {/* This area will eventually show the hover summaries from the 3D modules */}
-              <div className="mt-24 max-w-2xl mx-auto h-32 flex flex-col items-center justify-center">
-                <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.5em] mb-4">Architectural Modules</p>
-                <p className="text-xl md:text-2xl text-zinc-400 font-light italic">Hover over the monolith components to dissect the technical stack.</p>
+              <div className="mt-24 max-w-2xl mx-auto h-48 flex flex-col items-center justify-center pointer-events-auto">
+                <AnimatePresence mode="wait">
+                  {activeSkill ? (
+                    <motion.div
+                      key={activeSkill.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="text-center"
+                    >
+                      <span className="font-mono text-[10px] text-primary uppercase tracking-[0.5em] mb-4 block">Strategic Module: {activeSkill.category}</span>
+                      <h3 className="text-4xl md:text-6xl font-serif italic text-white mb-6 uppercase tracking-tighter">{activeSkill.name}</h3>
+                      <p className="text-lg md:text-xl text-zinc-400 font-light italic max-w-lg mx-auto leading-relaxed">
+                        "{activeSkill.importance}"
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="idle"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-center opacity-40"
+                    >
+                      <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.5em] mb-4">Architectural Assembly Active</p>
+                      <p className="text-xl font-light italic text-zinc-600">Dissect the monolith to reveal technical depth.</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
         <section id="contact" className="min-h-screen flex flex-col items-center justify-center px-8 text-center">
-          <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">
-            Let's <br/> <span className="text-primary">Connect.</span>
-          </h2>
+          <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">Let's <br/> <span className="text-primary">Connect.</span></h2>
           <a href="mailto:wenceslausdsilva@gmail.com" className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light">
             wenceslausdsilva@gmail.com
             <div className="h-px w-0 group-hover:w-12 bg-primary transition-all duration-500"></div>
