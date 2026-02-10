@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Data Architecture & Dynamic Routing' (d724d77)
 
 ## Phase 2: Editorial UI & SEO
-- [~] Task: Case Study Page Layout
+- [x] Task: Case Study Page Layout (92b555c)
     - [ ] Write tests for the editorial component structure (Challenge, ADRs, Results)
     - [ ] Implement the responsive high-end UI using Tailwind CSS
 - [ ] Task: SEO & Metadata
