@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Skill Module Architecture' (0d24bcb)
 
 ## Phase 2: Kinetic Assembly Engine
-- [ ] Task: Assembly Logic
+- [~] Task: Assembly Logic
     - [ ] Implement the \"fly-in\" animation logic using R3F
     - [ ] Create failing tests for the scroll-to-animation trigger
 - [ ] Task: The Monolith Formation
