@@ -13,7 +13,7 @@
 - **Three.js:** Powering a custom morphing architectural lattice and vertical node transitions.
 - **React Three Fiber (R3F):** A declarative wrapper for Three.js that integrates seamlessly with React.
 - **React Three Drei:** A collection of high-quality helpers for R3F to accelerate 3D development.
-- **Framer Motion:** For smooth 2D UI transitions and high-performance layout animations.
+- **Framer Motion:** Powering shared layout transitions and high-end technical overlays (Blueprint Mode).
 
 ## Deployment & Hosting (\ Cost)
 - **Vercel (Hobby Plan):** Providing \ hosting for personal projects with global CDN, automatic SSL, and specialized optimizations for Next.js.
@@ -21,3 +21,4 @@
 ## Content & Assets
 - **Local Markdown/PDF:** Utilizing the provided \WenceslausDsilva-CV-2026.pdf\ and \dditional.md\ as the primary data sources.
 - **Sharp:** For high-performance image optimization to boost SEO scores.
+

@@ -14,7 +14,8 @@ To create a high-end, \"Architectural Authority\" portfolio website that positio
 ## Core Features
 - **Architectural Epochs:** A sophisticated 3D scroll experience that reveals career milestones through floating geometric frames and refined typography, emphasizing 20 years of leadership impact.
 - **Dynamic Skill Cloud:** A reactive visualization of a diverse tech stack including Python, PHP, AWS, Angular, and Serverless frameworks.
-- **Project Deep Dives:** Detailed case studies for key career highlights such as the OnFees SAAS product and CashBoss mobile ecosystem.
+- **Architectural Deep-Dives:** A dynamic system of project case studies featuring interactive "Blueprint" 3D visualizations and comprehensive Architectural Decision Records (ADRs) to prove strategic technical depth.
 
 ## Unique Value Proposition (The Hook)
 **The Visionary Architect:** Wenceslaus is presented not just as a manager, but as a leader who understands the \"how\" of deep system design and the \"why\" of strategic business alignment.
+
