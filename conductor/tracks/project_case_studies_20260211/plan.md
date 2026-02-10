@@ -1,13 +1,13 @@
 # Implementation Plan: Project Case Studies Deep-Dive
 
-## Phase 1: Data Architecture & Dynamic Routing
+## Phase 1: Data Architecture & Dynamic Routing [checkpoint: d724d77]
 - [x] Task: Project Content Schema (271dca5)
     - [ ] Define TypeScript interfaces for project case studies
     - [ ] Create structured local data for key projects (OnFees, CashBoss, Rooftop)
 - [x] Task: Dynamic Work Routes (5da92f8)
     - [ ] Create failing tests for \/work/[slug]\ route generation
     - [ ] Implement \generateStaticParams\ and dynamic layout
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Data Architecture & Dynamic Routing' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Data Architecture & Dynamic Routing' (d724d77)
 
 ## Phase 2: Editorial UI & SEO
 - [ ] Task: Case Study Page Layout
