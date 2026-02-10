@@ -30,7 +30,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <main className="relative min-h-screen text-white pt-32 pb-20 px-8 md:px-24 bg-black">
+    <main className="relative min-h-screen text-white pt-32 pb-20 px-8 md:px-24">
       {/* 3D Background */}
       <SceneCanvas>
         <ambientLight intensity={0.2} />
