@@ -13,7 +13,7 @@
 - [x] Task: Case Study Page Layout (92b555c)
     - [ ] Write tests for the editorial component structure (Challenge, ADRs, Results)
     - [ ] Implement the responsive high-end UI using Tailwind CSS
-- [~] Task: SEO & Metadata
+- [x] Task: SEO & Metadata (aba8a1b)
     - [ ] Implement dynamic Next.js Metadata for every project page
     - [ ] Add JSON-LD structured data for career/project entities
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Editorial UI & SEO' (Protocol in workflow.md)
