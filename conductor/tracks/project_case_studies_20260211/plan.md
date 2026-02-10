@@ -4,7 +4,7 @@
 - [x] Task: Project Content Schema (271dca5)
     - [ ] Define TypeScript interfaces for project case studies
     - [ ] Create structured local data for key projects (OnFees, CashBoss, Rooftop)
-- [ ] Task: Dynamic Work Routes
+- [~] Task: Dynamic Work Routes
     - [ ] Create failing tests for \/work/[slug]\ route generation
     - [ ] Implement \generateStaticParams\ and dynamic layout
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Data Architecture & Dynamic Routing' (Protocol in workflow.md)
