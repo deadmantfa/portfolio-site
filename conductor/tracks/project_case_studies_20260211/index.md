@@ -1,0 +1,5 @@
+# Track project_case_studies_20260211 Context
+
+- [Specification](./spec.md)
+- [Implementation Plan](./plan.md)
+- [Metadata](./metadata.json)
