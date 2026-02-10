@@ -4,7 +4,7 @@
 - [x] Task: Project Initialization (d996dae)
     - [ ] Initialize Next.js app with TypeScript and Tailwind CSS
     - [ ] Configure ESLint and Prettier based on style guides
-- [ ] Task: Core Layout & Navigation
+- [~] Task: Core Layout & Navigation
     - [ ] Create global Layout component with SEO metadata
     - [ ] Implement responsive Navigation bar with 'Download CV' link
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Scaffolding' (Protocol in workflow.md)
