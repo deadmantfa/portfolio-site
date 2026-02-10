@@ -5,11 +5,12 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { Float, Box } from '@react-three/drei'
 import { careerData } from '@/data/career'
 import * as THREE from 'three'
+import { useRouter } from 'next/navigation'
 
-const TimelineNode = ({ index }: { index: number }) => {
+const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
   const groupRef = useRef<THREE.Group>(null!)
+  const router = useRouter()
   
-  // Base spacing for the 3D elements
   const yBase = -index * 15 - 10
   
   useFrame(() => {
@@ -17,20 +18,27 @@ const TimelineNode = ({ index }: { index: number }) => {
     const totalDist = (careerData.length + 1) * 15
     const targetY = yBase + (scrollProgress * totalDist)
     
-    // Smooth interpolation for the 3D markers
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.08)
-    
-    // Subtle horizontal drift
     groupRef.current.position.x = Math.sin(index + Date.now() * 0.001) * 0.5 + (index % 2 === 0 ? 5 : -5)
     
     const dist = Math.abs(groupRef.current.position.y)
     groupRef.current.visible = dist < 20
   })
 
+  const handleClick = () => {
+    if (slug) {
+      router.push(`/work/${slug}`)
+    }
+  }
+
   return (
-    <group ref={groupRef}>
+    <group 
+      ref={groupRef} 
+      onClick={handleClick} 
+      onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+      onPointerOut={() => { document.body.style.cursor = 'default' }}
+    >
       <Float speed={1.5} rotationIntensity={2} floatIntensity={2}>
-        {/* Abstract Architectural Marker */}
         <Box args={[1.5, 1.5, 1.5]}>
           <meshStandardMaterial 
             color="#6366f1" 
@@ -54,10 +62,19 @@ const TimelineNode = ({ index }: { index: number }) => {
 }
 
 const Timeline = () => {
+  // Mapping career milestones to specific project slugs where available
+  const getSlug = (index: number) => {
+    if (index === 0) return 'rooftop'
+    if (index === 1) return 'food-darzee'
+    if (index === 2) return 'onfees'
+    if (index === 3) return 'indiefolio' // We can add more data later
+    return undefined
+  }
+
   return (
     <group>
       {careerData.map((_, index) => (
-        <TimelineNode key={index} index={index} />
+        <TimelineNode key={index} index={index} slug={getSlug(index)} />
       ))}
     </group>
   )

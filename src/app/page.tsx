@@ -5,6 +5,7 @@ import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
 import Timeline from '@/components/Timeline'
 import { careerData } from '@/data/career'
+import Link from 'next/link'
 
 export default function Home() {
   useEffect(() => {
@@ -21,7 +22,6 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen text-white selection:bg-primary/30">
-      {/* 3D Background - Solid fixed layer */}
       <SceneCanvas>
         <ambientLight intensity={0.2} />
         <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
@@ -30,9 +30,8 @@ export default function Home() {
         <Timeline />
       </SceneCanvas>
 
-      {/* Hero Section */}
       <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
-        <div className="max-w-6xl">
+        <div className="max-w-6xl animate-reveal">
           <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[10px] tracking-[0.4em] uppercase text-primary">
             Chief Technology Officer
           </div>
@@ -59,7 +58,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Career Epochs: High-End Card Layout */}
       <div className="relative z-10 space-y-[20vh] pb-[20vh]">
         {careerData.map((milestone, index) => (
           <section
@@ -68,7 +66,6 @@ export default function Home() {
           >
             <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
               <div className="relative max-w-4xl w-full">
-                {/* Visual number backdrop */}
                 <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
                   {index + 1}
                 </div>
@@ -88,29 +85,40 @@ export default function Home() {
                     {milestone.description}
                   </p>
 
-                  {milestone.highlights && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-10 border-t border-white/5">
-                      {milestone.highlights.map((h, i) => (
+                  <div className="flex flex-col md:flex-row justify-between items-end gap-8 pt-10 border-t border-white/5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+                      {milestone.highlights?.slice(0, 2).map((h, i) => (
                         <div key={i} className="flex gap-4">
                           <span className="text-primary font-mono text-xs">/0{i+1}</span>
                           <p className="text-sm text-zinc-300 font-light leading-snug">{h}</p>
                         </div>
                       ))}
                     </div>
-                  )}
+                    
+                    {/* Dynamic Link to Case Study */}
+                    {(index === 0 || index === 1 || index === 2) && (
+                      <Link 
+                        href={`/work/${index === 0 ? 'rooftop' : index === 1 ? 'food-darzee' : 'onfees'}`}
+                        className="inline-flex items-center gap-2 group/btn"
+                      >
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
+                        <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors">
+                          <svg className="size-3 fill-current text-zinc-500 group-hover/btn:text-primary transition-colors" viewBox="0 0 20 20">
+                            <path d="M7 1L17 10L7 19L5.5 17.5L14 10L5.5 2.5L7 1Z" />
+                          </svg>
+                        </div>
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </section>
         ))}
 
-        {/* Technical authority section with specific skills usage */}
         <section id="skills" className="min-h-screen flex flex-col items-center justify-center px-8 py-32">
           <div className="max-w-5xl w-full glass p-12 md:p-24 rounded-[3rem] text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-            
             <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none">The <span className="text-primary">Ecosystem.</span></h2>
-            
             <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/5 mt-16">
               {['Three.js', 'React', 'Next.js', 'AWS', 'Python', 'Tailwind', 'PHP', 'TypeScript'].map((skill) => (
                 <div key={skill} className="bg-black/40 p-8 flex flex-col items-center justify-center hover:bg-primary/5 transition-colors group">
@@ -122,15 +130,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Closing / Contact */}
         <section id="contact" className="min-h-screen flex flex-col items-center justify-center px-8 text-center">
           <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">
             Let's <br/> <span className="text-primary">Connect.</span>
           </h2>
-          <a
-            href="mailto:wenceslausdsilva@gmail.com"
-            className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors"
-          >
+          <a href="mailto:wenceslausdsilva@gmail.com" className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light">
             wenceslausdsilva@gmail.com
             <div className="h-px w-0 group-hover:w-12 bg-primary transition-all duration-500"></div>
           </a>

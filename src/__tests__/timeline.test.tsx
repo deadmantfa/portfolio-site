@@ -2,6 +2,13 @@ import { render, screen } from '@testing-library/react'
 import Timeline from '../components/Timeline'
 import { expect, it, describe, vi } from 'vitest'
 
+// Mock useRouter
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}))
+
 // Mock R3F hooks
 vi.mock('@react-three/fiber', async () => {
   return {

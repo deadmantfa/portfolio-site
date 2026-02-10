@@ -22,6 +22,6 @@
 - [x] Task: 3D Workspace Transformation (f619ad2)
     - [ ] Implement state management to trigger \"Blueprint\" mode in the 3D scene
     - [ ] Create specialized 3D annotations/nodes for architectural visualization
-- [ ] Task: Smooth Navigation Transitions
+- [~] Task: Smooth Navigation Transitions
     - [ ] Implement Framer Motion shared layout transitions between timeline nodes and work pages
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Interactive 3D Blueprint Mode' (Protocol in workflow.md)
