@@ -16,42 +16,48 @@ const AssemblyScene = ({ progress }: AssemblySceneProps) => {
 
   // Pre-calculate initial "exploded" positions and final "monolith" positions
   const moduleData = useMemo(() => {
+    // Adjust spacing based on viewport height for responsiveness
+    const spacing = Math.min(viewport.height / 6, 2.5)
+    
     return skillModules.map((skill, i) => {
-      // Random starting position (far away)
+      // Deterministic but "random-looking" starting positions for consistency
       const startPos: [number, number, number] = [
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20
+        Math.sin(i * 100) * 15,
+        Math.cos(i * 100) * 15,
+        (Math.random() - 0.5) * 10
       ]
       
       // Final Monolith position (vertical stack)
-      // Spacing modules along the Y axis
-      const endPos: [number, number, number] = [0, (skillModules.length / 2 - i) * 2, 0]
+      const endPos: [number, number, number] = [0, (skillModules.length / 2 - i) * spacing, 0]
       
       return { skill, startPos, endPos }
     })
-  }, [])
+  }, [viewport.height])
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    // Animate each child module based on progress
+    // Smooth scroll progress interpolation
+    const t = Math.pow(progress, 1.5) 
+    
     groupRef.current.children.forEach((child, i) => {
       const data = moduleData[i]
       if (!data) return
 
-      // Interpolate position based on progress (0 to 1)
-      // We can use a power function for a "snappy" assembly feel
-      const t = Math.pow(progress, 2) 
+      // Smooth position interpolation
+      child.position.x = THREE.MathUtils.lerp(child.position.x, THREE.MathUtils.lerp(data.startPos[0], data.endPos[0], t), 0.1)
+      child.position.y = THREE.MathUtils.lerp(child.position.y, THREE.MathUtils.lerp(data.startPos[1], data.endPos[1], t), 0.1)
+      child.position.z = THREE.MathUtils.lerp(child.position.z, THREE.MathUtils.lerp(data.startPos[2], data.endPos[2], t), 0.1)
       
-      child.position.x = THREE.MathUtils.lerp(data.startPos[0], data.endPos[0], t)
-      child.position.y = THREE.MathUtils.lerp(data.startPos[1], data.endPos[1], t)
-      child.position.z = THREE.MathUtils.lerp(data.startPos[2], data.endPos[2], t)
-      
-      // Also interpolate rotation for a chaotic-to-ordered feel
-      child.rotation.x = THREE.MathUtils.lerp(i, 0, t)
-      child.rotation.y = THREE.MathUtils.lerp(i, 0, t)
+      // Rotation interpolation: Chaotic to Ordered
+      const targetRotX = THREE.MathUtils.lerp(i, 0, t)
+      const targetRotY = THREE.MathUtils.lerp(i, 0, t)
+      child.rotation.x = THREE.MathUtils.lerp(child.rotation.x, targetRotX, 0.1)
+      child.rotation.y = THREE.MathUtils.lerp(child.rotation.y, targetRotY, 0.1)
     })
+
+    // Subtlest group floating
+    groupRef.current.rotation.y += delta * 0.1 * (1 - t)
   })
 
   return (
