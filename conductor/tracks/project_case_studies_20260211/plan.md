@@ -1,7 +1,7 @@
 # Implementation Plan: Project Case Studies Deep-Dive
 
 ## Phase 1: Data Architecture & Dynamic Routing
-- [~] Task: Project Content Schema
+- [x] Task: Project Content Schema (271dca5)
     - [ ] Define TypeScript interfaces for project case studies
     - [ ] Create structured local data for key projects (OnFees, CashBoss, Rooftop)
 - [ ] Task: Dynamic Work Routes
