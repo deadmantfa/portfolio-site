@@ -18,10 +18,10 @@
     - [ ] Add smooth mouse-parallax effects
 - [x] Task: Conductor - User Manual Verification 'Phase 2: 3D Scene Integration' (f13dcf5)
 
-## Phase 3: Content & Timeline
+## Phase 3: Content & Timeline [checkpoint: 3244496]
 - [x] Task: Data Ingestion (9e5219c)
     - [ ] Extract and format career data from CV and additional.md
 - [x] Task: 3D Timeline Implementation (e0e10bc)
     - [ ] Create scroll-controlled camera transitions between 'career nodes'
     - [ ] Implement interactive 'Work' highlights based on CV deep dives
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Content & Timeline' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Content & Timeline' (3244496)
