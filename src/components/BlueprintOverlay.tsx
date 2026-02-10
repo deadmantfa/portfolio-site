@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ProjectCaseStudy } from '@/data/projects'
 
@@ -8,6 +9,15 @@ interface BlueprintOverlayProps {
 }
 
 const BlueprintOverlay = ({ project }: BlueprintOverlayProps) => {
+  const [coords, setCoords] = useState({ x: '0.0000', y: '0.0000' })
+
+  useEffect(() => {
+    setCoords({
+      x: Math.random().toFixed(4),
+      y: Math.random().toFixed(4)
+    })
+  }, [])
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -47,7 +57,7 @@ const BlueprintOverlay = ({ project }: BlueprintOverlayProps) => {
         <div className="font-mono text-[8px] text-zinc-500 space-y-1">
           <p>LOAD_LEVEL: V.4.0.2</p>
           <p>STRATA: {project.slug.toUpperCase()}_BLUEPRINT</p>
-          <p>COORD: {Math.random().toFixed(4)}, {Math.random().toFixed(4)}</p>
+          <p>COORD: {coords.x}, {coords.y}</p>
         </div>
       </div>
 
