@@ -7,6 +7,7 @@ import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
 import BlueprintOverlay from '@/components/BlueprintOverlay'
 import BlueprintSchema from '@/components/BlueprintSchema'
+import ADRCard from '@/components/ADRCard'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface ProjectCaseStudyClientProps {
@@ -121,26 +122,7 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
               </h3>
               <div className="space-y-12">
                 {project.adrs.map((adr, i) => (
-                  <div key={i} className="glass p-8 md:p-12 rounded-[2rem] hover:border-primary/20 transition-colors">
-                    <span className="text-[10px] font-mono text-zinc-500 block mb-6 uppercase tracking-widest">Architectural Decision Record #0{i+1}</span>
-                    <h4 className="text-3xl md:text-4xl font-serif italic text-white mb-8">{adr.title}</h4>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                      <div>
-                        <span className="text-[9px] font-mono text-primary uppercase tracking-widest mb-2 block">The Problem</span>
-                        <p className="text-sm text-zinc-400 leading-relaxed font-sans">{adr.problem}</p>
-                      </div>
-                      <div>
-                        <span className="text-[9px] font-mono text-accent uppercase tracking-widest mb-2 block">The Solution</span>
-                        <p className="text-sm text-zinc-400 leading-relaxed font-sans">{adr.solution}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-8 pt-8 border-t border-white/5">
-                      <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest mb-2 block">Measurable Impact</span>
-                      <p className="text-sm text-zinc-200 font-mono italic">{adr.impact}</p>
-                    </div>
-                  </div>
+                  <ADRCard key={i} adr={adr} index={i} />
                 ))}
               </div>
             </section>
