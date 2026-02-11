@@ -18,6 +18,6 @@
 ## Phase 3: Editorial Polishing & SEO
 - [x] Task: ADR Editorial Component (c703289)
     - [x] Design and implement a high-fidelity React component for displaying ADRs.
-- [ ] Task: Project SEO Synchronization
-    - [ ] Implement `generateMetadata` for the dynamic routes using project data.
+- [x] Task: Project SEO Synchronization (ada3002)
+    - [x] Implement `generateMetadata` for the dynamic routes using project data.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Case Study Review'
