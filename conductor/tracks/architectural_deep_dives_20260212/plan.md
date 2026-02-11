@@ -16,8 +16,8 @@
     - [x] Implement simple 3D primitives or schematic models for the top 3 projects (Rooftop, Food Darzee, OnFees).
 
 ## Phase 3: Editorial Polishing & SEO
-- [ ] Task: ADR Editorial Component
-    - [ ] Design and implement a high-fidelity React component for displaying ADRs.
+- [x] Task: ADR Editorial Component (c703289)
+    - [x] Design and implement a high-fidelity React component for displaying ADRs.
 - [ ] Task: Project SEO Synchronization
     - [ ] Implement `generateMetadata` for the dynamic routes using project data.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Case Study Review'
