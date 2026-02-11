@@ -31,24 +31,36 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <main className="relative min-h-screen text-white pt-32 pb-20 px-8 md:px-24">
+    <main className="relative min-h-screen text-white pt-32 pb-20 px-8 md:px-24 selection:bg-primary/30">
       {/* 3D Background - Solid layer for blueprint mode */}
-      <SceneCanvas>
-        <ambientLight intensity={0.1} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#6366f1" />
-        <ArchitecturalGrid />
-      </SceneCanvas>
+      <div className="fixed inset-0 z-0 bg-black">
+        <SceneCanvas>
+          <ambientLight intensity={0.1} />
+          <pointLight position={[10, 10, 10]} intensity={1} color="#6366f1" />
+          <ArchitecturalGrid />
+        </SceneCanvas>
+      </div>
 
       {/* Blueprint Mode Overlay */}
       <BlueprintOverlay project={project} />
 
       <div className="relative z-10 max-w-6xl mx-auto">
+        {/* Breadcrumb */}
+        <nav className="mb-12">
+          <Link href="/" className="inline-flex items-center gap-4 group">
+            <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-500 group-hover:text-primary">
+              ←
+            </div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500 group-hover:text-zinc-300 transition-colors">Return to Epochs</span>
+          </Link>
+        </nav>
+
         {/* Header Section */}
         <header className="mb-24">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-mono text-[10px] text-primary uppercase tracking-[0.4em]">Case Study / 0{projects.indexOf(project) + 1}</span>
+            <span className="font-mono text-[11px] text-primary uppercase tracking-[0.4em]">Case Study / 0{projects.indexOf(project) + 1}</span>
             <div className="h-px w-12 bg-primary/30"></div>
-            <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.4em]">{project.period}</span>
+            <span className="font-mono text-[11px] text-zinc-500 uppercase tracking-[0.4em]">{project.period}</span>
           </div>
           <h1 className="text-6xl md:text-9xl font-serif italic mb-8 leading-[0.9] tracking-tighter text-balance">
             {project.title}
@@ -66,25 +78,56 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <div className="lg:col-span-8 space-y-24">
             
             <section>
-              <h3 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-8 flex items-center gap-4">
-                The Challenge <div className="h-px flex-grow bg-white/5"></div>
+              <h3 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-12 flex items-center gap-4">
+                The Narrative <div className="h-px flex-grow bg-white/5"></div>
               </h3>
-              <p className="text-xl md:text-2xl text-zinc-300 font-light leading-relaxed font-sans">
-                {project.challenge}
-              </p>
+              <div className="space-y-16">
+                <div className="group">
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">01 / Vision</span>
+                  <p className="text-2xl md:text-3xl text-zinc-200 font-serif italic leading-relaxed">
+                    "{project.narrative.vision}"
+                  </p>
+                </div>
+                <div className="group">
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">02 / Execution</span>
+                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed">
+                    {project.narrative.execution}
+                  </p>
+                </div>
+                <div className="group">
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">03 / Result</span>
+                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed">
+                    {project.narrative.result}
+                  </p>
+                </div>
+              </div>
             </section>
 
             <section>
-              <h3 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-8 flex items-center gap-4">
-                Architectural Decisions <div className="h-px flex-grow bg-white/5"></div>
+              <h3 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-12 flex items-center gap-4">
+                Strategic Decisions <div className="h-px flex-grow bg-white/5"></div>
               </h3>
               <div className="space-y-12">
                 {project.adrs.map((adr, i) => (
-                  <div key={i} className="glass p-8 md:p-12 rounded-[2rem]">
-                    <span className="text-xs font-mono text-zinc-500 block mb-4">ADR-0{i+1}</span>
-                    <h4 className="text-2xl md:text-3xl font-serif italic text-white mb-4">{adr.title}</h4>
-                    <p className="text-indigo-400 font-mono text-sm mb-6">{adr.decision}</p>
-                    <p className="text-zinc-400 leading-relaxed font-sans">{adr.rationale}</p>
+                  <div key={i} className="glass p-8 md:p-12 rounded-[2rem] hover:border-primary/20 transition-colors">
+                    <span className="text-[10px] font-mono text-zinc-500 block mb-6 uppercase tracking-widest">Architectural Decision Record #0{i+1}</span>
+                    <h4 className="text-3xl md:text-4xl font-serif italic text-white mb-8">{adr.title}</h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                      <div>
+                        <span className="text-[9px] font-mono text-primary uppercase tracking-widest mb-2 block">The Problem</span>
+                        <p className="text-sm text-zinc-400 leading-relaxed font-sans">{adr.problem}</p>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-mono text-accent uppercase tracking-widest mb-2 block">The Solution</span>
+                        <p className="text-sm text-zinc-400 leading-relaxed font-sans">{adr.solution}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-8 pt-8 border-t border-white/5">
+                      <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest mb-2 block">Measurable Impact</span>
+                      <p className="text-sm text-zinc-200 font-mono italic">{adr.impact}</p>
+                    </div>
                   </div>
                 ))}
               </div>
