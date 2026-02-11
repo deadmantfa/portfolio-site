@@ -1,6 +1,7 @@
 import { projects } from '@/data/projects'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import Link from 'next/link'
 import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
 import BlueprintOverlay from '@/components/BlueprintOverlay'
