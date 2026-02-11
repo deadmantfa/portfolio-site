@@ -1,6 +1,6 @@
 # Implementation Plan: Architectural Deep-Dives
 
-## Phase 1: Data & Routing
+## Phase 1: Data & Routing [checkpoint: 240ec3d]
 - [x] Task: Project Data Schema Expansion (297c5e4)
     - [x] Update `src/data/projects.ts` with detailed narratives, ADRs, and blueprint metadata.
     - [x] Create failing tests for the new project data structure.
