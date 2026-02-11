@@ -8,7 +8,7 @@
     - [x] Build the core layout for `src/app/work/[slug]/page.tsx`.
     - [x] Implement breadcrumb navigation back to home.
 
-## Phase 2: The Blueprint Engine
+## Phase 2: The Blueprint Engine [checkpoint: d02a297]
 - [x] Task: Blueprint Overlay Component (a8cd0df)
     - [x] Create `BlueprintOverlay.tsx` for the 3D wireframe visualization.
     - [x] Implement the "Blueprint" toggle logic in the global `SceneCanvas` or via state.
