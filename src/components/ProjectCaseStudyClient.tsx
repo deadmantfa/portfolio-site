@@ -19,10 +19,10 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
   return (
     <main className="relative min-h-screen text-white pt-32 pb-20 px-8 md:px-24 selection:bg-primary/30">
       {/* 3D Background */}
-      <div className="fixed inset-0 z-0 bg-black">
+      <div className={`fixed inset-0 z-0 transition-colors duration-1000 ${isBlueprintMode ? 'bg-[#021a1a]' : 'bg-black'}`}>
         <SceneCanvas>
-          <ambientLight intensity={isBlueprintMode ? 0.05 : 0.1} />
-          <pointLight position={[10, 10, 10]} intensity={isBlueprintMode ? 0.5 : 1} color={isBlueprintMode ? "#14b8a6" : "#6366f1"} />
+          <ambientLight intensity={isBlueprintMode ? 0.02 : 0.1} />
+          <pointLight position={[10, 10, 10]} intensity={isBlueprintMode ? 0.2 : 1} color={isBlueprintMode ? "#14b8a6" : "#6366f1"} />
           
           <ArchitecturalGrid isBlueprint={isBlueprintMode} />
           
@@ -56,7 +56,7 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
         </div>
       </button>
 
-      <div className={`relative z-10 max-w-6xl mx-auto transition-opacity duration-1000 ${isBlueprintMode ? 'opacity-20 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`relative z-10 max-w-6xl mx-auto transition-all duration-1000 ${isBlueprintMode ? 'opacity-60 grayscale pointer-events-none' : 'opacity-100'}`}>
         {/* Breadcrumb */}
         <nav className="mb-12">
           <Link href="/" className="inline-flex items-center gap-4 group">

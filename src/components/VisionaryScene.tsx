@@ -36,7 +36,7 @@ const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
   const pointsRef = useRef<THREE.Points>(null!)
   const linesRef = useRef<THREE.LineSegments>(null!)
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const time = state.clock.getElapsedTime()
     const scrollProgress = (window as any).scrollProgress || 0
     
@@ -53,15 +53,14 @@ const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
       linesRef.current.geometry.attributes.position.array.set(posAttr.array)
       linesRef.current.geometry.attributes.position.needsUpdate = true
       
-      // MAINTAIN OPACITY throughout the page (no fade out)
-      const opacity = isBlueprint ? 0.8 : 0.4
-      pointsRef.current.material.opacity = opacity
-      linesRef.current.material.opacity = opacity * 0.3
+      // Smoothly interpolate opacity and color
+      const targetOpacity = isBlueprint ? 0.8 : 0.4
+      pointsRef.current.material.opacity = THREE.MathUtils.lerp(pointsRef.current.material.opacity, targetOpacity, 0.1)
+      linesRef.current.material.opacity = THREE.MathUtils.lerp(linesRef.current.material.opacity, targetOpacity * 0.3, 0.1)
       
-      // Update colors based on mode
-      const targetColor = isBlueprint ? "#14b8a6" : "#6366f1"
-      pointsRef.current.material.color.set(targetColor)
-      linesRef.current.material.color.set(targetColor)
+      const targetColor = new THREE.Color(isBlueprint ? "#14b8a6" : "#6366f1")
+      pointsRef.current.material.color.lerp(targetColor, 0.1)
+      linesRef.current.material.color.lerp(targetColor, 0.1)
     }
     
     if (meshRef.current) {
