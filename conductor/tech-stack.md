@@ -13,6 +13,7 @@
 - **Three.js:** Powering a custom morphing architectural lattice and vertical node transitions.
 - **React Three Fiber (R3F):** A declarative wrapper for Three.js that integrates seamlessly with React.
 - **React Three Drei:** A collection of high-quality helpers for R3F to accelerate 3D development.
+- **Blueprint Engine:** A custom dynamic 3D schema visualizer built with Three.js and React Three Drei helpers (`Sphere`, `Line`, `Text`) to render architectural blueprints.
 - **Framer Motion:** Powering shared layout transitions and high-end technical overlays (Blueprint Mode).
 
 ## Deployment & Hosting (\ Cost)
