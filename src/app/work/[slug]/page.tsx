@@ -16,7 +16,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     title: `${project.company} | ${project.role}`,
-    description: project.challenge,
+    description: `${project.narrative.vision} - ${project.challenge}`,
+    openGraph: {
+      title: `${project.company} - Architectural Case Study`,
+      description: project.narrative.vision,
+      type: 'article',
+      section: 'Technology',
+      tags: project.techStack,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.company} | Wenceslaus Dsilva`,
+      description: project.impact,
+    }
   }
 }
 
