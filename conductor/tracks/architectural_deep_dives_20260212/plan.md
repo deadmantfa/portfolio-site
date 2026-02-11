@@ -9,11 +9,11 @@
     - [x] Implement breadcrumb navigation back to home.
 
 ## Phase 2: The Blueprint Engine
-- [ ] Task: Blueprint Overlay Component
-    - [ ] Create `BlueprintOverlay.tsx` for the 3D wireframe visualization.
-    - [ ] Implement the "Blueprint" toggle logic in the global `SceneCanvas` or via state.
-- [ ] Task: Project-Specific 3D Assets
-    - [ ] Implement simple 3D primitives or schematic models for the top 3 projects (Rooftop, Food Darzee, OnFees).
+- [x] Task: Blueprint Overlay Component (a8cd0df)
+    - [x] Create `BlueprintOverlay.tsx` for the 3D wireframe visualization.
+    - [x] Implement the "Blueprint" toggle logic in the global `SceneCanvas` or via state.
+- [x] Task: Project-Specific 3D Assets (a8cd0df)
+    - [x] Implement simple 3D primitives or schematic models for the top 3 projects (Rooftop, Food Darzee, OnFees).
 
 ## Phase 3: Editorial Polishing & SEO
 - [ ] Task: ADR Editorial Component
