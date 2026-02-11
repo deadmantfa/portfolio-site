@@ -4,83 +4,115 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-const ArchitecturalGrid = () => {
-  const pointsRef = useRef<THREE.Points>(null!)
-  const lineRef = useRef<THREE.LineSegments>(null!)
+interface ArchitecturalGridProps {
+  isBlueprint?: boolean
+}
 
-  const count = 20
-  const [particles, connections] = useMemo(() => {
-    const positions = new Float32Array(count * count * 3)
-    const lineIndices: number[] = []
+const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
+  const meshRef = useRef<THREE.Group>(null!)
+  const count = 40
+  
+  const [positions, indices] = useMemo(() => {
+    const pos = new Float32Array(count * count * 3)
+    const ind = []
     
-    let k = 0
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
-        const x = (i / count - 0.5) * 10
-        const z = (j / count - 0.5) * 10
-        positions.set([x, 0, z], k * 3)
+        const x = (i / (count - 1) - 0.5) * 80 // Even wider
+        const z = (j / (count - 1) - 0.5) * 80
+        const idx = (i * count + j) * 3
+        pos[idx] = x
+        pos[idx + 1] = 0
+        pos[idx + 2] = z
         
-        if (i < count - 1) {
-          lineIndices.push(k, k + count)
-        }
-        if (j < count - 1) {
-          lineIndices.push(k, k + 1)
-        }
-        k++
+        const k = i * count + j
+        if (i < count - 1) ind.push(k, k + count)
+        if (j < count - 1) ind.push(k, k + 1)
       }
     }
-    
-    return [positions, new Uint16Array(lineIndices)]
+    return [pos, new Uint16Array(ind)]
   }, [count])
+
+  const pointsRef = useRef<THREE.Points>(null!)
+  const linesRef = useRef<THREE.LineSegments>(null!)
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime()
-    const positions = pointsRef.current.geometry.attributes.position.array as Float32Array
+    const scrollProgress = (window as any).scrollProgress || 0
     
-    for (let i = 0; i < count * count; i++) {
-      const x = positions[i * 3]
-      const z = positions[i * 3 + 2]
-      const y = Math.sin(x * 0.5 + time) * Math.cos(z * 0.5 + time) * 0.5
-      positions[i * 3 + 1] = y
+    if (pointsRef.current) {
+      const posAttr = pointsRef.current.geometry.attributes.position
+      for (let i = 0; i < count * count; i++) {
+        const x = posAttr.getX(i)
+        const z = posAttr.getZ(i)
+        const y = Math.sin(x * 0.05 + time) * Math.cos(z * 0.05 + time) * (3 + scrollProgress * 10)
+        posAttr.setY(i, y)
+      }
+      posAttr.needsUpdate = true
+      
+      linesRef.current.geometry.attributes.position.array.set(posAttr.array)
+      linesRef.current.geometry.attributes.position.needsUpdate = true
+      
+      // MAINTAIN OPACITY throughout the page (no fade out)
+      const opacity = isBlueprint ? 0.8 : 0.4
+      pointsRef.current.material.opacity = opacity
+      linesRef.current.material.opacity = opacity * 0.3
+      
+      // Update colors based on mode
+      const targetColor = isBlueprint ? "#14b8a6" : "#6366f1"
+      pointsRef.current.material.color.set(targetColor)
+      linesRef.current.material.color.set(targetColor)
     }
     
-    pointsRef.current.geometry.attributes.position.needsUpdate = true
-    lineRef.current.geometry.attributes.position.needsUpdate = true
-    
-    pointsRef.current.rotation.y = time * 0.05
-    lineRef.current.rotation.y = time * 0.05
+    if (meshRef.current) {
+      meshRef.current.rotation.y = time * 0.01
+    }
   })
 
   return (
-    <group rotation={[Math.PI / 6, 0, 0]}>
+    <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]}>
       <points ref={pointsRef}>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={particles.length / 3}
-            array={particles}
+            count={positions.length / 3}
+            array={positions}
             itemSize={3}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.08} color="#6366f1" transparent opacity={0.6} sizeAttenuation />
+        <pointsMaterial 
+          size={isBlueprint ? 0.3 : 0.2} 
+          color="#6366f1" 
+          transparent 
+          opacity={0.4} 
+          sizeAttenuation={true}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
       </points>
       
-      <lineSegments ref={lineRef}>
+      <lineSegments ref={linesRef}>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={particles.length / 3}
-            array={particles}
+            count={positions.length / 3}
+            array={positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="index"
-            count={connections.length}
-            array={connections}
+            count={indices.length}
+            array={indices}
             itemSize={1}
           />
         </bufferGeometry>
-        <lineBasicMaterial color="#6366f1" transparent opacity={0.2} />
+        <lineBasicMaterial 
+          color="#6366f1" 
+          transparent 
+          opacity={0.15} 
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
       </lineSegments>
     </group>
   )
