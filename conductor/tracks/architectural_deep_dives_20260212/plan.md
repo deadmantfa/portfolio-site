@@ -4,9 +4,9 @@
 - [x] Task: Project Data Schema Expansion (297c5e4)
     - [x] Update `src/data/projects.ts` with detailed narratives, ADRs, and blueprint metadata.
     - [x] Create failing tests for the new project data structure.
-- [ ] Task: Dynamic Route Implementation
-    - [ ] Build the core layout for `src/app/work/[slug]/page.tsx`.
-    - [ ] Implement breadcrumb navigation back to home.
+- [x] Task: Dynamic Route Implementation (151789f)
+    - [x] Build the core layout for `src/app/work/[slug]/page.tsx`.
+    - [x] Implement breadcrumb navigation back to home.
 
 ## Phase 2: The Blueprint Engine
 - [ ] Task: Blueprint Overlay Component
