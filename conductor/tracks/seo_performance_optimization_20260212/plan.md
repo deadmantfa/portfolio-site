@@ -4,9 +4,9 @@
 - [x] Task: JSON-LD Implementation (a860253)
     - [x] Create a `StructuredData` component for Person and Professional profile schema.
     - [x] Integrate into `src/app/layout.tsx`.
-- [ ] Task: Automated Sitemap Generation
-    - [ ] Implement `src/app/sitemap.ts` to dynamically include all case studies.
-    - [ ] Create `src/app/robots.txt`.
+- [x] Task: Automated Sitemap Generation (e2e5dc4)
+    - [x] Implement `src/app/sitemap.ts` to dynamically include all case studies.
+    - [x] Create `src/app/robots.txt`.
 
 ## Phase 2: Performance & Asset Tuning
 - [ ] Task: Font & Image Optimization
