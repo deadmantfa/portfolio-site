@@ -20,6 +20,8 @@
 - **Vercel (Hobby Plan):** Providing \ hosting for personal projects with global CDN, automatic SSL, and specialized optimizations for Next.js.
 
 ## Content & Assets
-- **Local Markdown/PDF:** Utilizing the provided \WenceslausDsilva-CV-2026.pdf\ and \dditional.md\ as the primary data sources.
+- **Local Markdown/PDF:** Utilizing the provided \WenceslausDsilva-CV-2026.pdf\ and \additional.md\ as the primary data sources.
 - **Sharp:** For high-performance image optimization to boost SEO scores.
+- **Next.js Metadata & SEO:** Dynamic sitemap generation, robots.txt, and automated professional JSON-LD structured data.
+- **Optimized Typography:** Zero-CLS font delivery using `next/font/google`.
 
