@@ -1,6 +1,6 @@
 # Implementation Plan: Global SEO & Performance Optimization
 
-## Phase 1: Structured Data & Discovery
+## Phase 1: Structured Data & Discovery [checkpoint: 401719e]
 - [x] Task: JSON-LD Implementation (a860253)
     - [x] Create a `StructuredData` component for Person and Professional profile schema.
     - [x] Integrate into `src/app/layout.tsx`.
