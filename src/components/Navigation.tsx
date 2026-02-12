@@ -20,7 +20,7 @@ const Navigation = () => {
           </div>
           
           <a
-            href="/CV/WenceslausDsilva-CV-2026.pdf"
+            href="/CV/Wenceslaus-Dsilva-2025.pdf"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View Curriculum Vitae (PDF)"
