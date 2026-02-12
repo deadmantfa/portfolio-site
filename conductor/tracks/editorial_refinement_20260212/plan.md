@@ -15,7 +15,7 @@
     - [x] Implement floating vertical typography for career years that scrolls at a parallax rate.
 
 ## Phase 3: Home Page Editorial Polish
-- [ ] Task: Final Layout Tuning
-    - [ ] Adjust spacing and line-heights for maximum "Architectural Authority" impact.
-    - [ ] Add subtle "Scanline" or "Grid" textures to active milestone cards.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Storytelling Review'
+- [x] Task: Final Layout Tuning (adf9700)
+    - [x] Adjust spacing and line-heights for maximum "Architectural Authority" impact.
+    - [x] Add subtle "Scanline" or "Grid" textures to active milestone cards.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Storytelling Review' (Protocol in workflow.md)
