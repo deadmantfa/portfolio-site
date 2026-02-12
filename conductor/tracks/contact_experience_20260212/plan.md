@@ -17,4 +17,4 @@
 ## Phase 3: Final Journey Polish
 - [x] Task: "The Handshake" Animation (7a04694 - updated)
     - [x] Implement a coordinated animation that triggers when the user reaches the end of the page.
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Final Portfolio Sign-off' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Portfolio Sign-off' (Protocol in workflow.md) [checkpoint: 85cdbd7]
