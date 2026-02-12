@@ -8,11 +8,11 @@
     - [x] Refine the global scroll tracking logic to provide more granular "active epoch" indices to the 3D scene.
 
 ## Phase 2: Immersive Timeline Refinement
-- [ ] Task: 3D Frame Kinetic Sync
-    - [ ] Update `src/components/Timeline.tsx` to respond dynamically to the active epoch index.
-    - [ ] Implement "frame focus" lighting effects in the 3D scene.
-- [ ] Task: Background Editorial Markers
-    - [ ] Implement floating vertical typography for career years that scrolls at a parallax rate.
+- [x] Task: 3D Frame Kinetic Sync (c679536)
+    - [x] Update `src/components/Timeline.tsx` to respond dynamically to the active epoch index.
+    - [x] Implement "frame focus" lighting effects in the 3D scene.
+- [x] Task: Background Editorial Markers (c679536)
+    - [x] Implement floating vertical typography for career years that scrolls at a parallax rate.
 
 ## Phase 3: Home Page Editorial Polish
 - [ ] Task: Final Layout Tuning
