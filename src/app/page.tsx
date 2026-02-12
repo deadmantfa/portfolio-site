@@ -10,6 +10,7 @@ import { skillModules, SkillModule } from '@/data/skills'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EditorialReveal from '@/components/EditorialReveal'
+import BackgroundMarkers from '@/components/BackgroundMarkers'
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -72,6 +73,7 @@ export default function Home() {
     <main className="relative min-h-screen text-white selection:bg-primary/30">
       {/* 3D Experience - Persistent Global Layer */}
       <div className="fixed inset-0 z-0 bg-black">
+        <BackgroundMarkers />
         <SceneCanvas>
           <ambientLight intensity={0.2} />
           <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
