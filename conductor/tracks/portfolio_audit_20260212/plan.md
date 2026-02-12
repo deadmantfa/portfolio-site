@@ -1,11 +1,11 @@
 # Implementation Plan: Portfolio Comprehensive Audit (Analyze & Repair)
 
 ## Phase 1: Technical SEO & Metadata Remediation
-- [~] Task: Comprehensive SEO Audit & Reporting
-    - [ ] Run automated SEO audit and document findings in `conductor/audit_reports/seo_initial.md`.
-- [ ] Task: Metadata & Structured Data Fixes
-    - [ ] Write tests for missing or incorrect meta tags in `src/__tests__/seo_remediation.test.ts`.
-    - [ ] Correct `robots.ts`, `sitemap.ts`, and `StructuredData.tsx` to ensure 100/100 Lighthouse SEO.
+- [x] Task: Comprehensive SEO Audit & Reporting (e75ce1c)
+    - [x] Run automated SEO audit and document findings in `conductor/audit_reports/seo_initial.md`.
+- [x] Task: Metadata & Structured Data Fixes (e75ce1c)
+    - [x] Write tests for missing or incorrect meta tags in `src/__tests__/seo_remediation.test.ts`.
+    - [x] Correct `robots.ts`, `sitemap.ts`, and `StructuredData.tsx` to ensure 100/100 Lighthouse SEO.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Technical SEO & Metadata Remediation' (Protocol in workflow.md)
 
 ## Phase 2: Design Consistency & A11y Polish
