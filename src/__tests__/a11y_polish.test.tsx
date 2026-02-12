@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import ContactForm from '../components/ContactForm'
 import Navigation from '../components/Navigation'
+import SocialLinks from '../components/SocialLinks'
 import React from 'react'
 
 // Mock framer-motion to avoid animation issues in tests
@@ -25,6 +26,14 @@ describe('Accessibility Standards', () => {
 
   it('Navigation links should have focus-visible rings', () => {
     render(<Navigation />)
+    const links = screen.getAllByRole('link')
+    links.forEach(link => {
+      expect(link.className).toContain('focus-visible:ring-2')
+    })
+  })
+
+  it('SocialLinks should have focus-visible rings', () => {
+    render(<SocialLinks />)
     const links = screen.getAllByRole('link')
     links.forEach(link => {
       expect(link.className).toContain('focus-visible:ring-2')

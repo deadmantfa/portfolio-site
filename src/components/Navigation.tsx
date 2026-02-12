@@ -7,7 +7,7 @@ const Navigation = () => {
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-3rem)] max-w-7xl">
       <div className="glass px-6 py-4 rounded-full flex items-center justify-between">
         <div className="text-2xl font-serif italic font-bold tracking-tighter text-white group">
-          <Link href="/" aria-label="Wenceslaus Dsilva - Home">
+          <Link href="/" aria-label="Wenceslaus Dsilva - Home" className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg px-2">
             W<span className="text-primary group-hover:text-white transition-colors duration-500">.</span>D
           </Link>
         </div>
@@ -20,7 +20,7 @@ const Navigation = () => {
           </div>
           
           <a
-            href="/WenceslausDsilva-CV-2026.pdf"
+            href="/CV/WenceslausDsilva-CV-2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View Curriculum Vitae (PDF)"
