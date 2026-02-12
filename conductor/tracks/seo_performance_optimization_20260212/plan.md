@@ -8,7 +8,7 @@
     - [x] Implement `src/app/sitemap.ts` to dynamically include all case studies.
     - [x] Create `src/app/robots.txt`.
 
-## Phase 2: Performance & Asset Tuning
+## Phase 2: Performance & Asset Tuning [checkpoint: dc77c98]
 - [x] Task: Font & Image Optimization (9587ead)
     - [x] Audit font loading strategy to prevent layout shift.
     - [x] Ensure all SVGs and images use modern Next.js optimization patterns.
