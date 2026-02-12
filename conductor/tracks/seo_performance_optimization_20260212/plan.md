@@ -15,8 +15,8 @@
 - [x] Task: Three.js Loading States (338c903)
     - [x] Implement a high-end, minimal "Architectural Loader" for the 3D canvas initialization.
 
-## Phase 3: Accessibility & Final Audit
-- [ ] Task: WCAG Compliance Pass
-    - [ ] Audit all interactive elements for focus rings and ARIA labels.
-    - [ ] Final contrast check on all editorial sections.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Production Readiness Review'
+## Phase 3: Accessibility & Final Audit [checkpoint: 5e13553]
+- [x] Task: WCAG Compliance Pass (f98db16)
+    - [x] Audit all interactive elements for focus rings and ARIA labels.
+    - [x] Final contrast check on all editorial sections.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Production Readiness Review' (5e13553)
