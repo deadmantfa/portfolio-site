@@ -6,6 +6,8 @@ import ArchitecturalGrid from '@/components/VisionaryScene'
 import Timeline from '@/components/Timeline'
 import AssemblyScene from '@/components/AssemblyScene'
 import ConnectionScene from '@/components/ConnectionScene'
+import ContactForm from '@/components/ContactForm'
+import SocialLinks from '@/components/SocialLinks'
 import { careerData } from '@/data/career'
 import { skillModules, SkillModule } from '@/data/skills'
 import Link from 'next/link'
@@ -230,16 +232,9 @@ export default function Home() {
             <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">Let's <br/> <span className="text-primary">Connect.</span></h2>
           </EditorialReveal>
           
-          {/* Placeholder for Contact Form - will be added in Phase 2 */}
           <div className="max-w-4xl w-full flex flex-col items-center">
-            <a 
-              href="mailto:wenceslausdsilva@gmail.com" 
-              className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-2"
-              aria-label="Send an email to Wenceslaus Dsilva"
-            >
-              wenceslausdsilva@gmail.com
-              <div className="h-px w-0 group-hover:w-12 bg-primary transition-all duration-500"></div>
-            </a>
+            <ContactForm />
+            <SocialLinks />
           </div>
         </section>
       </div>
