@@ -3,6 +3,7 @@ import { Inter, Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import StructuredData from '@/components/StructuredData'
+import ArchitecturalLoader from '@/components/ArchitecturalLoader'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className="antialiased bg-black">
+        <ArchitecturalLoader />
         <Navigation />
         {children}
       </body>
