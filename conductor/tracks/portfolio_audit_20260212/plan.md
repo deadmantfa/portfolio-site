@@ -8,14 +8,14 @@
     - [x] Correct `robots.ts`, `sitemap.ts`, and `StructuredData.tsx` to ensure 100/100 Lighthouse SEO.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Technical SEO & Metadata Remediation' (Protocol in workflow.md) [checkpoint: ddf421f]
 
-## Phase 2: Design Consistency & A11y Polish
+## Phase 2: Design Consistency & A11y Polish [checkpoint: 6c3589f]
 - [x] Task: Design Review & Accessibility Audit (a30bbcc)
     - [x] Audit UI for OKLCH consistency and A11y (ARIA, keyboard nav).
     - [x] Document findings in `conductor/audit_reports/design_a11y.md`.
 - [x] Task: UI/UX & Accessibility Implementation (a30bbcc)
     - [x] Write tests for keyboard navigation and ARIA roles in `src/__tests__/a11y_polish.test.ts`.
     - [x] Refine `ContactForm.tsx`, `Navigation.tsx`, and `EditorialReveal.tsx` for visual and functional consistency.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Design Consistency & A11y Polish' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Design Consistency & A11y Polish' (Protocol in workflow.md) [checkpoint: 6c3589f]
 
 ## Phase 3: Code Architecture & Performance Tuning
 - [ ] Task: Codebase & Performance Investigation
