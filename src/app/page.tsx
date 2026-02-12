@@ -37,7 +37,6 @@ export default function Home() {
       sections.forEach((section, index) => {
         const rect = section.getBoundingClientRect()
         if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
-          // Subtract 1 because the first section is the hero
           currentEpoch = Math.max(0, index - 1)
         }
       })
@@ -67,13 +66,12 @@ export default function Home() {
         const sectionHeight = rect.height
         const windowHeight = window.innerHeight
         
-        if (rect.top < windowHeight && rect.bottom > 0) {
-          const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
+        // More generous progress trigger
+        if (rect.top < windowHeight) {
+          const p = Math.min(Math.max((windowHeight - rect.top) / windowHeight, 0), 1)
           setContactProgress(p)
-        } else if (rect.top >= windowHeight) {
-          setContactProgress(0)
         } else {
-          setContactProgress(1)
+          setContactProgress(0)
         }
       }
     }
@@ -94,15 +92,15 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen text-white selection:bg-primary/30">
-      {/* 3D Experience - Persistent Global Layer */}
-      <div className="fixed inset-0 z-0 bg-black">
+      {/* 3D Experience - Fixed Layer */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
         <BackgroundMarkers />
         <SceneCanvas>
-          <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
-          <spotLight position={[-10, 20, 10]} angle={0.15} penumbra={1} intensity={2} color="#fbbf24" />
+          {/* Brighter, more consistent global lighting */}
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[0, 10, 10]} intensity={2} color="#6366f1" />
+          <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
           
-          {/* All layers coexist; visibility handled by their internal logic/positions */}
           <ArchitecturalGrid />
           <Timeline />
           <AssemblyScene progress={skillsProgress * 3} />
@@ -110,6 +108,7 @@ export default function Home() {
         </SceneCanvas>
       </div>
 
+      {/* Content Layer */}
       <div className="relative z-10 pointer-events-none">
         <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
         <div className="max-w-6xl animate-reveal pointer-events-none">
@@ -138,7 +137,7 @@ export default function Home() {
 
       <div id="epochs" className="relative z-20 space-y-[20vh] pb-[20vh] pointer-events-none">
         {careerData.map((milestone, index) => (
-          <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 pointer-events-none">
+          <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 pointer-events-none bg-transparent">
             <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
               <div className="relative max-w-4xl w-full">
                 <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
@@ -185,10 +184,9 @@ export default function Home() {
           </section>
         ))}
 
-        <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none">
+        <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center">
             <div className="absolute inset-0 tech-grid opacity-15"></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-60"></div>
             <div className="max-w-5xl w-full text-center z-30 pointer-events-none">
               <EditorialReveal direction="down">
                 <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-10 uppercase tracking-tighter">Ecosystem.</h2>
@@ -227,9 +225,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" ref={contactSectionRef} className="min-h-[150vh] flex flex-col items-center justify-center px-8 text-center bg-transparent relative z-20">
-          <EditorialReveal direction="up">
-            <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">Let's <br/> <span className="text-primary">Connect.</span></h2>
+        <section id="contact" ref={contactSectionRef} className="min-h-[150vh] flex flex-col items-center justify-center px-8 text-center bg-transparent relative z-20 pointer-events-auto">
+          <EditorialReveal direction="up" className="mb-24">
+            <h2 className="text-5xl md:text-9xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
           </EditorialReveal>
           
           <div className="max-w-4xl w-full flex flex-col items-center">

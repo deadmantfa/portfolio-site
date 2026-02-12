@@ -18,7 +18,7 @@ const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
     
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
-        const x = (i / (count - 1) - 0.5) * 80 // Even wider
+        const x = (i / (count - 1) - 0.5) * 80
         const z = (j / (count - 1) - 0.5) * 80
         const idx = (i * count + j) * 3
         pos[idx] = x
@@ -36,7 +36,7 @@ const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
   const pointsRef = useRef<THREE.Points>(null!)
   const linesRef = useRef<THREE.LineSegments>(null!)
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const time = state.clock.getElapsedTime()
     const scrollProgress = (window as any).scrollProgress || 0
     
@@ -45,7 +45,9 @@ const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
       for (let i = 0; i < count * count; i++) {
         const x = posAttr.getX(i)
         const z = posAttr.getZ(i)
-        const y = Math.sin(x * 0.05 + time) * Math.cos(z * 0.05 + time) * (3 + scrollProgress * 10)
+        // Cap the amplitude to prevent clipping through camera
+        const amplitude = Math.min(3 + scrollProgress * 10, 12)
+        const y = Math.sin(x * 0.05 + time) * Math.cos(z * 0.05 + time) * amplitude
         posAttr.setY(i, y)
       }
       posAttr.needsUpdate = true
@@ -53,7 +55,6 @@ const ArchitecturalGrid = ({ isBlueprint = false }: ArchitecturalGridProps) => {
       linesRef.current.geometry.attributes.position.array.set(posAttr.array)
       linesRef.current.geometry.attributes.position.needsUpdate = true
       
-      // Smoothly interpolate opacity and color
       const targetOpacity = isBlueprint ? 0.8 : 0.4
       pointsRef.current.material.opacity = THREE.MathUtils.lerp(pointsRef.current.material.opacity, targetOpacity, 0.1)
       linesRef.current.material.opacity = THREE.MathUtils.lerp(linesRef.current.material.opacity, targetOpacity * 0.3, 0.1)

@@ -18,14 +18,13 @@ const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    const targetZ = hovered ? 1.5 : 0
+    // Displacement on hover
+    const targetZ = hovered ? 4 : 0
     groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.1)
     
-    // Rotation logic
+    // Logic to ensure we always face "forward" (Y=0) when assembled or hovered
     if (hovered) {
-      groupRef.current.rotation.y += delta * 1.5
-    } else {
-      groupRef.current.rotation.y += delta * 0.2
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0, 0.1)
     }
   })
 
@@ -33,7 +32,6 @@ const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
     e.stopPropagation()
     setHovered(true)
     document.body.style.cursor = 'pointer'
-    // Update global state for HTML overlay
     ;(window as any).activeSkill = skill
   }
 
@@ -46,31 +44,35 @@ const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
   }
 
   return (
-    <group 
-      ref={groupRef}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-    >
-      <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-        <Box args={[1.8, 1.2, 0.1]}>
+    <group ref={groupRef}>
+      <Float speed={hovered ? 0 : 2} rotationIntensity={hovered ? 0 : 0.2} floatIntensity={0.5}>
+        <Box 
+          args={[4, 1.4, 0.1]}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+        >
           <meshStandardMaterial 
-            color={hovered ? "#fbbf24" : "#6366f1"}
+            color={hovered ? "#14b8a6" : "#6366f1"}
             wireframe={!hovered}
             transparent
-            opacity={hovered ? 1 : 0.3}
-            emissive={hovered ? "#fbbf24" : "#6366f1"}
-            emissiveIntensity={hovered ? 10 : 0.2}
-            metalness={0.8}
-            roughness={0.2}
+            opacity={hovered ? 1 : 0.2}
+            emissive={hovered ? "#14b8a6" : "#6366f1"}
+            emissiveIntensity={hovered ? 10 : 0.5}
+            metalness={1}
+            roughness={0}
           />
         </Box>
 
         <Text
-          position={[0, 0, 0.06]}
-          fontSize={0.15}
+          position={[0, 0, 0.1]}
+          fontSize={0.35}
           color="white"
-          font="https://fonts.gstatic.com/s/jetbrainsmono/v18/t6nu27PSq1Xkv5H-2Ra7UC1WIzWDnvMDdg.ttf"
-          fillOpacity={hovered ? 1 : 0.5}
+          fillOpacity={1}
+          strokeWidth={0.01}
+          strokeColor={hovered ? "black" : ""}
+          strokeOpacity={hovered ? 1 : 0}
+          side={THREE.FrontSide}
+          pointerEvents="none"
         >
           {skill.name.toUpperCase()}
         </Text>

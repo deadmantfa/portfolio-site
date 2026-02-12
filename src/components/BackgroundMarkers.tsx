@@ -3,22 +3,60 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { careerData } from '@/data/career'
 
-const BackgroundMarkers = () => {
+interface YearMarkerProps {
+  year: string
+  index: number
+}
+
+const YearMarker = ({ year, index }: YearMarkerProps) => {
   const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '-50%'])
+  
+  // Total sections estimate: Hero (1) + Career (6) + Ecosystem (3) + Contact (1) = 11
+  // Career milestones start after Hero, so around 1/11
+  const totalSections = 11
+  const careerStart = 1 / totalSections
+  const careerEnd = 7 / totalSections
+  
+  const step = (careerEnd - careerStart) / careerData.length
+  const start = careerStart + (index * step)
+  const end = start + step
+  
+  const y = useTransform(
+    scrollYProgress, 
+    [Math.max(0, start), Math.min(1, end)], 
+    ['10%', '-10%']
+  )
+  
+  const opacity = useTransform(
+    scrollYProgress,
+    [
+      Math.max(0, start - 0.05), 
+      Math.max(0, start), 
+      Math.min(1, end), 
+      Math.min(1, end + 0.05)
+    ],
+    [0, 0.08, 0.08, 0]
+  )
 
   return (
+    <motion.div 
+      style={{ y, opacity }}
+      className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+    >
+      <span className="text-[15rem] md:text-[25rem] font-serif italic tracking-tighter leading-none select-none text-white whitespace-nowrap">
+        {year.includes('Present') ? '2026' : year.split(' ')[0]}
+      </span>
+      <div className="h-[40vh] w-px bg-gradient-to-b from-white/20 to-transparent"></div>
+    </motion.div>
+  )
+}
+
+const BackgroundMarkers = () => {
+  return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <motion.div style={{ y }} className="flex flex-col items-center gap-[40vh] pt-[100vh]">
-        {careerData.map((milestone, i) => (
-          <div key={i} className="flex flex-col items-center gap-4 opacity-[0.03]">
-            <span className="text-[15rem] font-serif italic tracking-tighter leading-none select-none">
-              {milestone.year}
-            </span>
-            <div className="h-64 w-px bg-white"></div>
-          </div>
-        ))}
-      </motion.div>
+      {careerData.map((milestone, i) => (
+        <YearMarker key={i} index={i} year={milestone.year} />
+      ))}
     </div>
   )
 }

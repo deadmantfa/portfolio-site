@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Float, Icosahedron, Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -13,60 +13,66 @@ const ConnectionScene = ({ progress }: ConnectionSceneProps) => {
   const groupRef = useRef<THREE.Group>(null!)
   const coreRef = useRef<THREE.Mesh>(null!)
 
+  const particles = useMemo(() => {
+    const pts = new Float32Array(1500)
+    for (let i = 0; i < 500; i++) {
+      const r = 5 + Math.random() * 8
+      const theta = Math.random() * Math.PI * 2
+      const phi = Math.acos(2 * Math.random() - 1)
+      pts[i * 3] = r * Math.sin(phi) * Math.cos(theta)
+      pts[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
+      pts[i * 3 + 2] = r * Math.cos(phi)
+    }
+    return pts
+  }, [])
+
   useFrame((state) => {
     if (!groupRef.current) return
-    
     const time = state.clock.getElapsedTime()
     
-    // Position the core: it starts far below and rises up
-    // progress 0 means it's far below (Y=-20)
-    // progress 1 means it's centered (Y=0)
-    const targetY = THREE.MathUtils.lerp(-20, 0, progress)
+    // Position fixed at Z=0 (further back for better background scaling)
+    groupRef.current.position.z = 0
+    
+    // progress is 0-1 based on visibility
+    // Centered quickly:
+    const targetY = THREE.MathUtils.lerp(-30, 0, Math.min(progress * 12, 1))
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.1)
     
-    // Core rotation
+    const pulse = 1 + Math.sin(time * 3) * 0.1
+    groupRef.current.scale.setScalar(pulse)
+
     if (coreRef.current) {
-      coreRef.current.rotation.y = time * 0.2
-      coreRef.current.rotation.x = Math.sin(time * 0.5) * 0.1
+      coreRef.current.rotation.y = time * 0.6
+      coreRef.current.rotation.z = time * 0.4
+      const material = coreRef.current.material as THREE.MeshStandardMaterial
+      // Extreme emissive boost
+      material.emissiveIntensity = THREE.MathUtils.lerp(20, 100, progress)
     }
 
-    // Dynamic visibility based on progress
-    groupRef.current.visible = progress > 0.01
+    groupRef.current.visible = progress > 0.001
   })
 
-  // Generate a small cloud of connection particles
-  const particles = new Float32Array(300)
-  for (let i = 0; i < 100; i++) {
-    const r = 10 + Math.random() * 5
-    const theta = Math.random() * Math.PI * 2
-    const phi = Math.acos(2 * Math.random() - 1)
-    
-    particles[i * 3] = r * Math.sin(phi) * Math.cos(theta)
-    particles[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
-    particles[i * 3 + 2] = r * Math.cos(phi)
-  }
-
   return (
-    <group ref={groupRef} position={[0, -20, -5]}>
-      <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+    <group ref={groupRef} position={[0, -30, 0]}>
+      <Float speed={4} rotationIntensity={2} floatIntensity={5}>
         <Icosahedron ref={coreRef} args={[4, 1]}>
           <meshStandardMaterial 
-            color="#14b8a6" 
+            color="#818cf8" 
             wireframe 
             transparent 
-            opacity={0.3} 
-            emissive="#14b8a6"
-            emissiveIntensity={2}
+            opacity={0.95} 
+            emissive="#818cf8"
+            emissiveIntensity={20}
           />
         </Icosahedron>
         
         <Icosahedron args={[2, 0]}>
           <meshStandardMaterial 
-            color="#14b8a6" 
+            color="#ffffff" 
             transparent 
-            opacity={0.1} 
-            emissive="#14b8a6"
-            emissiveIntensity={10}
+            opacity={0.8} 
+            emissive="#818cf8"
+            emissiveIntensity={50}
           />
         </Icosahedron>
       </Float>
@@ -74,8 +80,8 @@ const ConnectionScene = ({ progress }: ConnectionSceneProps) => {
       <Points positions={particles}>
         <PointMaterial
           transparent
-          color="#14b8a6"
-          size={0.15}
+          color="#818cf8"
+          size={0.4}
           sizeAttenuation={true}
           depthWrite={false}
           blending={THREE.AdditiveBlending}

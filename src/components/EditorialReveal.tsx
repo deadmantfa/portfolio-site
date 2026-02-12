@@ -17,28 +17,26 @@ const EditorialReveal = ({
   className = '' 
 }: EditorialRevealProps) => {
   const directions = {
-    up: { y: 40 },
-    down: { y: -40 },
-    left: { x: 40 },
-    right: { x: -40 }
+    up: { y: 20 },
+    down: { y: -20 },
+    left: { x: 20 },
+    right: { x: -20 }
   }
 
   return (
     <motion.div
       initial={{ 
         opacity: 0, 
-        ...directions[direction],
-        clipPath: 'inset(0 0 100% 0)' 
+        ...directions[direction]
       }}
       whileInView={{ 
         opacity: 1, 
         x: 0, 
-        y: 0,
-        clipPath: 'inset(0 0 0% 0)' 
+        y: 0
       }}
-      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+      viewport={{ once: true, amount: 0.01 }}
       transition={{ 
-        duration: 1.2, 
+        duration: 0.8, 
         delay, 
         ease: [0.16, 1, 0.3, 1] 
       }}

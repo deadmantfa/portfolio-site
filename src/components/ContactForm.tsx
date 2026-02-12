@@ -46,7 +46,7 @@ const ContactForm = () => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="glass p-8 md:p-12 rounded-[3rem] w-full max-w-2xl border-white/5 relative overflow-hidden"
+      className="bg-card/30 backdrop-blur-lg p-8 md:p-12 rounded-[3rem] w-full max-w-2xl border border-white/10 relative overflow-hidden pointer-events-auto shadow-2xl"
     >
       <div className="absolute inset-0 tech-grid opacity-5 pointer-events-none"></div>
       

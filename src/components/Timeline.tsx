@@ -17,6 +17,7 @@ const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
   
   useFrame((state) => {
     const scrollProgress = (window as any).scrollProgress || 0
+    const skillsProgress = (window as any).skillsProgress || 0
     const activeEpoch = (window as any).activeEpoch || 0
     const totalDist = (careerData.length) * 10 + 10
     const targetY = yBase + (scrollProgress * totalDist)
@@ -27,7 +28,8 @@ const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
     groupRef.current.position.z = -10
     
     const dist = Math.abs(groupRef.current.position.y)
-    groupRef.current.visible = dist < 15
+    // Hide if too far or if we are in the skills section
+    groupRef.current.visible = dist < 15 && skillsProgress < 0.1
 
     // Frame focus logic
     const isFocused = activeEpoch === index
@@ -67,7 +69,7 @@ const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
           />
         </Box>
         <Sphere args={[0.6, 32, 32]}>
-          <meshStandardMaterial color="#fbbf24" emissive="#fbbf24" emissiveIntensity={5} toneMapped={false} />
+          <meshStandardMaterial color="#14b8a6" emissive="#14b8a6" emissiveIntensity={5} toneMapped={false} />
         </Sphere>
       </Float>
     </group>

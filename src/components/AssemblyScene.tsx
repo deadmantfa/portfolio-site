@@ -12,52 +12,52 @@ interface AssemblySceneProps {
 
 const AssemblyScene = ({ progress }: AssemblySceneProps) => {
   const groupRef = useRef<THREE.Group>(null!)
-  const { viewport } = useThree()
 
-  // Pre-calculate initial "exploded" positions and final "monolith" positions
   const moduleData = useMemo(() => {
-    // Adjust spacing based on viewport height for responsiveness
-    const spacing = Math.min(viewport.height / 6, 2.5)
+    const cols = 3
+    const spacingX = 5.5
+    const spacingY = 2.2
     
     return skillModules.map((skill, i) => {
-      // Deterministic but "random-looking" starting positions for consistency
       const startPos: [number, number, number] = [
         Math.sin(i * 100) * 15,
-        Math.cos(i * 100) * 15,
-        (Math.random() - 0.5) * 10
+        Math.cos(i * 100) * 12,
+        Math.sin(i * 50) * 8
       ]
       
-      // Final Monolith position (vertical stack)
-      const endPos: [number, number, number] = [0, (skillModules.length / 2 - i) * spacing, 0]
+      // Grid formation logic
+      const row = Math.floor(i / cols)
+      const col = i % cols
+      const x = (col - (cols - 1) / 2) * spacingX
+      const y = ((skillModules.length / cols) / 2 - row) * spacingY
       
+      const endPos: [number, number, number] = [x, y, 0]
       return { skill, startPos, endPos }
     })
-  }, [viewport.height])
+  }, [])
 
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    // Smooth scroll progress interpolation
-    const t = Math.pow(progress, 1.5) 
+    const t = Math.pow(progress, 1.2) 
     
     groupRef.current.children.forEach((child, i) => {
       const data = moduleData[i]
       if (!data) return
 
-      // Smooth position interpolation
       child.position.x = THREE.MathUtils.lerp(child.position.x, THREE.MathUtils.lerp(data.startPos[0], data.endPos[0], t), 0.1)
       child.position.y = THREE.MathUtils.lerp(child.position.y, THREE.MathUtils.lerp(data.startPos[1], data.endPos[1], t), 0.1)
       child.position.z = THREE.MathUtils.lerp(child.position.z, THREE.MathUtils.lerp(data.startPos[2], data.endPos[2], t), 0.1)
       
-      // Rotation interpolation: Chaotic to Ordered
-      const targetRotX = THREE.MathUtils.lerp(i, 0, t)
-      const targetRotY = THREE.MathUtils.lerp(i, 0, t)
+      // Force perfectly centered rotation upon assembly
+      const targetRotX = THREE.MathUtils.lerp(Math.sin(i) * 0.5, 0, t)
+      const targetRotY = THREE.MathUtils.lerp(Math.cos(i) * 0.5, 0, t)
       child.rotation.x = THREE.MathUtils.lerp(child.rotation.x, targetRotX, 0.1)
       child.rotation.y = THREE.MathUtils.lerp(child.rotation.y, targetRotY, 0.1)
     })
 
-    // Subtlest group floating
-    groupRef.current.rotation.y += delta * 0.1 * (1 - t)
+    // NO MORE GROUP ROTATION - ensures text is always forward facing
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0, 0.1)
   })
 
   return (
