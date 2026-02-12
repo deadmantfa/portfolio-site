@@ -121,18 +121,21 @@ export default function Home() {
                   {index + 1}
                 </div>
                 <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group cursor-pointer hover:border-primary/20 transition-colors pointer-events-auto">
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+                  <div className="absolute inset-0 tech-grid opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                  <div className="absolute inset-0 scanline opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                  
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-12 relative z-10">
                     <span className="font-mono text-[11px] text-primary uppercase tracking-[0.3em]">{milestone.year}</span>
                     <div className="h-px w-24 bg-white/10"></div>
                     <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em]">{milestone.company}</span>
                   </div>
-                  <EditorialReveal direction="up">
-                    <h2 className="text-4xl md:text-7xl font-serif italic text-white mb-6 leading-tight">{milestone.role}</h2>
+                  <EditorialReveal direction="up" className="relative z-10">
+                    <h2 className="text-5xl md:text-8xl font-serif italic text-white mb-10 leading-[0.9] tracking-tighter">{milestone.role}</h2>
                   </EditorialReveal>
-                  <EditorialReveal direction="up" delay={0.2}>
-                    <p className="text-lg md:text-xl text-zinc-400 leading-relaxed mb-10 max-w-2xl font-sans">{milestone.description}</p>
+                  <EditorialReveal direction="up" delay={0.2} className="relative z-10">
+                    <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed mb-12 max-w-2xl font-sans font-light">{milestone.description}</p>
                   </EditorialReveal>
-                  <div className="flex flex-col md:flex-row justify-between items-end gap-8 pt-10 border-t border-white/5">
+                  <div className="flex flex-col md:flex-row justify-between items-end gap-10 pt-12 border-t border-white/5 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
                       {milestone.highlights?.slice(0, 2).map((h, i) => (
                         <div key={i} className="flex gap-4">
@@ -156,6 +159,7 @@ export default function Home() {
 
         <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center">
+            <div className="absolute inset-0 tech-grid opacity-5"></div>
             <div className="max-w-5xl w-full text-center z-30 pointer-events-none">
               <EditorialReveal direction="down">
                 <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-10 uppercase tracking-tighter">Ecosystem.</h2>

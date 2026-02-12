@@ -1,20 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Architectural Authority Theme */
   --color-background: oklch(10% 0.01 264);
   --color-foreground: oklch(98% 0.01 264);
-
-  --color-primary: oklch(65% 0.15 264); /* Strategic Blue */
-  --color-accent: oklch(85% 0.1 100);   /* Architectural Gold */
-  
+  --color-primary: oklch(70% 0.15 264);
+  --color-accent: oklch(85% 0.1 100);
   --color-card: oklch(15% 0.02 264);
   --color-border: oklch(25% 0.02 264);
-
   --font-serif: "Cormorant Garamond", serif;
   --font-mono: "JetBrains Mono", monospace;
   --font-sans: "Inter", system-ui;
-
   --animate-float: float 6s ease-in-out infinite;
   --animate-reveal: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
@@ -24,43 +19,40 @@
   }
 
   @keyframes reveal {
-    from { 
-      opacity: 0;
-      transform: translateY(40px) skewY(2deg);
-    }
-    to { 
-      opacity: 1;
-      transform: translateY(0) skewY(0);
-    }
+    from { opacity: 0; transform: translateY(40px) skewY(2deg); }
+    to { opacity: 1; transform: translateY(0) skewY(0); }
   }
 }
 
 @layer base {
-  * {
-    @apply border-border selection:bg-primary/30;
+  * { @apply border-border selection:bg-primary/30; }
+  html { scroll-behavior: smooth; }
+  body { 
+    /* CRITICAL: Transparent body allows the -z-10 canvas to be seen */
+    background-color: transparent !important; 
+    color: #ffffff;
+    @apply antialiased overflow-x-hidden font-sans;
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden font-sans;
-  }
-
-  h1, h2, h3 {
-    @apply font-serif italic;
-  }
+  h1, h2, h3 { @apply font-serif italic; }
 }
 
-@utility text-balance {
-  text-wrap: balance;
+@utility text-balance { text-wrap: balance; }
+@utility glass { @apply bg-card/40 backdrop-blur-2xl border border-white/5; }
+@utility vertical-text { writing-mode: vertical-rl; }
+
+@utility scanline {
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.5) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
 }
 
-@utility glass {
-  @apply bg-card/40 backdrop-blur-2xl border border-white/5;
-}
-
-@utility vertical-text {
-  writing-mode: vertical-rl;
+@utility tech-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
