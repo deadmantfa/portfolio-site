@@ -9,11 +9,11 @@
     - [x] Create `src/app/robots.txt`.
 
 ## Phase 2: Performance & Asset Tuning
-- [ ] Task: Font & Image Optimization
-    - [ ] Audit font loading strategy to prevent layout shift.
-    - [ ] Ensure all SVGs and images use modern Next.js optimization patterns.
-- [ ] Task: Three.js Loading States
-    - [ ] Implement a high-end, minimal "Architectural Loader" for the 3D canvas initialization.
+- [x] Task: Font & Image Optimization (9587ead)
+    - [x] Audit font loading strategy to prevent layout shift.
+    - [x] Ensure all SVGs and images use modern Next.js optimization patterns.
+- [x] Task: Three.js Loading States (338c903)
+    - [x] Implement a high-end, minimal "Architectural Loader" for the 3D canvas initialization.
 
 ## Phase 3: Accessibility & Final Audit
 - [ ] Task: WCAG Compliance Pass
