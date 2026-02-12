@@ -7,9 +7,6 @@
   --color-accent: oklch(85% 0.1 100);
   --color-card: oklch(15% 0.02 264);
   --color-border: oklch(25% 0.02 264);
-  --font-serif: "Cormorant Garamond", serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-sans: "Inter", system-ui;
   --animate-float: float 6s ease-in-out infinite;
   --animate-reveal: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
