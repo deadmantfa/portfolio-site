@@ -1,9 +1,10 @@
 'use client'
 
 const StructuredData = () => {
-  const schema = {
+  const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": "https://wenceslaus.pro/#person",
     "name": "Wenceslaus Dsilva",
     "jobTitle": "Chief Technology Officer",
     "url": "https://wenceslaus.pro",
@@ -22,11 +23,27 @@ const StructuredData = () => {
     ]
   }
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://wenceslaus.pro/#website",
+    "url": "https://wenceslaus.pro",
+    "name": "Wenceslaus Dsilva Portfolio",
+    "description": "The professional portfolio of Wenceslaus Dsilva, Visionary Architect.",
+    "publisher": { "@id": "https://wenceslaus.pro/#person" }
+  }
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+    </>
   )
 }
 

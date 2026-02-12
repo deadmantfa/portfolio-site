@@ -1,7 +1,7 @@
 # Implementation Plan: Portfolio Comprehensive Audit (Analyze & Repair)
 
 ## Phase 1: Technical SEO & Metadata Remediation
-- [ ] Task: Comprehensive SEO Audit & Reporting
+- [~] Task: Comprehensive SEO Audit & Reporting
     - [ ] Run automated SEO audit and document findings in `conductor/audit_reports/seo_initial.md`.
 - [ ] Task: Metadata & Structured Data Fixes
     - [ ] Write tests for missing or incorrect meta tags in `src/__tests__/seo_remediation.test.ts`.
