@@ -2,9 +2,11 @@
 
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Float, Box, Text } from '@react-three/drei'
+import { Float, Text } from '@react-three/drei'
 import * as THREE from 'three'
 import { SkillModule } from '@/data/skills'
+import { useSkillResources } from './SkillResourceProvider'
+import { useScroll } from './ScrollProvider'
 
 interface SkillModuleProps {
   skill: SkillModule
@@ -14,6 +16,8 @@ interface SkillModuleProps {
 const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
   const groupRef = useRef<THREE.Group>(null!)
   const [hovered, setHovered] = useState(false)
+  const { geometry, baseMaterial, hoverMaterial } = useSkillResources()
+  const { setActiveSkill } = useScroll()
   
   useFrame((state, delta) => {
     if (!groupRef.current) return
@@ -32,36 +36,24 @@ const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
     e.stopPropagation()
     setHovered(true)
     document.body.style.cursor = 'pointer'
-    ;(window as any).activeSkill = skill
+    setActiveSkill(skill)
   }
 
   const handlePointerOut = () => {
     setHovered(false)
     document.body.style.cursor = 'default'
-    if ((window as any).activeSkill === skill) {
-      (window as any).activeSkill = null
-    }
+    setActiveSkill(null)
   }
 
   return (
     <group ref={groupRef}>
       <Float speed={hovered ? 0 : 2} rotationIntensity={hovered ? 0 : 0.2} floatIntensity={0.5}>
-        <Box 
-          args={[4, 1.4, 0.1]}
+        <mesh 
+          geometry={geometry}
+          material={hovered ? hoverMaterial : baseMaterial}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
-        >
-          <meshStandardMaterial 
-            color={hovered ? "#14b8a6" : "#6366f1"}
-            wireframe={!hovered}
-            transparent
-            opacity={hovered ? 1 : 0.2}
-            emissive={hovered ? "#14b8a6" : "#6366f1"}
-            emissiveIntensity={hovered ? 10 : 0.5}
-            metalness={1}
-            roughness={0}
-          />
-        </Box>
+        />
 
         <Text
           position={[0, 0, 0.1]}

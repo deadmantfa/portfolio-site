@@ -5,6 +5,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { skillModules } from '@/data/skills'
 import SkillModuleComponent from './SkillModule'
 import * as THREE from 'three'
+import { SkillResourceProvider } from './SkillResourceProvider'
 
 interface AssemblySceneProps {
   progress: number
@@ -61,13 +62,15 @@ const AssemblyScene = ({ progress }: AssemblySceneProps) => {
   })
 
   return (
-    <group ref={groupRef}>
-      {moduleData.map((data, i) => (
-        <group key={i}>
-          <SkillModuleComponent skill={data.skill} index={i} />
-        </group>
-      ))}
-    </group>
+    <SkillResourceProvider>
+      <group ref={groupRef}>
+        {moduleData.map((data, i) => (
+          <group key={i}>
+            <SkillModuleComponent skill={data.skill} index={i} />
+          </group>
+        ))}
+      </group>
+    </SkillResourceProvider>
   )
 }
 

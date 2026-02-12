@@ -4,6 +4,7 @@ import './globals.css'
 import Navigation from '@/components/Navigation'
 import StructuredData from '@/components/StructuredData'
 import ArchitecturalLoader from '@/components/ArchitecturalLoader'
+import { ScrollProvider } from '@/components/ScrollProvider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -82,9 +83,11 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className="antialiased bg-black">
-        <ArchitecturalLoader />
-        <Navigation />
-        {children}
+        <ScrollProvider>
+          <ArchitecturalLoader />
+          <Navigation />
+          {children}
+        </ScrollProvider>
       </body>
     </html>
   )

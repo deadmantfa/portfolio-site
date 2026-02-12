@@ -18,7 +18,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Design Consistency & A11y Polish' (Protocol in workflow.md) [checkpoint: 6c3589f]
 
 ## Phase 3: Code Architecture & Performance Tuning
-- [ ] Task: Codebase & Performance Investigation
+- [~] Task: Codebase & Performance Investigation
     - [ ] Analyze Three.js components for performance bottlenecks and TS type safety.
     - [ ] Document findings in `conductor/audit_reports/code_perf.md`.
 - [ ] Task: Architectural Refactoring & Optimization

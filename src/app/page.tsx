@@ -14,35 +14,17 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EditorialReveal from '@/components/EditorialReveal'
 import BackgroundMarkers from '@/components/BackgroundMarkers'
+import { useScroll } from '@/components/ScrollProvider'
 
 export default function Home() {
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [activeEpoch, setActiveEpoch] = useState(0)
+  const { scrollProgress, activeSkill } = useScroll()
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
   const contactSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
   const [contactProgress, setContactProgress] = useState(0)
-  const [activeSkill, setActiveSkill] = useState<SkillModule | null>(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = window.scrollY / totalHeight
-      setScrollProgress(progress)
-      ;(window as any).scrollProgress = progress
-
-      // Track active epoch
-      const sections = document.querySelectorAll('section')
-      let currentEpoch = 0
-      sections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect()
-        if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
-          currentEpoch = Math.max(0, index - 1)
-        }
-      })
-      setActiveEpoch(currentEpoch)
-      ;(window as any).activeEpoch = currentEpoch
-
+    const handleScrollProgress = () => {
       if (skillsSectionRef.current) {
         const rect = skillsSectionRef.current.getBoundingClientRect()
         const sectionHeight = rect.height
@@ -51,22 +33,17 @@ export default function Home() {
         if (rect.top < windowHeight && rect.bottom > 0) {
           const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
           setSkillsProgress(p)
-          ;(window as any).skillsProgress = p
         } else if (rect.top >= windowHeight) {
           setSkillsProgress(0)
-          ;(window as any).skillsProgress = 0
         } else {
           setSkillsProgress(1)
-          ;(window as any).skillsProgress = 1
         }
       }
 
       if (contactSectionRef.current) {
         const rect = contactSectionRef.current.getBoundingClientRect()
-        const sectionHeight = rect.height
         const windowHeight = window.innerHeight
         
-        // More generous progress trigger
         if (rect.top < windowHeight) {
           const p = Math.min(Math.max((windowHeight - rect.top) / windowHeight, 0), 1)
           setContactProgress(p)
@@ -76,19 +53,10 @@ export default function Home() {
       }
     }
 
-    const interval = setInterval(() => {
-      if ((window as any).activeSkill !== activeSkill) {
-        setActiveSkill((window as any).activeSkill)
-      }
-    }, 100)
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      clearInterval(interval)
-    }
-  }, [activeSkill])
+    window.addEventListener('scroll', handleScrollProgress, { passive: true })
+    handleScrollProgress()
+    return () => window.removeEventListener('scroll', handleScrollProgress)
+  }, [])
 
   return (
     <main className="relative min-h-screen text-white selection:bg-primary/30">
