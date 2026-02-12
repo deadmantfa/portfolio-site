@@ -47,10 +47,13 @@ export default function Home() {
         if (rect.top < windowHeight && rect.bottom > 0) {
           const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
           setSkillsProgress(p)
+          ;(window as any).skillsProgress = p
         } else if (rect.top >= windowHeight) {
           setSkillsProgress(0)
+          ;(window as any).skillsProgress = 0
         } else {
           setSkillsProgress(1)
+          ;(window as any).skillsProgress = 1
         }
       }
     }
@@ -112,7 +115,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="relative z-20 space-y-[20vh] pb-[20vh] pointer-events-none">
+      <div id="epochs" className="relative z-20 space-y-[20vh] pb-[20vh] pointer-events-none">
         {careerData.map((milestone, index) => (
           <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 pointer-events-none">
             <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
@@ -121,8 +124,8 @@ export default function Home() {
                   {index + 1}
                 </div>
                 <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group cursor-pointer hover:border-primary/20 transition-colors pointer-events-auto">
-                  <div className="absolute inset-0 tech-grid opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                  <div className="absolute inset-0 scanline opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                  <div className="absolute inset-0 tech-grid opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                  <div className="absolute inset-0 scanline opacity-0 group-hover:opacity-10 transition-opacity"></div>
                   
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-12 relative z-10">
                     <span className="font-mono text-[11px] text-primary uppercase tracking-[0.3em]">{milestone.year}</span>
@@ -145,7 +148,11 @@ export default function Home() {
                       ))}
                     </div>
                     {(index === 0 || index === 1 || index === 2) && (
-                      <Link href={`/work/${index === 0 ? 'rooftop' : index === 1 ? 'food-darzee' : 'onfees'}`} className="inline-flex items-center gap-2 group/btn pointer-events-auto">
+                      <Link 
+                        href={`/work/${index === 0 ? 'rooftop' : index === 1 ? 'food-darzee' : 'onfees'}`} 
+                        className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1"
+                        aria-label={`View ${milestone.company} case study`}
+                      >
                         <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
                         <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
                       </Link>
@@ -159,7 +166,8 @@ export default function Home() {
 
         <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center">
-            <div className="absolute inset-0 tech-grid opacity-5"></div>
+            <div className="absolute inset-0 tech-grid opacity-15"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-60"></div>
             <div className="max-w-5xl w-full text-center z-30 pointer-events-none">
               <EditorialReveal direction="down">
                 <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-10 uppercase tracking-tighter">Ecosystem.</h2>
@@ -200,7 +208,11 @@ export default function Home() {
 
         <section id="contact" className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative z-20">
           <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">Let's <br/> <span className="text-primary">Connect.</span></h2>
-          <a href="mailto:wenceslausdsilva@gmail.com" className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light">
+          <a 
+            href="mailto:wenceslausdsilva@gmail.com" 
+            className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-2"
+            aria-label="Send an email to Wenceslaus Dsilva"
+          >
             wenceslausdsilva@gmail.com
             <div className="h-px w-0 group-hover:w-12 bg-primary transition-all duration-500"></div>
           </a>

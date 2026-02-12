@@ -39,13 +39,13 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
       {/* Blueprint Toggle Button */}
       <button 
         onClick={() => setIsBlueprintMode(!isBlueprintMode)}
-        className="fixed bottom-12 right-12 z-[100] flex flex-col items-end group"
-        aria-label="Toggle Blueprint Mode"
+        className="fixed bottom-12 right-12 z-[100] flex flex-col items-end group focus-visible:outline-none"
+        aria-label={isBlueprintMode ? "Close Architectural Schema" : "View Architectural Blueprint"}
       >
         <span className="font-mono text-[9px] uppercase tracking-[0.4em] mb-4 text-zinc-500 group-hover:text-primary transition-colors">
           {isBlueprintMode ? 'Close Schema' : 'View Blueprint'}
         </span>
-        <div className={`size-12 rounded-full border flex items-center justify-center transition-all duration-500 ${isBlueprintMode ? 'border-primary bg-primary text-black' : 'border-white/10 text-white hover:border-primary/50'}`}>
+        <div className={`size-12 rounded-full border flex items-center justify-center transition-all duration-500 group-focus-visible:ring-2 group-focus-visible:ring-primary ${isBlueprintMode ? 'border-primary bg-primary text-black' : 'border-white/10 text-white hover:border-primary/50'}`}>
           <div className="relative size-6">
             <motion.div 
               animate={{ rotate: isBlueprintMode ? 45 : 0 }}
@@ -60,7 +60,11 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
       <div className={`relative z-10 max-w-6xl mx-auto transition-all duration-1000 ${isBlueprintMode ? 'opacity-60 grayscale pointer-events-none' : 'opacity-100'}`}>
         {/* Breadcrumb */}
         <nav className="mb-12">
-          <Link href="/" className="inline-flex items-center gap-4 group">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-4 group focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-1"
+            aria-label="Return to career milestones"
+          >
             <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-500 group-hover:text-primary">
               ←
             </div>
