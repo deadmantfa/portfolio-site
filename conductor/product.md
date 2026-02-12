@@ -15,6 +15,7 @@ To create a high-end, \"Architectural Authority\" portfolio website that positio
 - **Architectural Epochs:** A sophisticated 3D scroll experience that reveals career milestones through floating geometric frames and refined typography, emphasizing 20 years of leadership impact.
 - **Dynamic Skill Cloud:** A reactive visualization of a diverse tech stack including Python, PHP, AWS, Angular, and Serverless frameworks.
 - **Architectural Deep-Dives:** A dynamic system of project case studies featuring interactive "Blueprint" 3D visualizations and comprehensive Architectural Decision Records (ADRs) to prove strategic technical depth.
+- **Architectural Handshake:** A high-end contact interface integrated with a final "Connection" 3D scene, providing a professional and immersive conclusion to the user journey.
 
 ## Unique Value Proposition (The Hook)
 **The Visionary Architect:** Wenceslaus is presented not just as a manager, but as a leader who understands the \"how\" of deep system design and the \"why\" of strategic business alignment.
