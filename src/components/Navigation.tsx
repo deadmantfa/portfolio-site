@@ -13,7 +13,7 @@ const Navigation = () => {
         </div>
         
         <div className="flex items-center gap-8 md:gap-12">
-          <div className="hidden space-x-8 md:space-x-12 text-[11px] font-mono uppercase tracking-[0.3em] text-zinc-400 md:flex">
+          <div className="hidden space-x-8 md:space-x-12 text-[11px] font-mono uppercase tracking-[0.3em] text-foreground/40 md:flex">
             <Link href="#epochs" className="transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded px-2">Epochs</Link>
             <Link href="#skills" className="transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded px-2">Ecosystem</Link>
             <Link href="#contact" className="transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded px-2">Contact</Link>
@@ -24,7 +24,7 @@ const Navigation = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View Curriculum Vitae (PDF)"
-            className="bg-white/10 hover:bg-primary px-6 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-[0.2em] text-white hover:text-black transition-all active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="bg-white/10 hover:bg-primary px-6 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-[0.2em] text-foreground hover:text-background transition-all active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           >
             CV
           </a>

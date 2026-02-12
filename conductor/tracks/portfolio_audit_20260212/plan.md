@@ -9,7 +9,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Technical SEO & Metadata Remediation' (Protocol in workflow.md) [checkpoint: ddf421f]
 
 ## Phase 2: Design Consistency & A11y Polish
-- [ ] Task: Design Review & Accessibility Audit
+- [~] Task: Design Review & Accessibility Audit
     - [ ] Audit UI for OKLCH consistency and A11y (ARIA, keyboard nav).
     - [ ] Document findings in `conductor/audit_reports/design_a11y.md`.
 - [ ] Task: UI/UX & Accessibility Implementation

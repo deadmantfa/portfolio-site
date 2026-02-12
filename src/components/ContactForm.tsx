@@ -22,17 +22,19 @@ const ContactForm = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         className="glass p-12 rounded-[2rem] text-center max-w-lg w-full"
+        role="status"
+        aria-live="polite"
       >
         <div className="size-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
           <span className="text-primary text-3xl">✓</span>
         </div>
-        <h3 className="text-3xl font-serif italic text-white mb-4">Transmission Received.</h3>
-        <p className="text-zinc-400 font-sans leading-relaxed">
+        <h3 className="text-3xl font-serif italic text-foreground mb-4">Transmission Received.</h3>
+        <p className="text-foreground/60 font-sans leading-relaxed">
           The architectural handshake is complete. I will review your message and respond shortly.
         </p>
         <button 
           onClick={() => { setFormState('idle'); setFormData({ name: '', email: '', message: '' }) }}
-          className="mt-8 text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 hover:text-primary transition-colors"
+          className="mt-8 text-[10px] font-mono uppercase tracking-[0.3em] text-foreground/40 hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded px-2"
         >
           Send another message
         </button>
@@ -52,7 +54,7 @@ const ContactForm = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
         <div className="space-y-2">
-          <label htmlFor="name" className="block font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-500 ml-4">Full Name</label>
+          <label htmlFor="name" className="block font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/40 ml-4">Full Name</label>
           <input
             id="name"
             required
@@ -60,11 +62,11 @@ const ContactForm = () => {
             placeholder="John Doe"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 focus:outline-none focus:border-primary/50 transition-colors font-sans"
+            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors font-sans"
           />
         </div>
         <div className="space-y-2">
-          <label htmlFor="email" className="block font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-500 ml-4">Email Axis</label>
+          <label htmlFor="email" className="block font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/40 ml-4">Email Axis</label>
           <input
             id="email"
             required
@@ -72,13 +74,13 @@ const ContactForm = () => {
             placeholder="john@example.com"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 focus:outline-none focus:border-primary/50 transition-colors font-sans"
+            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors font-sans"
           />
         </div>
       </div>
 
       <div className="space-y-2 mb-10 relative z-10">
-        <label htmlFor="message" className="block font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-500 ml-4">Structural Details</label>
+        <label htmlFor="message" className="block font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/40 ml-4">Structural Details</label>
         <textarea
           id="message"
           required
@@ -86,14 +88,14 @@ const ContactForm = () => {
           placeholder="Describe the scope of your vision..."
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-6 py-4 text-white placeholder:text-zinc-700 focus:outline-none focus:border-primary/50 transition-colors font-sans resize-none"
+          className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-6 py-4 text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors font-sans resize-none"
         />
       </div>
 
       <button
         disabled={formState === 'submitting'}
         type="submit"
-        className="w-full bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-5 rounded-full hover:bg-white transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 relative z-10"
+        className="w-full bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-5 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 relative z-10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
       >
         {formState === 'submitting' ? (
           <>
