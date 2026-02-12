@@ -5,6 +5,7 @@ import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
 import Timeline from '@/components/Timeline'
 import AssemblyScene from '@/components/AssemblyScene'
+import ConnectionScene from '@/components/ConnectionScene'
 import { careerData } from '@/data/career'
 import { skillModules, SkillModule } from '@/data/skills'
 import Link from 'next/link'
@@ -16,7 +17,9 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeEpoch, setActiveEpoch] = useState(0)
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
+  const contactSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
+  const [contactProgress, setContactProgress] = useState(0)
   const [activeSkill, setActiveSkill] = useState<SkillModule | null>(null)
 
   useEffect(() => {
@@ -56,6 +59,21 @@ export default function Home() {
           ;(window as any).skillsProgress = 1
         }
       }
+
+      if (contactSectionRef.current) {
+        const rect = contactSectionRef.current.getBoundingClientRect()
+        const sectionHeight = rect.height
+        const windowHeight = window.innerHeight
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
+          setContactProgress(p)
+        } else if (rect.top >= windowHeight) {
+          setContactProgress(0)
+        } else {
+          setContactProgress(1)
+        }
+      }
     }
 
     const interval = setInterval(() => {
@@ -86,6 +104,7 @@ export default function Home() {
           <ArchitecturalGrid />
           <Timeline />
           <AssemblyScene progress={skillsProgress * 3} />
+          <ConnectionScene progress={contactProgress} />
         </SceneCanvas>
       </div>
 
@@ -206,16 +225,22 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative z-20">
-          <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">Let's <br/> <span className="text-primary">Connect.</span></h2>
-          <a 
-            href="mailto:wenceslausdsilva@gmail.com" 
-            className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-2"
-            aria-label="Send an email to Wenceslaus Dsilva"
-          >
-            wenceslausdsilva@gmail.com
-            <div className="h-px w-0 group-hover:w-12 bg-primary transition-all duration-500"></div>
-          </a>
+        <section id="contact" ref={contactSectionRef} className="min-h-[150vh] flex flex-col items-center justify-center px-8 text-center bg-transparent relative z-20">
+          <EditorialReveal direction="up">
+            <h2 className="text-7xl md:text-[15rem] font-serif italic tracking-tighter leading-[0.7] mb-20">Let's <br/> <span className="text-primary">Connect.</span></h2>
+          </EditorialReveal>
+          
+          {/* Placeholder for Contact Form - will be added in Phase 2 */}
+          <div className="max-w-4xl w-full flex flex-col items-center">
+            <a 
+              href="mailto:wenceslausdsilva@gmail.com" 
+              className="group relative inline-flex items-center gap-4 text-2xl md:text-4xl font-serif italic hover:text-primary transition-colors font-light focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-2"
+              aria-label="Send an email to Wenceslaus Dsilva"
+            >
+              wenceslausdsilva@gmail.com
+              <div className="h-px w-0 group-hover:w-12 bg-primary transition-all duration-500"></div>
+            </a>
+          </div>
         </section>
       </div>
     </div>
