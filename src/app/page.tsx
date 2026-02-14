@@ -158,14 +158,14 @@ export default function Home() {
         ))}
 
         <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
-          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center">
-            <div className="absolute inset-0 tech-grid opacity-15"></div>
-            <div className="max-w-5xl w-full text-center z-30 pointer-events-none">
+          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+            <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
+            <div className="max-w-5xl w-full text-center z-10 pointer-events-none">
               <EditorialReveal direction="down">
-                <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-5 uppercase tracking-tighter">Ecosystem.</h2>
+                <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
               </EditorialReveal>
               
-              <div className="mt-24 max-w-3xl mx-auto min-h-64 flex flex-col items-center justify-center pointer-events-auto bg-black/20 backdrop-blur-md rounded-[3rem] p-12 border border-white/5 shadow-2xl">
+              <div className="mt-24 max-w-3xl mx-auto min-h-64 flex flex-col items-center justify-center pointer-events-auto bg-black/20 backdrop-blur-md rounded-[3rem] p-12 border border-white/5 shadow-2xl relative z-20">
                 <AnimatePresence mode="wait">
                   {activeSkill ? (
                     <motion.div
