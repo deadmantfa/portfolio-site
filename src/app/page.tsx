@@ -62,9 +62,9 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="relative min-h-screen text-white selection:bg-primary/30">
+    <main className="relative min-h-screen text-white selection:bg-primary/30 pointer-events-none">
       {/* 3D Experience - Background Interaction Layer */}
-      <div className="fixed inset-0 -z-10 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundMarkers />
         <SceneCanvas>
           <ContextBridge>
