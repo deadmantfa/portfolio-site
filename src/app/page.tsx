@@ -14,10 +14,13 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EditorialReveal from '@/components/EditorialReveal'
 import BackgroundMarkers from '@/components/BackgroundMarkers'
-import { useScroll } from '@/components/ScrollProvider'
+import { useScroll, ScrollContext } from '@/components/ScrollProvider'
+import { useContextBridge } from '@react-three/drei'
 
 export default function Home() {
   const { scrollProgress, activeSkill } = useScroll()
+  const ContextBridge = useContextBridge(ScrollContext)
+  
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
   const contactSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
@@ -60,23 +63,25 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen text-white selection:bg-primary/30">
-      {/* 3D Experience - Fixed Layer */}
+      {/* 3D Experience - Background Interaction Layer */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <BackgroundMarkers />
         <SceneCanvas>
-          {/* Brighter, more consistent global lighting */}
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[0, 10, 10]} intensity={2} color="#6366f1" />
-          <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
-          
-          <ArchitecturalGrid />
-          <Timeline />
-          <AssemblyScene progress={skillsProgress * 3} />
-          <ConnectionScene progress={contactProgress} />
+          <ContextBridge>
+            {/* Brighter, more consistent global lighting */}
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[0, 10, 10]} intensity={2} color="#6366f1" />
+            <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
+            
+            <ArchitecturalGrid />
+            <Timeline />
+            <AssemblyScene progress={skillsProgress * 3} />
+            <ConnectionScene progress={contactProgress} />
+          </ContextBridge>
         </SceneCanvas>
       </div>
 
-      {/* Content Layer */}
+      {/* Content Layer (on top) */}
       <div className="relative z-10 pointer-events-none">
         <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
         <div className="max-w-6xl animate-reveal pointer-events-none">
@@ -103,7 +108,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div id="epochs" className="relative z-20 space-y-[20vh] pb-[20vh] pointer-events-none">
+      <div id="epochs" className="relative space-y-[20vh] pb-[20vh] pointer-events-none">
         {careerData.map((milestone, index) => (
           <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 pointer-events-none bg-transparent">
             <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
@@ -157,10 +162,10 @@ export default function Home() {
             <div className="absolute inset-0 tech-grid opacity-15"></div>
             <div className="max-w-5xl w-full text-center z-30 pointer-events-none">
               <EditorialReveal direction="down">
-                <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-10 uppercase tracking-tighter">Ecosystem.</h2>
+                <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-5 uppercase tracking-tighter">Ecosystem.</h2>
               </EditorialReveal>
               
-              <div className="mt-24 max-w-2xl mx-auto h-48 flex flex-col items-center justify-center pointer-events-auto">
+              <div className="mt-24 max-w-3xl mx-auto min-h-64 flex flex-col items-center justify-center pointer-events-auto bg-black/20 backdrop-blur-md rounded-[3rem] p-12 border border-white/5 shadow-2xl">
                 <AnimatePresence mode="wait">
                   {activeSkill ? (
                     <motion.div
@@ -193,7 +198,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" ref={contactSectionRef} className="min-h-[150vh] flex flex-col items-center justify-center px-8 text-center bg-transparent relative z-20 pointer-events-auto">
+        <section id="contact" ref={contactSectionRef} className="min-h-[150vh] flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">
           <EditorialReveal direction="up" className="mb-24">
             <h2 className="text-5xl md:text-9xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
           </EditorialReveal>

@@ -11,9 +11,12 @@ import { useScroll } from './ScrollProvider'
 interface SkillModuleProps {
   skill: SkillModule
   index: number
+  startPos: [number, number, number]
+  endPos: [number, number, number]
+  progress: number
 }
 
-const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
+const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: SkillModuleProps) => {
   const groupRef = useRef<THREE.Group>(null!)
   const [hovered, setHovered] = useState(false)
   const { geometry, baseMaterial, hoverMaterial } = useSkillResources()
@@ -22,13 +25,31 @@ const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    // Displacement on hover
-    const targetZ = hovered ? 4 : 0
-    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.1)
+    const t = Math.pow(progress, 1.2)
     
-    // Logic to ensure we always face "forward" (Y=0) when assembled or hovered
+    // Base position from assembly
+    const bx = THREE.MathUtils.lerp(startPos[0], endPos[0], t)
+    const by = THREE.MathUtils.lerp(startPos[1], endPos[1], t)
+    const bz = THREE.MathUtils.lerp(startPos[2], endPos[2], t)
+
+    // Displacement on hover
+    const targetZOffset = hovered ? 4 : 0
+    
+    // Current position
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx, 0.1)
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.1)
+    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.1)
+    
+    // Rotation logic
+    const targetRotX = THREE.MathUtils.lerp(Math.sin(index) * 0.5, 0, t)
+    const targetRotY = THREE.MathUtils.lerp(Math.cos(index) * 0.5, 0, t)
+    
     if (hovered) {
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0, 0.1)
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0, 0.1)
+    } else {
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, 0.1)
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotY, 0.1)
     }
   })
 
@@ -61,7 +82,7 @@ const SkillModuleComponent = ({ skill, index }: SkillModuleProps) => {
           color="white"
           fillOpacity={1}
           strokeWidth={0.01}
-          strokeColor={hovered ? "black" : ""}
+          strokeColor={hovered ? "#6366f1" : "transparent"}
           strokeOpacity={hovered ? 1 : 0}
           side={THREE.FrontSide}
           pointerEvents="none"

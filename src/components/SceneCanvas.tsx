@@ -14,6 +14,7 @@ const SceneCanvas = ({ children }: SceneCanvasProps) => {
       camera={{ position: [0, 0, 20], fov: 50 }}
       gl={{ antialias: true, alpha: true }} 
       dpr={[1, 2]}
+      style={{ pointerEvents: 'auto' }}
     >
       <Suspense fallback={null}>
         {children}

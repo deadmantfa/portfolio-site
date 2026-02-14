@@ -16,23 +16,21 @@ export const SkillResourceProvider = ({ children }: { children: ReactNode }) => 
     const geo = new THREE.BoxGeometry(4, 1.4, 0.1)
     
     const baseMat = new THREE.MeshStandardMaterial({
-      color: "#6366f1",
-      wireframe: true,
+      color: "#ffffff",
       transparent: true,
-      opacity: 0.2,
-      emissive: "#6366f1",
-      emissiveIntensity: 0.5,
+      opacity: 0.05,
+      emissive: "#ffffff",
+      emissiveIntensity: 0.1,
       metalness: 1,
       roughness: 0
     })
 
     const hoverMat = new THREE.MeshStandardMaterial({
-      color: "#14b8a6",
-      wireframe: false,
+      color: "#ffffff",
       transparent: true,
-      opacity: 1,
-      emissive: "#14b8a6",
-      emissiveIntensity: 10,
+      opacity: 0.15,
+      emissive: "#6366f1", // Using primary color for active glow
+      emissiveIntensity: 0.8,
       metalness: 1,
       roughness: 0
     })

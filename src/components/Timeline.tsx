@@ -7,18 +7,22 @@ import { careerData } from '@/data/career'
 import * as THREE from 'three'
 import { useRouter } from 'next/navigation'
 
+import { useScroll } from './ScrollProvider'
+
 const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
   const groupRef = useRef<THREE.Group>(null!)
   const meshRef = useRef<THREE.Mesh>(null!)
   const router = useRouter()
+  const { scrollProgress, activeEpoch } = useScroll()
   
   // Pushed further down and BACK (Z=-10) to avoid overlapping with skills
   const yBase = -index * 10 - 5
   
   useFrame((state) => {
-    const scrollProgress = (window as any).scrollProgress || 0
-    const skillsProgress = (window as any).skillsProgress || 0
-    const activeEpoch = (window as any).activeEpoch || 0
+    // Determine if we are nearing the skills section to hide nodes
+    // Rough estimate: skills start after epoch 6.
+    const skillsStartProgress = 0.7
+    
     const totalDist = (careerData.length) * 10 + 10
     const targetY = yBase + (scrollProgress * totalDist)
     
@@ -28,8 +32,8 @@ const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
     groupRef.current.position.z = -10
     
     const dist = Math.abs(groupRef.current.position.y)
-    // Hide if too far or if we are in the skills section
-    groupRef.current.visible = dist < 15 && skillsProgress < 0.1
+    // Hide if too far or if we are nearing the skills section
+    groupRef.current.visible = dist < 15 && scrollProgress < skillsStartProgress
 
     // Frame focus logic
     const isFocused = activeEpoch === index
@@ -38,13 +42,14 @@ const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
     
     if (meshRef.current) {
       const material = meshRef.current.material as THREE.MeshStandardMaterial
-      const targetEmissive = isFocused ? 10 : 0.5
+      const targetEmissive = isFocused ? 10 : 2
       material.emissiveIntensity = THREE.MathUtils.lerp(material.emissiveIntensity, targetEmissive, 0.1)
-      material.opacity = isFocused ? 0.8 : 0.4
+      material.opacity = isFocused ? 1 : 0.6
     }
   })
 
-  const handleClick = () => {
+  const handleClick = (e: any) => {
+    e.stopPropagation()
     if (slug) {
       router.push(`/work/${slug}`)
     }
@@ -54,22 +59,19 @@ const TimelineNode = ({ index, slug }: { index: number, slug?: string }) => {
     <group 
       ref={groupRef} 
       onClick={handleClick} 
-      onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+      onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer' }}
       onPointerOut={() => { document.body.style.cursor = 'default' }}
     >
       <Float speed={2} rotationIntensity={2} floatIntensity={2}>
-        <Box ref={meshRef} args={[2, 2, 2]}>
+        <Sphere ref={meshRef} args={[0.8, 32, 32]}>
           <meshStandardMaterial 
-            color="#6366f1" 
-            wireframe 
-            transparent 
-            opacity={0.4} 
-            emissive="#6366f1"
-            emissiveIntensity={0.5}
+            color="#14b8a6" 
+            emissive="#14b8a6" 
+            emissiveIntensity={5} 
+            toneMapped={false}
+            transparent
+            opacity={0.8}
           />
-        </Box>
-        <Sphere args={[0.6, 32, 32]}>
-          <meshStandardMaterial color="#14b8a6" emissive="#14b8a6" emissiveIntensity={5} toneMapped={false} />
         </Sphere>
       </Float>
     </group>

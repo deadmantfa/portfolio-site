@@ -80,8 +80,18 @@ const ArchitecturalGrid = ({ isBlueprint = false }: { isBlueprint?: boolean }) =
     materialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress
     
-    const targetOpacity = isBlueprint ? 0.8 : 0.4
-    materialRef.current.uniforms.uOpacity.value = THREE.MathUtils.lerp(materialRef.current.uniforms.uOpacity.value, targetOpacity, 0.1)
+    // Subdue amplitude: lower base and much lower peak
+    const currentAmplitude = Math.min(2 + scrollProgress * 4, 6)
+    
+    // Fade out as we scroll deep into the content (e.g., past 0.6 progress)
+    const fadeOut = Math.max(0, 1 - (scrollProgress - 0.4) * 2)
+    const targetOpacity = (isBlueprint ? 0.8 : 0.2) * fadeOut
+    
+    materialRef.current.uniforms.uOpacity.value = THREE.MathUtils.lerp(
+      materialRef.current.uniforms.uOpacity.value, 
+      targetOpacity, 
+      0.1
+    )
     
     const targetColor = new THREE.Color(isBlueprint ? "#14b8a6" : "#6366f1")
     materialRef.current.uniforms.uColor.value.lerp(targetColor, 0.1)
@@ -92,7 +102,7 @@ const ArchitecturalGrid = ({ isBlueprint = false }: { isBlueprint?: boolean }) =
   })
 
   return (
-    <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]}>
+    <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]} position={[0, 0, -20]}>
       <points>
         <bufferGeometry>
           <bufferAttribute
@@ -108,6 +118,7 @@ const ArchitecturalGrid = ({ isBlueprint = false }: { isBlueprint?: boolean }) =
           transparent
           blending={THREE.AdditiveBlending}
           depthWrite={false}
+          opacity={0.2}
         />
       </points>
       
@@ -132,6 +143,7 @@ const ArchitecturalGrid = ({ isBlueprint = false }: { isBlueprint?: boolean }) =
           blending={THREE.AdditiveBlending}
           depthWrite={false}
           wireframe
+          opacity={0.1}
         />
       </lineSegments>
     </group>

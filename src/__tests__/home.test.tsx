@@ -2,6 +2,20 @@ import { render, screen } from '@testing-library/react'
 import Home from '../app/page'
 import { expect, it, describe, vi } from 'vitest'
 
+// Mock ScrollProvider
+vi.mock('@/components/ScrollProvider', async (importOriginal) => {
+  const React = await import('react')
+  return {
+    useScroll: () => ({
+      scrollProgress: 0,
+      activeSkill: null,
+      setActiveSkill: vi.fn(),
+    }),
+    ScrollContext: React.createContext(undefined),
+    ScrollProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+  }
+})
+
 // Mock 3D components
 vi.mock('@/components/SceneCanvas', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-canvas">{children}</div>

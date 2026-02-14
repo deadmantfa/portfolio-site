@@ -40,10 +40,10 @@ const SocialLinks = () => {
           className="group flex flex-col items-center gap-3 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-2xl p-2"
           aria-label={social.name}
         >
-          <div className="size-14 rounded-full border border-white/20 flex items-center justify-center bg-white/5 group-hover:border-primary group-hover:bg-primary/10 transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]">
-            <social.icon size={22} className="text-foreground/40 group-hover:text-primary transition-colors" />
+          <div className="size-14 rounded-full border border-white/40 flex items-center justify-center bg-white/10 group-hover:border-primary group-hover:bg-primary/20 transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+            <social.icon size={22} className="text-white group-hover:text-primary transition-colors" />
           </div>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-foreground/40 group-hover:text-foreground transition-colors">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">
             {social.name}
           </span>
         </motion.a>

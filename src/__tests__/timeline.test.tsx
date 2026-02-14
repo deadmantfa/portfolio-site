@@ -9,6 +9,20 @@ vi.mock('next/navigation', () => ({
   }),
 }))
 
+vi.mock('../components/ScrollProvider', async (importOriginal) => {
+  const React = await import('react')
+  return {
+    useScroll: () => ({
+      scrollProgress: 0.5,
+      activeEpoch: 0,
+      activeSkill: null,
+      setActiveSkill: vi.fn(),
+    }),
+    ScrollContext: React.createContext(undefined),
+    ScrollProvider: ({ children }: any) => <div>{children}</div>
+  }
+})
+
 // Mock R3F hooks
 vi.mock('@react-three/fiber', async () => {
   return {

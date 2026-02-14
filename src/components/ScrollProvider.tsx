@@ -2,14 +2,14 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 
-interface ScrollContextType {
+export interface ScrollContextType {
   scrollProgress: number
   activeEpoch: number
   activeSkill: any | null
   setActiveSkill: (skill: any | null) => void
 }
 
-const ScrollContext = createContext<ScrollContextType | undefined>(undefined)
+export const ScrollContext = createContext<ScrollContextType | undefined>(undefined)
 
 export const ScrollProvider = ({ children }: { children: ReactNode }) => {
   const [scrollProgress, setScrollProgress] = useState(0)

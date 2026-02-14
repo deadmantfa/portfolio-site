@@ -9,6 +9,22 @@ vi.mock('@react-three/fiber', async () => {
   }
 })
 
+vi.mock('../components/ScrollProvider', () => ({
+  useScroll: () => ({
+    scrollProgress: 0,
+    activeSkill: null,
+    setActiveSkill: vi.fn(),
+  }),
+}))
+
+vi.mock('../components/SkillResourceProvider', () => ({
+  useSkillResources: () => ({
+    geometry: {},
+    baseMaterial: {},
+    hoverMaterial: {},
+  }),
+}))
+
 // Mock Drei
 vi.mock('@react-three/drei', () => ({
   Float: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-float">{children}</div>,
