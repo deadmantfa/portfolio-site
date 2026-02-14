@@ -11,11 +11,10 @@ interface YearMarkerProps {
 const YearMarker = ({ year, index }: YearMarkerProps) => {
   const { scrollYProgress } = useScroll()
   
-  // Total sections estimate: Hero (1) + Career (6) + Ecosystem (3) + Contact (1) = 11
-  // Career milestones start after Hero, so around 1/11
-  const totalSections = 11
+  // Dynamic section calculation: Hero (1) + Career (careerData.length) + Ecosystem (3) + Contact (1)
+  const totalSections = 1 + careerData.length + 3 + 1
   const careerStart = 1 / totalSections
-  const careerEnd = 7 / totalSections
+  const careerEnd = (1 + careerData.length) / totalSections
   
   const step = (careerEnd - careerStart) / careerData.length
   const start = careerStart + (index * step)
