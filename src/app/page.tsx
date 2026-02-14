@@ -157,58 +157,57 @@ export default function Home() {
           </section>
         ))}
 
-        <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
-          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
-            <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
-            <div className="max-w-5xl w-full text-center z-10 pointer-events-none">
-              <EditorialReveal direction="down">
-                <h2 className="text-6xl md:text-[10rem] font-serif italic mb-12 leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
-              </EditorialReveal>
-              
-              <div className="mt-24 max-w-3xl mx-auto min-h-64 flex flex-col items-center justify-center pointer-events-auto bg-black/20 backdrop-blur-md rounded-[3rem] p-12 border border-white/5 shadow-2xl relative z-20">
-                <AnimatePresence mode="wait">
-                  {activeSkill ? (
-                    <motion.div
-                      key={activeSkill.name}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="text-center"
-                    >
-                      <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">Strategic Module: {activeSkill.category}</span>
-                      <h3 className="text-4xl md:text-6xl font-serif italic text-white mb-6 uppercase tracking-tighter">{activeSkill.name}</h3>
-                      <p className="text-lg md:text-xl text-zinc-400 font-light italic max-w-lg mx-auto leading-relaxed font-serif">
-                        "{activeSkill.importance}"
-                      </p>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="idle"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-center opacity-40"
-                    >
-                      <p className="font-mono text-[11px] text-zinc-500 uppercase tracking-[0.5em] mb-4 font-bold">Structural Assembly Active</p>
-                      <p className="text-xl font-serif italic text-zinc-600">Dissect the monolith to reveal technical depth.</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" ref={contactSectionRef} className="min-h-[150vh] flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">
-          <EditorialReveal direction="up" className="mb-24">
-            <h2 className="text-5xl md:text-9xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
-          </EditorialReveal>
-          
-          <div className="max-w-4xl w-full flex flex-col items-center">
-            <ContactForm />
-            <SocialLinks />
-          </div>
-        </section>
-      </div>
+                <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
+                  <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+                    <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
+                    <div className="max-w-7xl w-full h-full flex flex-col justify-between p-8 md:p-24 z-10 pointer-events-none">
+                      <EditorialReveal direction="down">
+                        <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
+                      </EditorialReveal>
+                      
+                      <div className="self-end max-w-sm w-full min-h-48 flex flex-col items-center justify-center pointer-events-auto bg-black/40 backdrop-blur-xl rounded-[2.5rem] p-10 border border-white/10 shadow-2xl relative z-20">
+                        <AnimatePresence mode="wait">
+                          {activeSkill ? (
+                            <motion.div
+                              key={activeSkill.name}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              className="text-left w-full"
+                            >
+                              <span className="font-mono text-[9px] text-primary uppercase tracking-[0.5em] mb-3 block">Module: {activeSkill.category}</span>
+                              <h3 className="text-3xl md:text-4xl font-serif italic text-white mb-4 uppercase tracking-tighter">{activeSkill.name}</h3>
+                              <p className="text-sm md:text-base text-zinc-400 font-light italic leading-relaxed font-serif">
+                                "{activeSkill.importance}"
+                              </p>
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="idle"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="text-left w-full opacity-40"
+                            >
+                              <p className="font-mono text-[9px] text-zinc-500 uppercase tracking-[0.5em] mb-3 font-bold">Assembly Active</p>
+                              <p className="text-lg font-serif italic text-zinc-600">Dissect the monolith to reveal technical depth.</p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+        
+                <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">  
+                  <EditorialReveal direction="up" className="mb-12">
+                    <h2 className="text-5xl md:text-8xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
+                  </EditorialReveal>
+                  
+                  <div className="max-w-4xl w-full flex flex-col items-center">
+                    <ContactForm />
+                    <SocialLinks />
+                  </div>
+                </section>      </div>
     </div>
   </main>
 )

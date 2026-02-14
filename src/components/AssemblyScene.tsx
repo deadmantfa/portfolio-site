@@ -29,7 +29,7 @@ const AssemblyScene = ({ progress }: AssemblySceneProps) => {
       // Grid formation logic
       const row = Math.floor(i / cols)
       const col = i % cols
-      const x = (col - (cols - 1) / 2) * spacingX
+      const x = (col - (cols - 1) / 2) * spacingX - 2 // Shifted left by 2 units
       const y = ((skillModules.length / cols) / 2 - row) * spacingY
       
       const endPos: [number, number, number] = [x, y, 0]
