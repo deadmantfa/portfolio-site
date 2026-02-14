@@ -17,11 +17,11 @@
     - [x] Refine `ContactForm.tsx`, `Navigation.tsx`, and `EditorialReveal.tsx` for visual and functional consistency.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Design Consistency & A11y Polish' (Protocol in workflow.md) [checkpoint: 6c3589f]
 
-## Phase 3: Code Architecture & Performance Tuning
+## Phase 3: Code Architecture & Performance Tuning [checkpoint: cd4f4da]
 - [x] Task: Codebase & Performance Investigation (6a9df87)
     - [x] Analyze Three.js components for performance bottlenecks and TS type safety.
     - [x] Document findings in `conductor/audit_reports/code_perf.md`.
 - [x] Task: Architectural Refactoring & Optimization (6a9df87)
     - [x] Write performance-focused tests in `src/__tests__/perf_tuning.test.ts`.
     - [x] Refactor `SceneCanvas.tsx` and 3D scenes to minimize draw calls and improve memory management.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Code Architecture & Performance Tuning' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Code Architecture & Performance Tuning' (Protocol in workflow.md) [checkpoint: cd4f4da]
