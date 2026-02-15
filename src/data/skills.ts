@@ -54,5 +54,25 @@ export const skillModules: SkillModule[] = [
     name: 'Leadership',
     category: 'leadership',
     importance: '20+ years of mentoring teams and aligning tech with business vision.'
+  },
+  {
+    name: 'AI Strategy',
+    category: 'leadership',
+    importance: 'Orchestrating AI adoption and strategic integration for business growth.'
+  },
+  {
+    name: 'Design Thinking',
+    category: 'leadership',
+    importance: 'Solving complex problems through user-centric architectural empathy.'
+  },
+  {
+    name: 'Team Building',
+    category: 'leadership',
+    importance: 'Cultivating high-performance engineering cultures through mentorship.'
+  },
+  {
+    name: 'Critical Thinking',
+    category: 'leadership',
+    importance: 'Evaluating deep-tech trade-offs with strategic architectural foresight.'
   }
 ]
