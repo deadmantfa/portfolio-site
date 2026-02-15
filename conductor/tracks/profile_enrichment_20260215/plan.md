@@ -1,13 +1,13 @@
 # Implementation Plan: Comprehensive Profile Enrichment (2025 CV Update)
 
 ## Phase 1: Early Career Data & Epochs
-- [ ] Task: Data Expansion - Add 2006-2012 roles to `src/data/career.ts`
+- [x] Task: Data Expansion - Add 2006-2012 roles to `src/data/career.ts` (319050b)
     - [ ] Add MADAR International School, TCS, and WNS milestones with full descriptions and highlights.
-- [ ] Task: TDD - Create validation tests for the expanded career timeline
-    - [ ] Ensure `src/__tests__/career.test.ts` (or similar) validates the existence and format of new roles.
-- [ ] Task: UI Verification - Confirm 3D Epoch rendering
-    - [ ] Ensure the 3D background markers and text reveals trigger correctly for the new 2006-2012 segments.
-- [ ] Task: Conductor - User Manual Verification 'Early Career Data & Epochs' (Protocol in workflow.md)
+- [x] Task: TDD - Create validation tests for the expanded career timeline (319050b)
+    - [x] Ensure `src/__tests__/career.test.ts` (or similar) validates the existence and format of new roles.
+- [x] Task: UI Verification - Confirm 3D Epoch rendering (319050b)
+    - [x] Ensure the 3D background markers and text reveals trigger correctly for the new 2006-2012 segments.
+- [~] Task: Conductor - User Manual Verification 'Early Career Data & Epochs' (Protocol in workflow.md)
 
 ## Phase 2: Skill Ecosystem Enrichment
 - [ ] Task: Data Expansion - Add Leadership & AI modules to `src/data/skills.ts`

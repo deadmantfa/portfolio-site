@@ -81,9 +81,9 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
           fontSize={0.35}
           color="white"
           fillOpacity={1}
-          strokeWidth={0.01}
+          strokeWidth={hovered ? 0.02 : 0.015}
           strokeColor={hovered ? "#6366f1" : "#000000"}
-          strokeOpacity={hovered ? 1 : 0}
+          strokeOpacity={hovered ? 1 : 0.5}
           side={THREE.FrontSide}
           pointerEvents="none"
         >

@@ -19,5 +19,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Comprehensive Profile Enrichment (2025 CV Update)**
+- [~] **Track: Comprehensive Profile Enrichment (2025 CV Update)**
 *Link: [./tracks/profile_enrichment_20260215/](./tracks/profile_enrichment_20260215/)*
