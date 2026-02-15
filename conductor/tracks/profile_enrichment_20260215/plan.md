@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Early Career Data & Epochs' (e572ffb)
 
 ## Phase 2: Skill Ecosystem Enrichment
-- [ ] Task: Data Expansion - Add Leadership & AI modules to `src/data/skills.ts`
+- [x] Task: Data Expansion - Add Leadership & AI modules to `src/data/skills.ts` (1ee9fb8)
     - [ ] Add "AI Strategy," "Design Thinking," "Team Building," and "Critical Thinking."
 - [ ] Task: TDD - Create tests for updated skills ecosystem
     - [ ] Verify that the 3D grid correctly incorporates the new module entries.
