@@ -37,4 +37,11 @@ describe('VaultScene Component', () => {
     expect(container.querySelector('group')).toBeDefined()
     expect(container.querySelector('mesh')).toBeDefined()
   })
+
+  it('contains labels for education and certifications', () => {
+    const { getByText } = render(<VaultScene />)
+    expect(getByText(/St. Andrews College/i)).toBeDefined()
+    expect(getByText(/Elasticsearch Certified Engineer/i)).toBeDefined()
+    expect(getByText(/Google Cloud Professional/i)).toBeDefined()
+  })
 })

@@ -208,17 +208,29 @@ export default function Home() {
                                     </EditorialReveal>
                                     
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
-                                      <div className="glass p-8 rounded-3xl opacity-0 hover:opacity-100 transition-opacity pointer-events-auto">
+                                      <div 
+                                        tabIndex={0} 
+                                        className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto"
+                                        aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
+                                      >
                                         <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Education</p>
                                         <h3 className="text-xl text-white font-serif italic">B.Sc Information Technology</h3>
                                         <p className="text-zinc-500 text-xs mt-2">St. Andrews College, Mumbai University</p>
                                       </div>
-                                      <div className="glass p-8 rounded-3xl opacity-0 hover:opacity-100 transition-opacity pointer-events-auto">
+                                      <div 
+                                        tabIndex={0} 
+                                        className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto"
+                                        aria-label="Certification: Elasticsearch Certified Engineer"
+                                      >
                                         <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Certification</p>
                                         <h3 className="text-xl text-white font-serif italic">Elasticsearch Certified Engineer</h3>
                                         <p className="text-zinc-500 text-xs mt-2">Elite specialized engineering certification.</p>
                                       </div>
-                                      <div className="glass p-8 rounded-3xl opacity-0 hover:opacity-100 transition-opacity pointer-events-auto">
+                                      <div 
+                                        tabIndex={0} 
+                                        className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto"
+                                        aria-label="Certification: Google Cloud Professional Architect"
+                                      >
                                         <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Certification</p>
                                         <h3 className="text-xl text-white font-serif italic">Google Cloud Professional</h3>
                                         <p className="text-zinc-500 text-xs mt-2">Cloud Infrastructure & Solution Architecting.</p>

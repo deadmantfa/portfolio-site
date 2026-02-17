@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useScroll } from './ScrollProvider'
@@ -15,6 +15,7 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
   const meshRef = useRef<THREE.Mesh>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
   const { scrollProgress } = useScroll()
+  const [hovered, setHover] = useState(false)
 
   const shaderArgs = useMemo(() => ({
     uniforms: {
@@ -74,17 +75,28 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = time
       // Simple "active" logic based on scroll progress (Vault is roughly at 0.7 - 0.8)
-      const isActive = Math.max(0, 1 - Math.abs(scrollProgress - 0.75) * 5)
-      materialRef.current.uniforms.uActive.value = isActive
+      const scrollActivation = Math.max(0, 1 - Math.abs(scrollProgress - 0.75) * 5)
+      const targetActive = hovered ? 1 : scrollActivation
+      materialRef.current.uniforms.uActive.value = THREE.MathUtils.lerp(
+        materialRef.current.uniforms.uActive.value, 
+        targetActive, 
+        0.1
+      )
     }
     if (meshRef.current) {
-      meshRef.current.rotation.y = time * 0.5
+      meshRef.current.rotation.y = time * (hovered ? 1.5 : 0.5)
+      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, hovered ? 1.2 : 1, 0.1))
     }
   })
 
   return (
     <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-      <mesh ref={meshRef} position={position}>
+      <mesh 
+        ref={meshRef} 
+        position={position}
+        onPointerOver={() => setHover(true)}
+        onPointerOut={() => setHover(false)}
+      >
         {shape === 'box' && <boxGeometry args={[1.2, 1.2, 1.2]} />}
         {shape === 'octahedron' && <octahedronGeometry args={[0.8]} />}
         {shape === 'tetrahedron' && <tetrahedronGeometry args={[0.8]} />}
