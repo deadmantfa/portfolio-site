@@ -17,12 +17,12 @@
 - [x] Task: Conductor - User Manual Verification 'Skill Ecosystem Enrichment' (15bcf6b)
 
 ## Phase 3: The Vault - 3D Credentials Section
-- [~] Task: Component Development - Create `VaultScene.tsx`
-    - [ ] Build a new interactive Three.js scene for Education and Certifications.
-- [ ] Task: Visual Polish - Implement custom GLSL shaders
-    - [ ] Create holographic/scanline effects for the credential artifacts.
-- [ ] Task: Integration - Add Vault to `src/app/page.tsx`
-    - [ ] Position the new section between Ecosystem and Contact.
+- [x] Task: Component Development - Create `VaultScene.tsx` (78b8722)
+    - [x] Build a new interactive Three.js scene for Education and Certifications.
+- [x] Task: Visual Polish - Implement custom GLSL shaders (78b8722)
+    - [x] Create holographic/scanline effects for the credential artifacts.
+- [x] Task: Integration - Add Vault to `src/app/page.tsx` (78b8722)
+    - [x] Position the new section between Ecosystem and Contact.
 - [ ] Task: TDD - Interaction & Accessibility Tests
     - [ ] Write tests for credential hover states and keyboard navigation within the new section.
 - [ ] Task: Conductor - User Manual Verification 'The Vault - 3D Credentials Section' (Protocol in workflow.md)
