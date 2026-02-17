@@ -5,6 +5,7 @@ import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
 import Timeline from '@/components/Timeline'
 import AssemblyScene from '@/components/AssemblyScene'
+import VaultScene from '@/components/VaultScene'
 import ConnectionScene from '@/components/ConnectionScene'
 import ContactForm from '@/components/ContactForm'
 import SocialLinks from '@/components/SocialLinks'
@@ -76,6 +77,7 @@ export default function Home() {
             <ArchitecturalGrid />
             <Timeline />
             <AssemblyScene progress={skillsProgress * 3} />
+            <VaultScene />
             <ConnectionScene progress={contactProgress} />
           </ContextBridge>
         </SceneCanvas>
@@ -196,9 +198,37 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                </section>
-        
-                <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">  
+                                </section>
+                        
+                                <section id="vault" className="min-h-screen flex flex-col items-center justify-center px-8 relative pointer-events-none bg-transparent">
+                                  <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
+                                    <EditorialReveal direction="down">
+                                      <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">The Vault</span>
+                                      <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
+                                    </EditorialReveal>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
+                                      <div className="glass p-8 rounded-3xl opacity-0 hover:opacity-100 transition-opacity pointer-events-auto">
+                                        <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Education</p>
+                                        <h3 className="text-xl text-white font-serif italic">B.Sc Information Technology</h3>
+                                        <p className="text-zinc-500 text-xs mt-2">St. Andrews College, Mumbai University</p>
+                                      </div>
+                                      <div className="glass p-8 rounded-3xl opacity-0 hover:opacity-100 transition-opacity pointer-events-auto">
+                                        <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Certification</p>
+                                        <h3 className="text-xl text-white font-serif italic">Elasticsearch Certified Engineer</h3>
+                                        <p className="text-zinc-500 text-xs mt-2">Elite specialized engineering certification.</p>
+                                      </div>
+                                      <div className="glass p-8 rounded-3xl opacity-0 hover:opacity-100 transition-opacity pointer-events-auto">
+                                        <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Certification</p>
+                                        <h3 className="text-xl text-white font-serif italic">Google Cloud Professional</h3>
+                                        <p className="text-zinc-500 text-xs mt-2">Cloud Infrastructure & Solution Architecting.</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </section>
+                
+                                <section id="contact" ref={contactSectionRef}
+                 className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">  
                   <EditorialReveal direction="up" className="mb-12">
                     <h2 className="text-5xl md:text-8xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
                   </EditorialReveal>
