@@ -19,12 +19,14 @@ import { useScroll, ScrollContext } from '@/components/ScrollProvider'
 import { useContextBridge } from '@react-three/drei'
 
 export default function Home() {
-  const { scrollProgress, activeSkill } = useScroll()
+  const { scrollProgress, activeSkill, setActiveCredential } = useScroll()
   const ContextBridge = useContextBridge(ScrollContext)
   
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
+  const vaultSectionRef = useRef<HTMLDivElement>(null!)
   const contactSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
+  const [vaultProgress, setVaultProgress] = useState(0)
   const [contactProgress, setContactProgress] = useState(0)
 
   useEffect(() => {
@@ -41,6 +43,21 @@ export default function Home() {
           setSkillsProgress(0)
         } else {
           setSkillsProgress(1)
+        }
+      }
+
+      if (vaultSectionRef.current) {
+        const rect = vaultSectionRef.current.getBoundingClientRect()
+        const sectionHeight = rect.height
+        const windowHeight = window.innerHeight
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
+          setVaultProgress(p)
+        } else if (rect.top >= windowHeight) {
+          setVaultProgress(0)
+        } else {
+          setVaultProgress(1)
         }
       }
 
@@ -77,7 +94,7 @@ export default function Home() {
             <ArchitecturalGrid />
             <Timeline />
             <AssemblyScene progress={skillsProgress * 3} />
-            <VaultScene />
+            <VaultScene progress={vaultProgress} />
             <ConnectionScene progress={contactProgress} />
           </ContextBridge>
         </SceneCanvas>
@@ -198,49 +215,110 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                                </section>
-                        
-                                <section id="vault" className="min-h-screen flex flex-col items-center justify-center px-8 relative pointer-events-none bg-transparent">
-                                  <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
-                                    <EditorialReveal direction="down">
-                                      <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">The Vault</span>
-                                      <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
-                                    </EditorialReveal>
-                                    
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
-                                      <div 
-                                        tabIndex={0} 
-                                        className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto"
-                                        aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
-                                      >
-                                        <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Education</p>
-                                        <h3 className="text-xl text-white font-serif italic">B.Sc Information Technology</h3>
-                                        <p className="text-zinc-500 text-xs mt-2">St. Andrews College, Mumbai University</p>
-                                      </div>
-                                      <div 
-                                        tabIndex={0} 
-                                        className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto"
-                                        aria-label="Certification: Elasticsearch Certified Engineer"
-                                      >
-                                        <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Certification</p>
-                                        <h3 className="text-xl text-white font-serif italic">Elasticsearch Certified Engineer</h3>
-                                        <p className="text-zinc-500 text-xs mt-2">Elite specialized engineering certification.</p>
-                                      </div>
-                                      <div 
-                                        tabIndex={0} 
-                                        className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto"
-                                        aria-label="Certification: Google Cloud Professional Architect"
-                                      >
-                                        <p className="text-zinc-400 text-sm font-mono mb-2 uppercase">Certification</p>
-                                        <h3 className="text-xl text-white font-serif italic">Google Cloud Professional</h3>
-                                        <p className="text-zinc-500 text-xs mt-2">Cloud Infrastructure & Solution Architecting.</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </section>
+                </section>
+        
+                <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
+                  <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+                    <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
+                      <EditorialReveal direction="down">
+                        <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">The Vault</span>
+                        <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
+                      </EditorialReveal>
+                      
+                                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
+                      
+                                                            <div 
+                      
+                                                              tabIndex={0} 
+                      
+                                                              onMouseEnter={() => setActiveCredential('edu')}
+                      
+                                                              onMouseLeave={() => setActiveCredential(null)}
+                      
+                                                              onFocus={() => setActiveCredential('edu')}
+                      
+                                                              onBlur={() => setActiveCredential(null)}
+                      
+                                                              className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                      
+                                                              aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
+                      
+                                                            >
+                      
+                                                              <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
+                      
+                                                              <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
+                      
+                                                              <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                      
+                                                              <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
+                      
+                                                            </div>
+                      
+                                                            <div 
+                      
+                                                              tabIndex={0} 
+                      
+                                                              onMouseEnter={() => setActiveCredential('cert1')}
+                      
+                                                              onMouseLeave={() => setActiveCredential(null)}
+                      
+                                                              onFocus={() => setActiveCredential('cert1')}
+                      
+                                                              onBlur={() => setActiveCredential(null)}
+                      
+                                                              className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                      
+                                                              aria-label="Certification: Elasticsearch Certified Engineer"
+                      
+                                                            >
+                      
+                                                              <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                      
+                                                              <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
+                      
+                                                              <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                      
+                                                              <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
+                      
+                                                            </div>
+                      
+                                                            <div 
+                      
+                                                              tabIndex={0} 
+                      
+                                                              onMouseEnter={() => setActiveCredential('cert2')}
+                      
+                                                              onMouseLeave={() => setActiveCredential(null)}
+                      
+                                                              onFocus={() => setActiveCredential('cert2')}
+                      
+                                                              onBlur={() => setActiveCredential(null)}
+                      
+                                                              className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                      
+                                                              aria-label="Certification: Google Cloud Professional Architect"
+                      
+                                                            >
+                      
+                                                              <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                      
+                                                              <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
+                      
+                                                              <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                      
+                                                              <p className="text-zinc-500 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
+                      
+                                                            </div>
+                      
+                                                          </div>
+                      
+                      
+                    </div>
+                  </div>
+                </section>
                 
-                                <section id="contact" ref={contactSectionRef}
-                 className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">  
+                <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">  
                   <EditorialReveal direction="up" className="mb-12">
                     <h2 className="text-5xl md:text-8xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
                   </EditorialReveal>
@@ -249,7 +327,8 @@ export default function Home() {
                     <ContactForm />
                     <SocialLinks />
                   </div>
-                </section>      </div>
+                </section>
+              </div>
     </div>
   </main>
 )

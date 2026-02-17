@@ -4,75 +4,92 @@ import { useRef, useMemo, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useScroll } from './ScrollProvider'
-import { Float, Text, MeshDistortMaterial } from '@react-three/drei'
+import { Float, Points, PointMaterial } from '@react-three/drei'
 
-const Artifact = ({ position, color, label, shape = 'box', progress = 0, opacity = 1 }: { 
+const ArtifactShader = {
+  uniforms: {
+    uTime: { value: 0 },
+    uColor: { value: new THREE.Color("#6366f1") },
+    uActive: { value: 0 },
+    uOpacity: { value: 1 },
+    uScanlineFrequency: { value: 25.0 }
+  },
+  vertexShader: `
+    varying vec2 vUv;
+    varying vec3 vPosition;
+    varying vec3 vNormal;
+    varying vec3 vViewPosition;
+    uniform float uTime;
+    uniform float uActive;
+    
+    void main() {
+      vUv = uv;
+      vPosition = position;
+      vNormal = normalize(normalMatrix * normal);
+      
+      vec3 pos = position;
+      // Pulse animation when active
+      float pulse = uActive * sin(uTime * 4.0) * 0.05;
+      pos += normal * pulse;
+      
+      vec4 modelViewPosition = modelViewMatrix * vec4(pos, 1.0);
+      vViewPosition = -modelViewPosition.xyz;
+      gl_Position = projectionMatrix * modelViewPosition;
+    }
+  `,
+  fragmentShader: `
+    varying vec2 vUv;
+    varying vec3 vPosition;
+    varying vec3 vNormal;
+    varying vec3 vViewPosition;
+    uniform float uTime;
+    uniform vec3 uColor;
+    uniform float uActive;
+    uniform float uOpacity;
+    uniform float uScanlineFrequency;
+    
+    void main() {
+      // Fresnel effect for high-end glow
+      float fresnel = pow(1.0 - max(dot(normalize(vNormal), normalize(vViewPosition)), 0.0), 2.5);
+      
+      // Technical scanlines
+      float scanline = sin(vPosition.y * uScanlineFrequency + uTime * 3.0) * 0.5 + 0.5;
+      scanline = pow(scanline, 4.0);
+      
+      // Combine effects
+      vec3 baseColor = mix(uColor, vec3(1.0), fresnel * 0.5);
+      vec3 finalColor = baseColor + (scanline * 0.2) + (uActive * uColor * 0.3);
+      
+      float alpha = (0.2 + fresnel * 0.6 + scanline * 0.2) * uOpacity;
+      // Boost alpha when active
+      alpha = mix(alpha, alpha + 0.3, uActive);
+      
+      gl_FragColor = vec4(finalColor, alpha);
+    }
+  `
+}
+
+const Artifact = ({ position, color, id, shape = 'box', progress = 0, opacity = 1 }: { 
   position: [number, number, number], 
   color: string, 
-  label: string, 
+  id: string,
   shape?: 'box' | 'octahedron' | 'tetrahedron',
   progress?: number,
   opacity?: number
 }) => {
   const meshRef = useRef<THREE.Mesh>(null!)
+  const wireRef = useRef<THREE.Mesh>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
-  const { scrollProgress } = useScroll()
-  const [hovered, setHover] = useState(false)
+  const { activeCredential } = useScroll()
+  const [localHover, setLocalHover] = useState(false)
 
-  const shaderArgs = useMemo(() => ({
-    uniforms: {
-      uTime: { value: 0 },
-      uColor: { value: new THREE.Color(color) },
-      uActive: { value: 0 },
-      uOpacity: { value: opacity },
-      uScanlineFrequency: { value: 20.0 }
-    },
-    vertexShader: `
-      varying vec2 vUv;
-      varying vec3 vPosition;
-      uniform float uTime;
-      
-      void main() {
-        vUv = uv;
-        vPosition = position;
-        vec3 pos = position;
-        
-        // Subtle distortion
-        pos.x += sin(pos.y * 2.0 + uTime) * 0.05;
-        pos.z += cos(pos.x * 2.0 + uTime) * 0.05;
-        
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-      }
-    `,
-    fragmentShader: `
-      varying vec2 vUv;
-      varying vec3 vPosition;
-      uniform float uTime;
-      uniform vec3 uColor;
-      uniform float uActive;
-      uniform float uOpacity;
-      uniform float uScanlineFrequency;
-      
-      void main() {
-        // Holographic scanlines
-        float scanline = sin(vPosition.y * uScanlineFrequency + uTime * 5.0) * 0.5 + 0.5;
-        scanline = pow(scanline, 3.0);
-        
-        // Edge glow
-        float edge = 1.0 - dot(normalize(vPosition), vec3(0.0, 0.0, 1.0));
-        edge = pow(edge, 2.0);
-        
-        vec3 finalColor = uColor + edge * 0.5;
-        float alpha = (0.4 + scanline * 0.3 + edge * 0.2) * uOpacity;
-        
-        // Boost color and alpha if "active" (scroll based or hovered)
-        finalColor += uActive * 0.2;
-        alpha += uActive * 0.2;
-        
-        gl_FragColor = vec4(finalColor, alpha);
-      }
-    `
-  }), [color])
+  const isActive = activeCredential === id || localHover
+
+  const shaderArgs = useMemo(() => {
+    const args = JSON.parse(JSON.stringify(ArtifactShader))
+    args.uniforms.uColor.value = new THREE.Color(color)
+    return args
+  }, [color])
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime()
@@ -80,9 +97,7 @@ const Artifact = ({ position, color, label, shape = 'box', progress = 0, opacity
       materialRef.current.uniforms.uTime.value = time
       materialRef.current.uniforms.uOpacity.value = opacity
       
-      // Target active state based on hover or middle-of-section scroll
-      const activation = Math.max(0, 1 - Math.abs(progress - 0.5) * 4)
-      const targetActive = hovered ? 1 : activation
+      const targetActive = isActive ? 1 : 0
       materialRef.current.uniforms.uActive.value = THREE.MathUtils.lerp(
         materialRef.current.uniforms.uActive.value, 
         targetActive, 
@@ -90,27 +105,34 @@ const Artifact = ({ position, color, label, shape = 'box', progress = 0, opacity
       )
     }
     if (meshRef.current) {
-      meshRef.current.rotation.y = time * (hovered ? 1.5 : 0.5)
-      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, (hovered ? 1.2 : 1) * opacity, 0.1))
+      meshRef.current.rotation.y = time * (isActive ? 1.2 : 0.4)
+      meshRef.current.rotation.z = time * 0.2
+      const targetScale = (isActive ? 1.3 : 1.0) * opacity
+      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.1))
       
-      // Depth transition based on progress
-      const targetZ = (1 - opacity) * -10
+      const targetZ = (1 - opacity) * -15
       meshRef.current.position.z = THREE.MathUtils.lerp(meshRef.current.position.z, targetZ, 0.1)
+    }
+    if (wireRef.current) {
+      wireRef.current.rotation.copy(meshRef.current.rotation)
+      wireRef.current.scale.copy(meshRef.current.scale).multiplyScalar(1.05)
+      wireRef.current.position.copy(meshRef.current.position)
     }
   })
 
   return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+      {/* Solid Body */}
       <mesh 
         ref={meshRef} 
         position={position}
-        onPointerOver={() => setHover(true)}
-        onPointerOut={() => setHover(false)}
+        onPointerOver={() => setLocalHover(true)}
+        onPointerOut={() => setLocalHover(false)}
         visible={opacity > 0.01}
       >
-        {shape === 'box' && <boxGeometry args={[1.2, 1.2, 1.2]} />}
-        {shape === 'octahedron' && <octahedronGeometry args={[0.8]} />}
-        {shape === 'tetrahedron' && <tetrahedronGeometry args={[0.8]} />}
+        {shape === 'box' && <boxGeometry args={[1.4, 1.4, 1.4]} />}
+        {shape === 'octahedron' && <octahedronGeometry args={[1.0]} />}
+        {shape === 'tetrahedron' && <tetrahedronGeometry args={[1.0]} />}
         <shaderMaterial 
           ref={materialRef}
           args={[shaderArgs]}
@@ -120,25 +142,50 @@ const Artifact = ({ position, color, label, shape = 'box', progress = 0, opacity
           depthWrite={false}
         />
       </mesh>
-      <Text
-        position={[position[0], position[1] - 1.2, position[2]]}
-        fontSize={0.2}
-        color="white"
-        fillOpacity={opacity}
-        font="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {label}
-      </Text>
+      {/* Technical Wireframe Overlay */}
+      <mesh ref={wireRef} visible={opacity > 0.01}>
+        {shape === 'box' && <boxGeometry args={[1.4, 1.4, 1.4]} />}
+        {shape === 'octahedron' && <octahedronGeometry args={[1.0]} />}
+        {shape === 'tetrahedron' && <tetrahedronGeometry args={[1.0]} />}
+        <meshBasicMaterial 
+          color={color} 
+          wireframe 
+          transparent 
+          opacity={0.1 * opacity * (isActive ? 3 : 1)} 
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
     </Float>
   )
 }
 
-const VaultScene = ({ progress = 0 }: { progress?: number }) => {
-  const groupRef = useRef<THREE.Group>(null!)
+const DataDust = ({ count = 200, opacity = 1 }) => {
+  const points = useMemo(() => {
+    const p = new Float32Array(count * 3)
+    for (let i = 0; i < count; i++) {
+      p[i * 3] = (Math.random() - 0.5) * 20
+      p[i * 3 + 1] = (Math.random() - 0.5) * 20
+      p[i * 3 + 2] = (Math.random() - 0.5) * 10
+    }
+    return p
+  }, [count])
 
-  // Fade in at the start of the section and out at the end
+  return (
+    <Points positions={points} stride={3}>
+      <PointMaterial
+        transparent
+        color="#ffffff"
+        size={0.05}
+        sizeAttenuation={true}
+        depthWrite={false}
+        opacity={0.2 * opacity}
+        blending={THREE.AdditiveBlending}
+      />
+    </Points>
+  )
+}
+
+const VaultScene = ({ progress = 0 }: { progress?: number }) => {
   const vaultOpacity = useMemo(() => {
     if (progress < 0.1) return progress * 10
     if (progress > 0.9) return (1 - progress) * 10
@@ -146,32 +193,31 @@ const VaultScene = ({ progress = 0 }: { progress?: number }) => {
   }, [progress])
 
   return (
-    <group ref={groupRef} visible={vaultOpacity > 0}>
-      {/* Education Artifact: St. Andrews College */}
+    <group visible={vaultOpacity > 0}>
+      <DataDust opacity={vaultOpacity} />
+      
       <Artifact 
-        position={[-3, 0, 0]} 
+        id="edu"
+        position={[-4, 0, 0]} 
         color="#6366f1" 
-        label="St. Andrews College (B.Sc IT)" 
         shape="box"
         progress={progress}
         opacity={vaultOpacity}
       />
       
-      {/* Certification Artifact 1: Elasticsearch Certified Engineer */}
       <Artifact 
+        id="cert1"
         position={[0, 0, 0]} 
         color="#14b8a6" 
-        label="Elasticsearch Certified Engineer" 
         shape="octahedron"
         progress={progress}
         opacity={vaultOpacity}
       />
       
-      {/* Certification Artifact 2: Google Cloud Professional */}
       <Artifact 
-        position={[3, 0, 0]} 
+        id="cert2"
+        position={[4, 0, 0]} 
         color="#f59e0b" 
-        label="Google Cloud Professional Architect" 
         shape="tetrahedron"
         progress={progress}
         opacity={vaultOpacity}

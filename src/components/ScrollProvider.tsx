@@ -7,6 +7,8 @@ export interface ScrollContextType {
   activeEpoch: number
   activeSkill: any | null
   setActiveSkill: (skill: any | null) => void
+  activeCredential: string | null
+  setActiveCredential: (id: string | null) => void
 }
 
 export const ScrollContext = createContext<ScrollContextType | undefined>(undefined)
@@ -15,6 +17,7 @@ export const ScrollProvider = ({ children }: { children: ReactNode }) => {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeEpoch, setActiveEpoch] = useState(0)
   const [activeSkill, setActiveSkill] = useState<any | null>(null)
+  const [activeCredential, setActiveCredential] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +42,14 @@ export const ScrollProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   return (
-    <ScrollContext.Provider value={{ scrollProgress, activeEpoch, activeSkill, setActiveSkill }}>
+    <ScrollContext.Provider value={{ 
+      scrollProgress, 
+      activeEpoch, 
+      activeSkill, 
+      setActiveSkill,
+      activeCredential,
+      setActiveCredential 
+    }}>
       {children}
     </ScrollContext.Provider>
   )

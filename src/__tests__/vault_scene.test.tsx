@@ -13,7 +13,8 @@ vi.mock('@react-three/fiber', async () => {
 vi.mock('@react-three/drei', async () => {
   return {
     Float: ({ children }: any) => <group>{children}</group>,
-    Text: ({ children }: any) => <mesh>{children}</mesh>,
+    Points: ({ children }: any) => <points>{children}</points>,
+    PointMaterial: () => <pointsMaterial />,
   }
 })
 
@@ -22,8 +23,8 @@ vi.mock('../components/ScrollProvider', async (importOriginal) => {
   return {
     useScroll: () => ({
       scrollProgress: 0,
-      activeSkill: null,
-      setActiveSkill: vi.fn(),
+      activeCredential: null,
+      setActiveCredential: vi.fn(),
     }),
     ScrollContext: React.createContext(undefined),
     ScrollProvider: ({ children }: any) => <div>{children}</div>
@@ -31,17 +32,10 @@ vi.mock('../components/ScrollProvider', async (importOriginal) => {
 })
 
 describe('VaultScene Component', () => {
-  it('renders the vault scene with artifacts', () => {
-    const { container } = render(<VaultScene />)
+  it('renders the vault with artifacts', () => {
+    const { container } = render(<VaultScene progress={0.5} />)
     // We expect some 3D primitives to represent artifacts
     expect(container.querySelector('group')).toBeDefined()
-    expect(container.querySelector('mesh')).toBeDefined()
-  })
-
-  it('contains labels for education and certifications', () => {
-    const { getByText } = render(<VaultScene />)
-    expect(getByText(/St. Andrews College/i)).toBeDefined()
-    expect(getByText(/Elasticsearch Certified Engineer/i)).toBeDefined()
-    expect(getByText(/Google Cloud Professional/i)).toBeDefined()
+    expect(container.querySelectorAll('mesh').length).toBeGreaterThan(0)
   })
 })
