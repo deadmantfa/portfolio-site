@@ -86,9 +86,16 @@ const Artifact = ({ position, color, id, shape = 'box', progress = 0, opacity = 
   const isActive = activeCredential === id || localHover
 
   const shaderArgs = useMemo(() => {
-    const args = JSON.parse(JSON.stringify(ArtifactShader))
-    args.uniforms.uColor.value = new THREE.Color(color)
-    return args
+    return {
+      ...ArtifactShader,
+      uniforms: {
+        uTime: { value: 0 },
+        uColor: { value: new THREE.Color(color) },
+        uActive: { value: 0 },
+        uOpacity: { value: 1 },
+        uScanlineFrequency: { value: 25.0 }
+      }
+    }
   }, [color])
 
   useFrame((state) => {

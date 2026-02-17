@@ -11,8 +11,8 @@ interface YearMarkerProps {
 const YearMarker = ({ year, index }: YearMarkerProps) => {
   const { scrollYProgress } = useScroll()
   
-  // Dynamic section calculation: Hero (1) + Career (careerData.length) + Ecosystem (3) + Contact (1)
-  const totalSections = 1 + careerData.length + 3 + 1
+  // Dynamic section calculation: Hero (1) + Career (careerData.length) + Ecosystem (3) + Vault (2) + Contact (1)
+  const totalSections = 1 + careerData.length + 3 + 2 + 1
   const careerStart = 1 / totalSections
   const careerEnd = (1 + careerData.length) / totalSections
   
