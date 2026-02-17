@@ -23,13 +23,13 @@
     - [x] Create holographic/scanline effects for the credential artifacts.
 - [x] Task: Integration - Add Vault to `src/app/page.tsx` (78b8722)
     - [x] Position the new section between Ecosystem and Contact.
-- [ ] Task: TDD - Interaction & Accessibility Tests
-    - [ ] Write tests for credential hover states and keyboard navigation within the new section.
-- [ ] Task: Conductor - User Manual Verification 'The Vault - 3D Credentials Section' (Protocol in workflow.md)
+- [x] Task: TDD - Interaction & Accessibility Tests (7b9f3bb)
+    - [x] Write tests for credential hover states and keyboard navigation within the new section.
+- [x] Task: Conductor - User Manual Verification 'The Vault - 3D Credentials Section' (7b9f3bb)
 
 ## Phase 4: Strategic Narrative Enrichment
-- [ ] Task: Content Update - Enrich Rooftop case study in `src/data/projects.ts`
-    - [ ] Detail the specific AI/ML architectures and their business impact.
-- [ ] Task: TDD - Verify Case Study UI
-    - [ ] Ensure the dynamic project routes correctly display the updated narratives.
-- [ ] Task: Conductor - User Manual Verification 'Strategic Narrative Enrichment' (Protocol in workflow.md)
+- [x] Task: Content Update - Enrich Rooftop case study in `src/data/projects.ts` (13acc78)
+    - [x] Detail the specific AI/ML architectures and their business impact.
+- [x] Task: TDD - Verify Case Study UI (13acc78)
+    - [x] Ensure the dynamic project routes correctly display the updated narratives.
+- [x] Task: Conductor - User Manual Verification 'Strategic Narrative Enrichment' (13acc78)

@@ -29,6 +29,9 @@ vi.mock('@/components/Timeline', () => ({
 vi.mock('@/components/AssemblyScene', () => ({
   default: () => <div data-testid="mock-assembly" />
 }))
+vi.mock('@/components/VaultScene', () => ({
+  default: () => <div data-testid="mock-vault" />
+}))
 vi.mock('@/components/ConnectionScene', () => ({
   default: () => <div data-testid="mock-connection" />
 }))
@@ -52,6 +55,7 @@ describe('Home Page', () => {
     expect(screen.getByTestId('mock-scene')).toBeInTheDocument()
     expect(screen.getByTestId('mock-timeline')).toBeInTheDocument()
     expect(screen.getByTestId('mock-assembly')).toBeInTheDocument()
+    expect(screen.getByTestId('mock-vault')).toBeInTheDocument()
     expect(screen.getByTestId('mock-connection')).toBeInTheDocument()
     expect(screen.getByTestId('mock-contact-form')).toBeInTheDocument()
     expect(screen.getByTestId('mock-social-links')).toBeInTheDocument()
