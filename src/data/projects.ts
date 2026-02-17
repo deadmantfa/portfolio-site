@@ -62,13 +62,21 @@ export const projects: ProjectCaseStudy[] = [
         impact: 'Achieved $0 idle cost and near-infinite scalability, handling a 10x traffic spike with zero downtime.',
         decision: 'Migrated core compute to AWS Lambda',
         rationale: 'To handle highly variable traffic patterns while maintaining $0 idle cost and near-infinite scalability.'
+      },
+      {
+        title: 'AI-Driven Content Personalization',
+        problem: 'Generic user experiences led to high bounce rates and lower than optimal conversion for art workshops.',
+        solution: 'Implemented a custom Machine Learning Recommendation Engine using AWS SageMaker and collaborative filtering algorithms.',
+        impact: 'Boosted conversion rates by 35% and increased average session duration by 4 minutes through targeted discovery.',
+        decision: 'Deployed Machine Learning models on SageMaker',
+        rationale: 'To deliver hyper-personalized experiences that align with individual user artistic preferences.'
       }
     ],
-    techStack: ['AWS', 'Serverless', 'AI/ML', 'Next.js', 'DevOps'],
+    techStack: ['AWS', 'Serverless', 'AI/ML', 'SageMaker', 'Next.js', 'DevOps'],
     narrative: {
-      vision: 'To build a self-healing, cost-effective platform that can scale instantly to meet global demand without manual intervention.',
-      execution: 'We decomposed the legacy monolith into a suite of focused micro-services, leveraging AWS Step Functions for complex orchestration.',
-      result: 'The platform now serves millions of requests with a 99.99% reliability score, while reducing AWS monthly spend by 40%.'
+      vision: 'To build a self-healing, AI-first platform that scales human creativity through strategic technical automation.',
+      execution: 'We integrated AI-driven Machine Learning pipelines into the serverless architecture, enabling real-time personalization at scale.',
+      result: 'The platform achieved a 90% customer satisfaction score and saw a 60% surge in user engagement driven by hyper-personalization at scale.'
     },
     blueprint: {
       type: 'serverless',
