@@ -33,3 +33,6 @@
 - [x] Task: TDD - Verify Case Study UI (13acc78)
     - [x] Ensure the dynamic project routes correctly display the updated narratives.
 - [x] Task: Conductor - User Manual Verification 'Strategic Narrative Enrichment' (13acc78)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (6da4250)
