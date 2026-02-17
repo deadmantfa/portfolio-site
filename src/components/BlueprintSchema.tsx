@@ -79,7 +79,6 @@ export default function BlueprintSchema({ blueprint }: BlueprintSchemaProps) {
             position={[0, 0.6, 0]}
             fontSize={0.2}
             color="#14b8a6"
-            font="/fonts/JetBrainsMono-Bold.ttf" // Optional: assumes font exists or fallback
           >
             {`NODE_${i.toString().padStart(2, '0')}`}
           </Text>

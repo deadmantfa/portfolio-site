@@ -113,7 +113,6 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
         position={[position[0], position[1] - 1.2, position[2]]}
         fontSize={0.2}
         color="white"
-        font="/fonts/JetBrainsMono-Bold.ttf" // Assuming this exists based on tech-stack.md
         anchorX="center"
         anchorY="middle"
       >
