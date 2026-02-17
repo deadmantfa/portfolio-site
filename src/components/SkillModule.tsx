@@ -80,6 +80,7 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
           position={[0, 0, 0.1]}
           fontSize={0.35}
           color="white"
+          font="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf"
           fillOpacity={1}
           strokeWidth={hovered ? 0.02 : 0.015}
           strokeColor={hovered ? "#6366f1" : "#000000"}

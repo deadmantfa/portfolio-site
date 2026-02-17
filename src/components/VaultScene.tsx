@@ -6,11 +6,13 @@ import * as THREE from 'three'
 import { useScroll } from './ScrollProvider'
 import { Float, Text, MeshDistortMaterial } from '@react-three/drei'
 
-const Artifact = ({ position, color, label, shape = 'box' }: { 
+const Artifact = ({ position, color, label, shape = 'box', progress = 0, opacity = 1 }: { 
   position: [number, number, number], 
   color: string, 
   label: string, 
-  shape?: 'box' | 'octahedron' | 'tetrahedron' 
+  shape?: 'box' | 'octahedron' | 'tetrahedron',
+  progress?: number,
+  opacity?: number
 }) => {
   const meshRef = useRef<THREE.Mesh>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
@@ -22,6 +24,7 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
       uTime: { value: 0 },
       uColor: { value: new THREE.Color(color) },
       uActive: { value: 0 },
+      uOpacity: { value: opacity },
       uScanlineFrequency: { value: 20.0 }
     },
     vertexShader: `
@@ -47,6 +50,7 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
       uniform float uTime;
       uniform vec3 uColor;
       uniform float uActive;
+      uniform float uOpacity;
       uniform float uScanlineFrequency;
       
       void main() {
@@ -59,9 +63,9 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
         edge = pow(edge, 2.0);
         
         vec3 finalColor = uColor + edge * 0.5;
-        float alpha = 0.4 + scanline * 0.3 + edge * 0.2;
+        float alpha = (0.4 + scanline * 0.3 + edge * 0.2) * uOpacity;
         
-        // Boost color and alpha if "active" (scroll based)
+        // Boost color and alpha if "active" (scroll based or hovered)
         finalColor += uActive * 0.2;
         alpha += uActive * 0.2;
         
@@ -74,9 +78,11 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
     const time = state.clock.getElapsedTime()
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = time
-      // Simple "active" logic based on scroll progress (Vault is roughly at 0.7 - 0.8)
-      const scrollActivation = Math.max(0, 1 - Math.abs(scrollProgress - 0.75) * 5)
-      const targetActive = hovered ? 1 : scrollActivation
+      materialRef.current.uniforms.uOpacity.value = opacity
+      
+      // Target active state based on hover or middle-of-section scroll
+      const activation = Math.max(0, 1 - Math.abs(progress - 0.5) * 4)
+      const targetActive = hovered ? 1 : activation
       materialRef.current.uniforms.uActive.value = THREE.MathUtils.lerp(
         materialRef.current.uniforms.uActive.value, 
         targetActive, 
@@ -85,7 +91,11 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
     }
     if (meshRef.current) {
       meshRef.current.rotation.y = time * (hovered ? 1.5 : 0.5)
-      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, hovered ? 1.2 : 1, 0.1))
+      meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, (hovered ? 1.2 : 1) * opacity, 0.1))
+      
+      // Depth transition based on progress
+      const targetZ = (1 - opacity) * -10
+      meshRef.current.position.z = THREE.MathUtils.lerp(meshRef.current.position.z, targetZ, 0.1)
     }
   })
 
@@ -96,6 +106,7 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
         position={position}
         onPointerOver={() => setHover(true)}
         onPointerOut={() => setHover(false)}
+        visible={opacity > 0.01}
       >
         {shape === 'box' && <boxGeometry args={[1.2, 1.2, 1.2]} />}
         {shape === 'octahedron' && <octahedronGeometry args={[0.8]} />}
@@ -113,6 +124,8 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
         position={[position[0], position[1] - 1.2, position[2]]}
         fontSize={0.2}
         color="white"
+        fillOpacity={opacity}
+        font="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf"
         anchorX="center"
         anchorY="middle"
       >
@@ -122,17 +135,26 @@ const Artifact = ({ position, color, label, shape = 'box' }: {
   )
 }
 
-const VaultScene = () => {
+const VaultScene = ({ progress = 0 }: { progress?: number }) => {
   const groupRef = useRef<THREE.Group>(null!)
 
+  // Fade in at the start of the section and out at the end
+  const vaultOpacity = useMemo(() => {
+    if (progress < 0.1) return progress * 10
+    if (progress > 0.9) return (1 - progress) * 10
+    return 1
+  }, [progress])
+
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} visible={vaultOpacity > 0}>
       {/* Education Artifact: St. Andrews College */}
       <Artifact 
         position={[-3, 0, 0]} 
         color="#6366f1" 
         label="St. Andrews College (B.Sc IT)" 
-        shape="box" 
+        shape="box"
+        progress={progress}
+        opacity={vaultOpacity}
       />
       
       {/* Certification Artifact 1: Elasticsearch Certified Engineer */}
@@ -140,7 +162,9 @@ const VaultScene = () => {
         position={[0, 0, 0]} 
         color="#14b8a6" 
         label="Elasticsearch Certified Engineer" 
-        shape="octahedron" 
+        shape="octahedron"
+        progress={progress}
+        opacity={vaultOpacity}
       />
       
       {/* Certification Artifact 2: Google Cloud Professional */}
@@ -148,7 +172,9 @@ const VaultScene = () => {
         position={[3, 0, 0]} 
         color="#f59e0b" 
         label="Google Cloud Professional Architect" 
-        shape="tetrahedron" 
+        shape="tetrahedron"
+        progress={progress}
+        opacity={vaultOpacity}
       />
     </group>
   )
