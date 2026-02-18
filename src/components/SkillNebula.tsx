@@ -2,6 +2,7 @@
 
 import { useRef, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { Points, PointMaterial } from '@react-three/drei'
 import { skillModules } from '@/data/skills'
 import SkillModuleComponent from './SkillModule'
 import * as THREE from 'three'
@@ -15,7 +16,27 @@ interface SkillNebulaProps {
 
 const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
   const groupRef = useRef<THREE.Group>(null!)
+  const particlesRef = useRef<THREE.Points>(null!)
   const { viewport } = useThree()
+
+  // Particle data for 'Data Streams'
+  const particlePositions = useMemo(() => {
+    const count = 1500
+    const positions = new Float32Array(count * 3)
+    const totalHeight = skillModules.length * 3.5
+    
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3
+      const t = Math.random()
+      const angle = t * Math.PI * 2 * 8 // Wrap around 8 times
+      const radius = 2 + Math.random() * 6 * (0.5 + t) // Flaring vortex radius
+      
+      positions[i3] = Math.cos(angle) * radius
+      positions[i3 + 1] = (t - 0.5) * (totalHeight + 20)
+      positions[i3 + 2] = Math.sin(angle) * radius
+    }
+    return positions
+  }, [])
 
   const moduleData = useMemo(() => {
     const total = skillModules.length
@@ -41,6 +62,10 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
     
     // Smooth auto-rotation
     groupRef.current.rotation.y += delta * 0.08
+    
+    if (particlesRef.current) {
+      particlesRef.current.rotation.y += delta * 0.15 // Particles rotate slightly faster
+    }
     
     // Vertical travel: Center the helix and scroll through it
     const totalHeight = skillModules.length * 3.5
@@ -69,6 +94,18 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
   return (
     <SkillResourceProvider>
       <group ref={groupRef}>
+        <Points ref={particlesRef} positions={particlePositions} stride={3}>
+          <PointMaterial
+            transparent
+            color="#6366f1"
+            size={0.05}
+            sizeAttenuation={true}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+            opacity={0.4 * (1 - exitProgress)}
+          />
+        </Points>
+
         {moduleData.map((data, i) => (
           <SkillModuleComponent 
             key={i}
