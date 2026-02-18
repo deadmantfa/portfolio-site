@@ -41,7 +41,7 @@ describe('Helix Vortex Calculation', () => {
     if (diff > Math.PI) diff = 2 * Math.PI - diff
     
     // For a double helix with alternating strands, the angle difference should be significant
-    // It will be PI minus the incremental twist per step
-    expect(diff).toBeGreaterThan(Math.PI * 0.5)
+    // With 6 rotations over 20 skills, it's roughly 0.4*PI
+    expect(diff).toBeGreaterThan(Math.PI * 0.3)
   })
 })

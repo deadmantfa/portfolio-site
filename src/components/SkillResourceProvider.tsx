@@ -5,8 +5,6 @@ import * as THREE from 'three'
 
 interface SkillResources {
   geometry: THREE.BoxGeometry
-  baseMaterial: THREE.MeshStandardMaterial
-  hoverMaterial: THREE.MeshStandardMaterial
 }
 
 const SkillResourceContext = createContext<SkillResources | undefined>(undefined)
@@ -14,28 +12,7 @@ const SkillResourceContext = createContext<SkillResources | undefined>(undefined
 export const SkillResourceProvider = ({ children }: { children: ReactNode }) => {
   const resources = useMemo(() => {
     const geo = new THREE.BoxGeometry(3.5, 1.2, 0.05)
-    
-    const baseMat = new THREE.MeshStandardMaterial({
-      color: "#ffffff",
-      transparent: true,
-      opacity: 0.05,
-      emissive: "#ffffff",
-      emissiveIntensity: 0.1,
-      metalness: 1,
-      roughness: 0
-    })
-
-    const hoverMat = new THREE.MeshStandardMaterial({
-      color: "#ffffff",
-      transparent: true,
-      opacity: 0.15,
-      emissive: "#6366f1", // Using primary color for active glow
-      emissiveIntensity: 0.8,
-      metalness: 1,
-      roughness: 0
-    })
-
-    return { geometry: geo, baseMaterial: baseMat, hoverMaterial: hoverMat }
+    return { geometry: geo }
   }, [])
 
   return (

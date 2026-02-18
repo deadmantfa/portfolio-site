@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Float, Text } from '@react-three/drei'
+import { Float, Text, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
 import { SkillModule } from '@/data/skills'
 import { useSkillResources } from './SkillResourceProvider'
@@ -19,13 +19,39 @@ interface SkillModuleProps {
 const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: SkillModuleProps) => {
   const groupRef = useRef<THREE.Group>(null!)
   const [hovered, setHovered] = useState(false)
-  const { geometry, baseMaterial, hoverMaterial } = useSkillResources()
+  const { geometry } = useSkillResources()
   const { setActiveSkill } = useScroll()
+  
+  // Create unique materials for each instance to avoid global opacity sync issues
+  const materials = useMemo(() => {
+    const base = new THREE.MeshStandardMaterial({
+      color: "#ffffff",
+      transparent: true,
+      opacity: 0.05,
+      emissive: "#ffffff",
+      emissiveIntensity: 0.1,
+      metalness: 1,
+      roughness: 0
+    })
+
+    const hover = new THREE.MeshStandardMaterial({
+      color: "#ffffff",
+      transparent: true,
+      opacity: 0.3,
+      emissive: "#6366f1",
+      emissiveIntensity: 0.8,
+      metalness: 1,
+      roughness: 0
+    })
+
+    return { base, hover }
+  }, [])
   
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    const t = Math.min(Math.max(Math.pow(progress, 1.2), 0), 1)
+    // Faster assembly: t reaches 1 at progress 0.3
+    const t = Math.min(Math.max(Math.pow(progress / 0.3, 1.2), 0), 1)
     
     // Base position from assembly
     const bx = THREE.MathUtils.lerp(startPos[0], endPos[0], t)
@@ -46,30 +72,26 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
     groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1)
     
     // Proximity logic: dim modules that are vertically distant from the viewport center
-    // The group itself moves vertically, so we check local Y relative to group center (which is roughly at 0)
-    // Actually, we want to check world Y relative to 0
     const worldPos = new THREE.Vector3()
     groupRef.current.getWorldPosition(worldPos)
     const verticalDist = Math.abs(worldPos.y)
-    const opacity = Math.max(0.1, 1 - (verticalDist / 15))
     
-    // Apply opacity to children (mesh and text)
+    // Opacity falloff: more generous to show more of the helix
+    const opacity = Math.max(0.1, 1 - Math.pow(verticalDist / 20, 1.2))
+    
+    // Apply opacity directly to the instance materials
+    materials.base.opacity = (hovered ? 0.4 : 0.08) * opacity
+    materials.hover.opacity = 0.9 * opacity
+    
+    // Text opacity handling
     if (groupRef.current.children[0]) {
-      const floatGroup = groupRef.current.children[0]
-      const mesh = floatGroup.children[0] as THREE.Mesh
-      const text = floatGroup.children[1] as any
-      
-      if (mesh.material) {
-        ;(mesh.material as THREE.MeshStandardMaterial).opacity = hovered ? 0.3 : 0.05 * opacity
-      }
+      const billboardGroup = groupRef.current.children[0]
+      const text = billboardGroup.children[1] as any
       if (text) {
         text.fillOpacity = opacity
         text.strokeOpacity = 0.5 * opacity
       }
     }
-
-    // Rotation logic: Face camera
-    groupRef.current.quaternion.copy(state.camera.quaternion)
   })
 
   const handlePointerOver = (e: any) => {
@@ -87,29 +109,31 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
 
   return (
     <group ref={groupRef}>
-      <Float speed={hovered ? 0 : 2} rotationIntensity={hovered ? 0 : 0.2} floatIntensity={0.5}>
+      <Billboard follow={true}>
         <mesh 
           geometry={geometry}
-          material={hovered ? hoverMaterial : baseMaterial}
+          material={hovered ? materials.hover : materials.base}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
         />
 
         <Text
-          position={[0, 0, 0.06]}
-          fontSize={0.3}
+          position={[0, 0, 0.1]}
+          fontSize={0.35}
           color="white"
           font="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf"
           fillOpacity={1}
-          strokeWidth={hovered ? 0.02 : 0.015}
+          strokeWidth={hovered ? 0.025 : 0.02}
           strokeColor={hovered ? "#6366f1" : "#000000"}
           strokeOpacity={hovered ? 1 : 0.5}
-          side={THREE.FrontSide}
+          side={THREE.DoubleSide}
           pointerEvents="none"
+          anchorX="center"
+          anchorY="middle"
         >
           {skill.name.toUpperCase()}
         </Text>
-      </Float>
+      </Billboard>
     </group>
   )
 }
