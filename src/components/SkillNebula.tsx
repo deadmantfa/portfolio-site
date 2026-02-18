@@ -19,23 +19,27 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
   const particlesRef = useRef<THREE.Points>(null!)
   const { viewport } = useThree()
 
-  // Particle data for 'Data Streams'
+  // Particle data for 'Data Streams' - following the double helix strands
   const particlePositions = useMemo(() => {
-    const count = 1500
+    const count = 3000 // More particles for density
     const positions = new Float32Array(count * 3)
     const totalHeight = skillModules.length * 3.5
+    const rotations = 8
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 3
       /* eslint-disable react-hooks/purity */
-      const t = Math.random()
-      const angle = t * Math.PI * 2 * 8 // Wrap around 8 times
-      const radius = 2 + Math.random() * 6 * (0.5 + t) // Flaring vortex radius
+      const t = Math.random() // vertical progress
+      const strandOffset = Math.random() > 0.5 ? 0 : Math.PI
+      const jitter = (Math.random() - 0.5) * 2
       /* eslint-enable react-hooks/purity */
       
-      positions[i3] = Math.cos(angle) * radius
+      const angle = t * Math.PI * 2 * rotations + strandOffset
+      const radius = 3 + t * 8 + Math.sin(angle * 0.5) * 2 // Match helix math
+      
+      positions[i3] = Math.cos(angle) * radius + jitter
       positions[i3 + 1] = (t - 0.5) * (totalHeight + 20)
-      positions[i3 + 2] = Math.sin(angle) * radius
+      positions[i3 + 2] = Math.sin(angle) * radius + jitter
     }
     return positions
   }, [])

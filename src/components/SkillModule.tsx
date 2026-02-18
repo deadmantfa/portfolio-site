@@ -1,8 +1,8 @@
 'use client'
 
 import { useRef, useState, useMemo } from 'react'
-import { useFrame } from '@react-three/fiber'
-import { Float, Text, Billboard } from '@react-three/drei'
+import { useFrame, ThreeEvent } from '@react-three/fiber'
+import { Text, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
 import { SkillModule } from '@/data/skills'
 import { useSkillResources } from './SkillResourceProvider'
@@ -10,7 +10,6 @@ import { useScroll } from './ScrollProvider'
 
 interface SkillModuleProps {
   skill: SkillModule
-  index: number
   startPos: [number, number, number]
   endPos: [number, number, number]
   progress: number
@@ -44,7 +43,7 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     roughness: 0
   }), [])
   
-  useFrame(() => {
+  useFrame((state) => {
     if (!groupRef.current) return
     
     // Faster assembly: t reaches 1 at progress 0.3
@@ -55,17 +54,19 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     const by = THREE.MathUtils.lerp(startPos[1], endPos[1], t)
     const bz = THREE.MathUtils.lerp(startPos[2], endPos[2], t)
 
-    // Displacement on hover: pull towards camera AND move slightly left to avoid the info card on the right
-    const targetZOffset = hovered ? 6 : 0
-    const targetXOffset = hovered ? -2 : 0
+    // Displacement on hover: pull significantly towards camera AND move slightly left to avoid the info card on the right
+    const targetZOffset = hovered ? 10 : 0
+    const targetXOffset = hovered ? -3 : 0
+    const targetRotation = hovered ? Math.sin(state.clock.elapsedTime * 2) * 0.2 : 0
     
     // Current position with organic lerping
     groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.08)
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.08)
     groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.12)
+    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotation, 0.1)
     
     // Scale-up effect on hover
-    const targetScale = hovered ? 1.4 : 1
+    const targetScale = hovered ? 1.6 : 1
     groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1)
     
     // Proximity logic: dim modules that are vertically distant from the viewport center
@@ -74,27 +75,28 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     const verticalDist = Math.abs(worldPos.y)
     
     // Opacity falloff: more generous to show more of the helix
-    const opacity = Math.max(0.1, 1 - Math.pow(verticalDist / 20, 1.2))
+    const opacity = Math.max(0.1, 1 - Math.pow(verticalDist / 25, 1.2))
     
     // Apply opacity directly to the instance materials
     // We disable immutability check here as this is standard R3F performance pattern
     /* eslint-disable react-hooks/immutability */
-    baseMaterial.opacity = (hovered ? 0.4 : 0.08) * opacity
-    hoverMaterial.opacity = 0.9 * opacity
+    baseMaterial.opacity = (hovered ? 0.6 : 0.12) * opacity
+    hoverMaterial.opacity = 0.95 * opacity
     /* eslint-enable react-hooks/immutability */
     
     // Text opacity handling
     if (groupRef.current.children[0]) {
       const billboardGroup = groupRef.current.children[0]
-      const text = billboardGroup.children[1] as any
+      // @ts-expect-error - R3F Text is not well typed for opacity props in standard types
+      const text = billboardGroup.children[1]
       if (text) {
         text.fillOpacity = opacity
-        text.strokeOpacity = 0.5 * opacity
+        text.strokeOpacity = 0.6 * opacity
       }
     }
   })
 
-  const handlePointerOver = (e: THREE.ThreeEvent<PointerEvent>) => {
+  const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
     setHovered(true)
     document.body.style.cursor = 'pointer'
@@ -107,6 +109,17 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     setActiveSkill(null)
   }
 
+  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation()
+    // Toggle for mobile/touch
+    if (hovered) {
+      handlePointerOut()
+    } else {
+      // @ts-expect-error - Event type mismatch between click and pointer over is handled by stopsPropagation
+      handlePointerOver(e)
+    }
+  }
+
   return (
     <group ref={groupRef}>
       <Billboard follow={true}>
@@ -116,6 +129,7 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
           material={hovered ? hoverMaterial : baseMaterial}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
+          onClick={handleClick}
         />
 
         <Text

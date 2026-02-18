@@ -119,7 +119,7 @@ export default function Home() {
         <BackgroundMarkers />
         <SceneCanvas>
           <SceneContent 
-            progress={skillsProgress * 1.5}
+            progress={skillsProgress * 2.0}
             exitProgress={skillsExitProgress}
             vaultProgress={vaultProgress}
             contactProgress={contactProgress}
@@ -221,7 +221,7 @@ export default function Home() {
           </section>
         ))}
 
-        <section id="skills" ref={skillsSectionRef} className="min-h-[500vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
+        <section id="skills" ref={skillsSectionRef} className="min-h-[800vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
             <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
             {/* Nebula Background Glow */}
