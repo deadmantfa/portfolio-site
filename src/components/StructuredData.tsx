@@ -1,6 +1,16 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
+
 const StructuredData = () => {
+  const pathname = usePathname()
+  const isProjectPage = pathname?.startsWith('/work/')
+  const projectSlug = isProjectPage ? pathname.split('/').pop() : null
+
+  const safeJsonLd = (data: any) => {
+    return JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+  }
+
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -33,16 +43,47 @@ const StructuredData = () => {
     "publisher": { "@id": "https://wenceslaus.pro/#person" }
   }
 
+  const breadcrumbSchema = isProjectPage ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://wenceslaus.pro"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Work",
+        "item": "https://wenceslaus.pro/#epochs"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": projectSlug?.charAt(0).toUpperCase() + (projectSlug?.slice(1) || ''),
+        "item": `https://wenceslaus.pro${pathname}`
+      }
+    ]
+  } : null
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(personSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteSchema) }}
       />
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
+        />
+      )}
     </>
   )
 }

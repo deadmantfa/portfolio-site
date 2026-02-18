@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from 'react'
 import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
-import Timeline from '@/components/Timeline'
 import AssemblyScene from '@/components/AssemblyScene'
 import VaultScene from '@/components/VaultScene'
 import ConnectionScene from '@/components/ConnectionScene'
@@ -92,7 +91,6 @@ export default function Home() {
             <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
             
             <ArchitecturalGrid />
-            <Timeline />
             <AssemblyScene progress={skillsProgress * 3} />
             <VaultScene progress={vaultProgress} />
             <ConnectionScene progress={contactProgress} />
@@ -318,12 +316,12 @@ export default function Home() {
                   </div>
                 </section>
                 
-                <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto">  
-                  <EditorialReveal direction="up" className="mb-12">
-                    <h2 className="text-5xl md:text-8xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
+                <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto py-12">  
+                  <EditorialReveal direction="up" className="mb-8">
+                    <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
                   </EditorialReveal>
                   
-                  <div className="max-w-4xl w-full flex flex-col items-center">
+                  <div className="max-w-4xl w-full flex flex-col items-center gap-8">
                     <ContactForm />
                     <SocialLinks />
                   </div>

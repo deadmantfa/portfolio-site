@@ -17,6 +17,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${project.company} | ${project.role}`,
     description: `${project.narrative.vision} - ${project.challenge}`,
+    keywords: [...project.techStack, project.role, project.company, 'Software Architecture', 'Case Study'],
+    alternates: {
+      canonical: `https://wenceslaus.pro/work/${slug}`,
+    },
     openGraph: {
       title: `${project.company} - Architectural Case Study`,
       description: project.narrative.vision,

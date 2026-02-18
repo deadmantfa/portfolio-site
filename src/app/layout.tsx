@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
@@ -26,16 +26,28 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 })
 
+import { Suspense } from 'react'
+
+export const viewport: Viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://wenceslaus.pro'),
   title: {
     default: 'Wenceslaus Dsilva | Architectural Leadership & Technical Strategy',
     template: '%s | Wenceslaus Dsilva'
   },
-  description: '20+ years of pioneering technical excellence and strategic leadership in Software Architecture and CTO roles.',
-  keywords: ['CTO', 'Chief Technology Officer', 'Software Architect', 'Technical Leadership', 'System Design', 'Scalable Systems', 'Wenceslaus Dsilva'],
+  description: 'Wenceslaus Dsilva is a visionary CTO and Software Architect with 20+ years of experience in technical leadership, system design, and building scalable enterprise solutions.',
+  keywords: ['CTO', 'Chief Technology Officer', 'Software Architect', 'Technical Leadership', 'System Design', 'Scalable Systems', 'Wenceslaus Dsilva', 'Cloud Architecture', 'Enterprise Software'],
   authors: [{ name: 'Wenceslaus Dsilva' }],
   creator: 'Wenceslaus Dsilva',
+  alternates: {
+    canonical: 'https://wenceslaus.pro',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -43,21 +55,12 @@ export const metadata: Metadata = {
     siteName: 'Wenceslaus Dsilva Portfolio',
     title: 'Wenceslaus Dsilva | Architectural Leadership',
     description: 'Bridging the gap between deep system design and strategic business alignment.',
-    images: [
-      {
-        url: '/og-image.png', // Placeholder for future asset
-        width: 1200,
-        height: 630,
-        alt: 'Wenceslaus Dsilva - Architectural Authority'
-      }
-    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Wenceslaus Dsilva | Architectural Leadership',
-    description: '20+ years of technical excellence and strategic strategy.',
+    description: '20+ years of technical excellence and strategic technical leadership.',
     creator: '@deadmantfa',
-    images: ['/og-image.png']
   },
   robots: {
     index: true,
@@ -80,7 +83,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${cormorant.variable} ${jetbrains.variable}`}>
       <head>
-        <StructuredData />
+        <Suspense fallback={null}>
+          <StructuredData />
+        </Suspense>
       </head>
       <body className="antialiased bg-black">
         <ScrollProvider>
