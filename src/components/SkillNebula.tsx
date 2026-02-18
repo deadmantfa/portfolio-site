@@ -98,11 +98,11 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
           <PointMaterial
             transparent
             color="#6366f1"
-            size={0.05}
+            size={0.03} // Smaller particles
             sizeAttenuation={true}
             depthWrite={false}
             blending={THREE.AdditiveBlending}
-            opacity={0.4 * (1 - exitProgress)}
+            opacity={0.25 * (1 - exitProgress)} // More subtle base opacity
           />
         </Points>
 

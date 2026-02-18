@@ -25,21 +25,21 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
   // Create unique materials for each instance to avoid global opacity sync issues
   const materials = useMemo(() => {
     const base = new THREE.MeshStandardMaterial({
-      color: "#ffffff",
+      color: "#1a1a1a",
       transparent: true,
-      opacity: 0.05,
-      emissive: "#ffffff",
-      emissiveIntensity: 0.1,
-      metalness: 1,
-      roughness: 0
+      opacity: 0.08,
+      emissive: "#6366f1", // Match primary color
+      emissiveIntensity: 0.05,
+      metalness: 0.9,
+      roughness: 0.1
     })
 
     const hover = new THREE.MeshStandardMaterial({
       color: "#ffffff",
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.4,
       emissive: "#6366f1",
-      emissiveIntensity: 0.8,
+      emissiveIntensity: 1.2, // Vibrant glow on hover
       metalness: 1,
       roughness: 0
     })
