@@ -25,7 +25,7 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    const t = Math.min(Math.pow(progress, 1.2), 1)
+    const t = Math.min(Math.max(Math.pow(progress, 1.2), 0), 1)
     
     // Base position from assembly
     const bx = THREE.MathUtils.lerp(startPos[0], endPos[0], t)
@@ -40,17 +40,31 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.1)
     groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.1)
     
-    // Rotation logic
-    const targetRotX = THREE.MathUtils.lerp(Math.sin(index) * 0.5, 0, t)
-    const targetRotY = THREE.MathUtils.lerp(Math.cos(index) * 0.5, 0, t)
+    // Proximity logic: dim modules that are vertically distant from the viewport center
+    // The group itself moves vertically, so we check local Y relative to group center (which is roughly at 0)
+    // Actually, we want to check world Y relative to 0
+    const worldPos = new THREE.Vector3()
+    groupRef.current.getWorldPosition(worldPos)
+    const verticalDist = Math.abs(worldPos.y)
+    const opacity = Math.max(0.1, 1 - (verticalDist / 15))
     
-    if (hovered) {
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0, 0.1)
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0, 0.1)
-    } else {
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, 0.1)
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotY, 0.1)
+    // Apply opacity to children (mesh and text)
+    if (groupRef.current.children[0]) {
+      const floatGroup = groupRef.current.children[0]
+      const mesh = floatGroup.children[0] as THREE.Mesh
+      const text = floatGroup.children[1] as any
+      
+      if (mesh.material) {
+        ;(mesh.material as THREE.MeshStandardMaterial).opacity = hovered ? 0.3 : 0.05 * opacity
+      }
+      if (text) {
+        text.fillOpacity = opacity
+        text.strokeOpacity = 0.5 * opacity
+      }
     }
+
+    // Rotation logic: Face camera
+    groupRef.current.quaternion.copy(state.camera.quaternion)
   })
 
   const handlePointerOver = (e: any) => {

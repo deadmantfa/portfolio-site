@@ -18,10 +18,8 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
 
   const moduleData = useMemo(() => {
     const total = skillModules.length
-    const columns = 5
-    const rows = Math.ceil(total / columns)
-    const spacingX = 4.5
-    const spacingY = 1.8
+    const helixRadius = Math.min(viewport.width * 0.8, 10)
+    const heightFactor = 4 // Vertical spacing between modules
 
     return skillModules.map((skill, i) => {
       // Start positions (dispersed cloud)
@@ -31,23 +29,16 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
         (Math.random() - 0.5) * 40
       ]
       
-      // Curved Wall distribution
-      const col = i % columns
-      const row = Math.floor(i / columns)
+      // Double Helix / Vortex distribution
+      const angle = (i / total) * Math.PI * 4 // 2 full rotations
+      const isSecondStrand = i % 2 === 0
+      const finalAngle = angle + (isSecondStrand ? Math.PI : 0)
       
-      // Center the grid
-      const xOffset = (col - (columns - 1) / 2) * spacingX
-      const yOffset = ((rows - 1) / 2 - row) * spacingY
-      
-      // Apply curvature (Cylindrical mapping)
-      const radius = 25
-      const angle = (xOffset / radius)
-      
-      const x = Math.sin(angle) * radius
-      const z = (Math.cos(angle) * radius) - radius // Curve towards camera
-      const y = yOffset
+      const x = Math.cos(finalAngle) * helixRadius
+      const z = Math.sin(finalAngle) * helixRadius
+      const y = (i - total / 2) * heightFactor
 
-      const endPos: [number, number, number] = [x - 2, y, z]
+      const endPos: [number, number, number] = [x, y, z]
 
       return { skill, startPos, endPos }
     })
@@ -56,21 +47,23 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    // Minimal rotation - mostly fixed for readability
-    const targetRotation = (progress - 1) * Math.PI * 0.05
-    const clampedRotation = Math.max(Math.min(targetRotation, 0.1), -0.1)
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, clampedRotation, 0.05)
+    // Slow rotation
+    groupRef.current.rotation.y += delta * 0.1
     
-    // Subtle float
+    // Vertical travel based on progress (0 to 1)
+    // We want to scroll through the helix as the section progresses
+    const totalHeight = skillModules.length * 4
+    const travelRange = totalHeight * 0.8
+    const targetY = (progress * travelRange) - (travelRange / 2)
+    
+    // Position handling
     const floatY = Math.sin(state.clock.elapsedTime * 0.4) * 0.15
+    const exitY = exitProgress * -30
     
-    // Exit logic: sink and fade
-    const exitY = exitProgress * -20
-    groupRef.current.position.y = floatY + exitY
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -targetY + floatY + exitY, 0.1)
     
-    // Opacity handling via scale or direct material update (if possible)
-    // For now, let's scale it down slightly as it exits
-    const s = 1 - exitProgress * 0.5
+    // Responsive scale & exit fade
+    const s = 1 - exitProgress * 0.8
     groupRef.current.scale.set(s, s, s)
   })
 

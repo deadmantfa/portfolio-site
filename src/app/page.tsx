@@ -205,10 +205,13 @@ export default function Home() {
           </section>
         ))}
 
-                <section id="skills" ref={skillsSectionRef} className="min-h-[300vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
-                  <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
-                    <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
-                    <div className="max-w-7xl w-full h-full flex flex-col justify-between p-8 md:p-24 z-10 pointer-events-none">
+        <section id="skills" ref={skillsSectionRef} className="min-h-[500vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
+          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+            <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
+            {/* Nebula Background Glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_70%)] pointer-events-none"></div>
+            
+            <div className="max-w-7xl w-full h-full flex flex-col justify-between p-8 md:p-24 z-10 pointer-events-none">
                       <EditorialReveal direction="down">
                         <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
                       </EditorialReveal>
