@@ -12,6 +12,7 @@
 ## 3D & Animation
 - **Three.js:** Powering a custom morphing architectural lattice and vertical node transitions.
 - **React Three Fiber (R3F):** A declarative wrapper for Three.js that integrates seamlessly with React.
+- **SkillNebula:** A scalable, 3D Fibonacci distribution engine for technical stack visualization, replacing the linear assembly model.
 - **Connection Scene:** A final Three.js visualization ("Data Core") providing a unique backdrop for the contact experience.
 - **React Three Drei:** A collection of high-quality helpers for R3F to accelerate 3D development.
 - **Blueprint Engine:** A custom dynamic 3D schema visualizer built with Three.js and React Three Drei helpers (`Sphere`, `Line`, `Text`) to render architectural blueprints.
