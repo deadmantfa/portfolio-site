@@ -10,6 +10,7 @@ import ContactForm from '@/components/ContactForm'
 import SocialLinks from '@/components/SocialLinks'
 import { careerData } from '@/data/career'
 import { skillModules, SkillModule } from '@/data/skills'
+import { projects } from '@/data/projects'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EditorialReveal from '@/components/EditorialReveal'
@@ -157,16 +158,22 @@ export default function Home() {
                         </div>
                       ))}
                     </div>
-                    {(index === 0 || index === 1 || index === 2) && (
-                      <Link 
-                        href={`/work/${index === 0 ? 'rooftop' : index === 1 ? 'food-darzee' : 'onfees'}`} 
-                        className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1"
-                        aria-label={`View ${milestone.company} case study`}
-                      >
-                        <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
-                        <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
-                      </Link>
-                    )}
+                    {(() => {
+                      const project = projects.find(p => 
+                        milestone.company.toLowerCase().includes(p.company.toLowerCase()) ||
+                        p.company.toLowerCase().includes(milestone.company.toLowerCase())
+                      )
+                      return project && (
+                        <Link 
+                          href={`/work/${project.slug}`} 
+                          className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1"
+                          aria-label={`View ${milestone.company} case study`}
+                        >
+                          <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
+                          <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
+                        </Link>
+                      )
+                    })()}
                   </div>
                 </div>
               </div>
