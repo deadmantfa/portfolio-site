@@ -16,38 +16,35 @@ interface SkillModuleProps {
   progress: number
 }
 
-const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: SkillModuleProps) => {
+const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModuleProps) => {
   const groupRef = useRef<THREE.Group>(null!)
+  const meshRef = useRef<THREE.Mesh>(null!)
   const [hovered, setHovered] = useState(false)
   const { geometry } = useSkillResources()
   const { setActiveSkill } = useScroll()
   
   // Create unique materials for each instance to avoid global opacity sync issues
-  const materials = useMemo(() => {
-    const base = new THREE.MeshStandardMaterial({
-      color: "#1a1a1a",
-      transparent: true,
-      opacity: 0.08,
-      emissive: "#6366f1", // Match primary color
-      emissiveIntensity: 0.05,
-      metalness: 0.9,
-      roughness: 0.1
-    })
+  const baseMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+    color: "#1a1a1a",
+    transparent: true,
+    opacity: 0.08,
+    emissive: "#6366f1", // Match primary color
+    emissiveIntensity: 0.05,
+    metalness: 0.9,
+    roughness: 0.1
+  }), [])
 
-    const hover = new THREE.MeshStandardMaterial({
-      color: "#ffffff",
-      transparent: true,
-      opacity: 0.4,
-      emissive: "#6366f1",
-      emissiveIntensity: 1.2, // Vibrant glow on hover
-      metalness: 1,
-      roughness: 0
-    })
-
-    return { base, hover }
-  }, [])
+  const hoverMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+    color: "#ffffff",
+    transparent: true,
+    opacity: 0.4,
+    emissive: "#6366f1",
+    emissiveIntensity: 1.2, // Vibrant glow on hover
+    metalness: 1,
+    roughness: 0
+  }), [])
   
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (!groupRef.current) return
     
     // Faster assembly: t reaches 1 at progress 0.3
@@ -80,8 +77,11 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
     const opacity = Math.max(0.1, 1 - Math.pow(verticalDist / 20, 1.2))
     
     // Apply opacity directly to the instance materials
-    materials.base.opacity = (hovered ? 0.4 : 0.08) * opacity
-    materials.hover.opacity = 0.9 * opacity
+    // We disable immutability check here as this is standard R3F performance pattern
+    /* eslint-disable react-hooks/immutability */
+    baseMaterial.opacity = (hovered ? 0.4 : 0.08) * opacity
+    hoverMaterial.opacity = 0.9 * opacity
+    /* eslint-enable react-hooks/immutability */
     
     // Text opacity handling
     if (groupRef.current.children[0]) {
@@ -94,7 +94,7 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
     }
   })
 
-  const handlePointerOver = (e: any) => {
+  const handlePointerOver = (e: THREE.ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
     setHovered(true)
     document.body.style.cursor = 'pointer'
@@ -111,8 +111,9 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
     <group ref={groupRef}>
       <Billboard follow={true}>
         <mesh 
+          ref={meshRef}
           geometry={geometry}
-          material={hovered ? materials.hover : materials.base}
+          material={hovered ? hoverMaterial : baseMaterial}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
         />

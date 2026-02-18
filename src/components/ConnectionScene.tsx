@@ -16,9 +16,11 @@ const ConnectionScene = ({ progress }: ConnectionSceneProps) => {
   const particles = useMemo(() => {
     const pts = new Float32Array(1500)
     for (let i = 0; i < 500; i++) {
+      /* eslint-disable react-hooks/purity */
       const r = 5 + Math.random() * 8
       const theta = Math.random() * Math.PI * 2
       const phi = Math.acos(2 * Math.random() - 1)
+      /* eslint-enable react-hooks/purity */
       pts[i * 3] = r * Math.sin(phi) * Math.cos(theta)
       pts[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
       pts[i * 3 + 2] = r * Math.cos(phi)

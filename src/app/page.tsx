@@ -9,7 +9,6 @@ import ConnectionScene from '@/components/ConnectionScene'
 import ContactForm from '@/components/ContactForm'
 import SocialLinks from '@/components/SocialLinks'
 import { careerData } from '@/data/career'
-import { skillModules, SkillModule } from '@/data/skills'
 import { projects } from '@/data/projects'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -18,8 +17,32 @@ import BackgroundMarkers from '@/components/BackgroundMarkers'
 import { useScroll, ScrollContext } from '@/components/ScrollProvider'
 import { useContextBridge } from '@react-three/drei'
 
+// Stable component to avoid 'Cannot create components during render' lint error
+const SceneContent = ({ progress, exitProgress, vaultProgress, contactProgress, bridge: Bridge }: { 
+  progress: number, 
+  exitProgress: number, 
+  vaultProgress: number, 
+  contactProgress: number,
+  bridge: React.ComponentType<{ children: React.ReactNode }>
+}) => (
+  <Bridge>
+    {/* Brighter, more consistent global lighting */}
+    <ambientLight intensity={0.5} />
+    <directionalLight position={[0, 10, 10]} intensity={2} color="#6366f1" />
+    <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
+    
+    <ArchitecturalGrid />
+    <SkillNebula 
+      progress={progress} 
+      exitProgress={exitProgress} 
+    />
+    <VaultScene progress={vaultProgress} />
+    <ConnectionScene progress={contactProgress} />
+  </Bridge>
+)
+
 export default function Home() {
-  const { scrollProgress, activeSkill, setActiveCredential } = useScroll()
+  const { activeSkill, setActiveCredential } = useScroll()
   const ContextBridge = useContextBridge(ScrollContext)
   
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
@@ -95,20 +118,13 @@ export default function Home() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundMarkers />
         <SceneCanvas>
-          <ContextBridge>
-            {/* Brighter, more consistent global lighting */}
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[0, 10, 10]} intensity={2} color="#6366f1" />
-            <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
-            
-            <ArchitecturalGrid />
-            <SkillNebula 
-              progress={skillsProgress * 1.5} 
-              exitProgress={skillsExitProgress} 
-            />
-            <VaultScene progress={vaultProgress} />
-            <ConnectionScene progress={contactProgress} />
-          </ContextBridge>
+          <SceneContent 
+            progress={skillsProgress * 1.5}
+            exitProgress={skillsExitProgress}
+            vaultProgress={vaultProgress}
+            contactProgress={contactProgress}
+            bridge={ContextBridge}
+          />
         </SceneCanvas>
       </div>
 
@@ -229,7 +245,7 @@ export default function Home() {
                               <span className="font-mono text-[9px] text-primary uppercase tracking-[0.5em] mb-3 block">Module: {activeSkill.category}</span>
                               <h3 className="text-3xl md:text-4xl font-serif italic text-white mb-4 uppercase tracking-tighter">{activeSkill.name}</h3>
                               <p className="text-sm md:text-base text-zinc-400 font-light italic leading-relaxed font-serif">
-                                "{activeSkill.importance}"
+                                &quot;{activeSkill.importance}&quot;
                               </p>
                             </motion.div>
                           ) : (
@@ -257,102 +273,59 @@ export default function Home() {
                         <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
                       </EditorialReveal>
                       
-                                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
-                      
-                                                            <div 
-                      
-                                                              tabIndex={0} 
-                      
-                                                              onMouseEnter={() => setActiveCredential('edu')}
-                      
-                                                              onMouseLeave={() => setActiveCredential(null)}
-                      
-                                                              onFocus={() => setActiveCredential('edu')}
-                      
-                                                              onBlur={() => setActiveCredential(null)}
-                      
-                                                              className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
-                      
-                                                              aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
-                      
-                                                            >
-                      
-                                                              <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
-                      
-                                                              <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
-                      
-                                                              <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                      
-                                                              <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
-                      
-                                                            </div>
-                      
-                                                            <div 
-                      
-                                                              tabIndex={0} 
-                      
-                                                              onMouseEnter={() => setActiveCredential('cert1')}
-                      
-                                                              onMouseLeave={() => setActiveCredential(null)}
-                      
-                                                              onFocus={() => setActiveCredential('cert1')}
-                      
-                                                              onBlur={() => setActiveCredential(null)}
-                      
-                                                              className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
-                      
-                                                              aria-label="Certification: Elasticsearch Certified Engineer"
-                      
-                                                            >
-                      
-                                                              <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
-                      
-                                                              <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
-                      
-                                                              <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                      
-                                                              <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
-                      
-                                                            </div>
-                      
-                                                            <div 
-                      
-                                                              tabIndex={0} 
-                      
-                                                              onMouseEnter={() => setActiveCredential('cert2')}
-                      
-                                                              onMouseLeave={() => setActiveCredential(null)}
-                      
-                                                              onFocus={() => setActiveCredential('cert2')}
-                      
-                                                              onBlur={() => setActiveCredential(null)}
-                      
-                                                              className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
-                      
-                                                              aria-label="Certification: Google Cloud Professional Architect"
-                      
-                                                            >
-                      
-                                                              <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
-                      
-                                                              <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
-                      
-                                                              <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                      
-                                                              <p className="text-zinc-500 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
-                      
-                                                            </div>
-                      
-                                                          </div>
-                      
-                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
+                        <div 
+                          tabIndex={0} 
+                          onMouseEnter={() => setActiveCredential('edu')}
+                          onMouseLeave={() => setActiveCredential(null)}
+                          onFocus={() => setActiveCredential('edu')}
+                          onBlur={() => setActiveCredential(null)}
+                          className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                          aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
+                        >
+                          <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
+                          <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
+                          <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                          <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
+                        </div>
+
+                        <div 
+                          tabIndex={0} 
+                          onMouseEnter={() => setActiveCredential('cert1')}
+                          onMouseLeave={() => setActiveCredential(null)}
+                          onFocus={() => setActiveCredential('cert1')}
+                          onBlur={() => setActiveCredential(null)}
+                          className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                          aria-label="Certification: Elasticsearch Certified Engineer"
+                        >
+                          <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                          <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
+                          <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                          <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
+                        </div>
+
+                        <div 
+                          tabIndex={0} 
+                          onMouseEnter={() => setActiveCredential('cert2')}
+                          onMouseLeave={() => setActiveCredential(null)}
+                          onFocus={() => setActiveCredential('cert2')}
+                          onBlur={() => setActiveCredential(null)}
+                          className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                          aria-label="Certification: Google Cloud Professional Architect"
+                        >
+                          <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                          <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
+                          <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                          <p className="text-zinc-500 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </section>
                 
                 <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto py-12">  
                   <EditorialReveal direction="up" className="mb-8">
-                    <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let's <br/> <span className="text-primary pr-4">Connect.</span></h2>
+                    <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let&apos;s <br/> <span className="text-primary pr-4">Connect.</span></h2>
                   </EditorialReveal>
                   
                   <div className="max-w-4xl w-full flex flex-col items-center gap-8">

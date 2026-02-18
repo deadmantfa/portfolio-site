@@ -27,9 +27,11 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 3
+      /* eslint-disable react-hooks/purity */
       const t = Math.random()
       const angle = t * Math.PI * 2 * 8 // Wrap around 8 times
       const radius = 2 + Math.random() * 6 * (0.5 + t) // Flaring vortex radius
+      /* eslint-enable react-hooks/purity */
       
       positions[i3] = Math.cos(angle) * radius
       positions[i3 + 1] = (t - 0.5) * (totalHeight + 20)
@@ -44,18 +46,20 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
     const heightFactor = 3.5 // More compact height factor to fit more skills in view
 
     return skillModules.map((skill, i) => {
-      // Start positions (dispersed cloud)
+      // Start positions (dispersed cloud) - random but stable because inside useMemo
+      /* eslint-disable react-hooks/purity */
       const startPos: [number, number, number] = [
         (Math.random() - 0.5) * 60,
         (Math.random() - 0.5) * 50,
         (Math.random() - 0.5) * 40
       ]
+      /* eslint-enable react-hooks/purity */
       
       const endPos = calculateHelixPosition(i, total, radiusBase, heightFactor)
 
       return { skill, startPos, endPos }
     })
-  }, [viewport])
+  }, [viewport.width]) // Stable dependency on viewport width
 
   useFrame((state, delta) => {
     if (!groupRef.current) return

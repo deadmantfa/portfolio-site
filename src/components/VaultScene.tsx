@@ -170,9 +170,13 @@ const DataDust = ({ count = 200, opacity = 1 }) => {
   const points = useMemo(() => {
     const p = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
+      // Math.random is used here inside useMemo to generate stable random positions
+      // for the particles. This is a common pattern in R3F.
+      /* eslint-disable react-hooks/purity */
       p[i * 3] = (Math.random() - 0.5) * 20
       p[i * 3 + 1] = (Math.random() - 0.5) * 20
       p[i * 3 + 2] = (Math.random() - 0.5) * 10
+      /* eslint-enable react-hooks/purity */
     }
     return p
   }, [count])

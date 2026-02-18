@@ -20,7 +20,9 @@ export default function BlueprintSchema({ blueprint }: BlueprintSchemaProps) {
       const angle = (i / blueprint.nodes) * Math.PI * 2
       const x = Math.cos(angle) * radius
       const y = Math.sin(angle) * radius
+      /* eslint-disable react-hooks/purity */
       const z = (Math.random() - 0.5) * 5
+      /* eslint-enable react-hooks/purity */
       arr.push(new THREE.Vector3(x, y, z))
     }
     return arr
@@ -33,8 +35,10 @@ export default function BlueprintSchema({ blueprint }: BlueprintSchemaProps) {
       arr.push([nodes[i], nodes[(i + 1) % nodes.length]])
       
       // Random internal connections
+      /* eslint-disable react-hooks/purity */
       if (Math.random() > 0.5) {
         const target = Math.floor(Math.random() * nodes.length)
+        /* eslint-enable react-hooks/purity */
         if (target !== i) {
           arr.push([nodes[i], nodes[target]])
         }
