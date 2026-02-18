@@ -6,14 +6,14 @@
     - [x] Implement exit animation in `SkillModule.tsx` (e.g., modules disperse or fly upwards when exiting).
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Transition & Overlap Remediation' (Protocol in workflow.md) (948466e)
 
-## Phase 2: Immersive 3D Helix Implementation
+## Phase 2: Immersive 3D Helix Implementation [checkpoint: 4591082]
 - [x] Task: Helix Mathematical Mapping (7ea4881)
     - [x] Refactor `SkillNebula.tsx` to use a vertical spiral / double-helix distribution for `endPos`.
     - [x] Adjust camera/group vertical positioning based on `progress`.
-- [ ] Task: Interaction Polish
-    - [ ] Refine hover logic to "pull" modules toward the camera more smoothly.
-    - [ ] Ensure `activeSkill` visibility is optimal relative to the info card.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Immersive 3D Helix Implementation' (Protocol in workflow.md)
+- [x] Task: Interaction Polish (cbc76cf)
+    - [x] Refine hover logic to "pull" modules toward the camera more smoothly.
+    - [x] Ensure `activeSkill` visibility is optimal relative to the info card.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Immersive 3D Helix Implementation' (Protocol in workflow.md) (4591082)
 
 ## Phase 3: Visual Polish & Responsive Audit
 - [ ] Task: Fine-tuning & Aesthetics
