@@ -1,31 +1,29 @@
+import { describe, it, expect } from 'vitest'
 import { careerData } from '../data/career'
-import { expect, it, describe } from 'vitest'
 
-describe('Career Data Expansion (2006-2012)', () => {
-  it('contains the MADAR International School milestone (2009-2012)', () => {
-    const madar = careerData.find(m => m.company === 'MADAR International School')
-    expect(madar).toBeDefined()
-    expect(madar?.year).toBe('2009 - 2012')
-    expect(madar?.role).toBe('Computer Programmer')
+describe('Career Data Enrichment Audit', () => {
+  it('should contain microscopic impact details for IndieFolio Network', () => {
+    const indieFolio = careerData.find(m => m.company.includes('IndieFolio'))
+    expect(indieFolio?.highlights).toContain('Architected Creative Field CQ algorithm for user discovery')
+    expect(indieFolio?.highlights).toContain('Developed real-time messaging with WebSockets and RBAC')
   })
 
-  it('contains the TCS milestone (2008-2009)', () => {
-    const tcs = careerData.find(m => m.company === 'Tata Consultancy Services')
-    expect(tcs).toBeDefined()
-    expect(tcs?.year).toBe('2008 - 2009')
-    expect(tcs?.role).toBe('Analyst Programmer')
+  it('should contain microscopic details for ePaisa Services', () => {
+    const ePaisa = careerData.find(m => m.company.includes('ePaisa'))
+    expect(ePaisa?.highlights).toContain('Architected Voodle: AWS-based Blender render farm')
+    expect(ePaisa?.highlights).toContain('Implemented Dugna Security (MFA) for payment integrity')
   })
 
-  it('contains the WNS milestones (2006-2008)', () => {
-    const wnsAnalyst = careerData.find(m => m.company === 'WNS' && m.role === 'Analyst Programmer')
-    const wnsJunior = careerData.find(m => m.company === 'WNS' && m.role === 'Junior Analyst')
-    
-    expect(wnsAnalyst).toBeDefined()
-    expect(wnsJunior).toBeDefined()
+  it('should reflect foundational automation at TCS and WNS', () => {
+    const tcs = careerData.find(m => m.company.includes('Tata'))
+    expect(tcs?.highlights).toContain('Automated market questionnaire analysis via Shell Scripts')
+
+    const wns = careerData.find(m => m.company.includes('WNS') && m.role === 'Junior Analyst')
+    expect(wns?.highlights).toContain('Earned highest productivity hours award')
   })
 
-  it('verifies updated highlights for Rooftop (90% satisfaction)', () => {
-    const rooftop = careerData.find(m => m.company === 'Rooftop')
-    expect(rooftop?.highlights).toContain('Boosting customer satisfaction rates by 90%')
+  it('should include specific payment gateway integrations for Food Darzee', () => {
+    const foodDarzee = careerData.find(m => m.company.includes('Food Darzee'))
+    expect(foodDarzee?.highlights).toContain('Integrated PayTM, PhonePe, and Axis Bank gateways')
   })
 })

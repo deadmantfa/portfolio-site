@@ -15,7 +15,8 @@ export const careerData: CareerMilestone[] = [
     highlights: [
       'Reduced system runtime by 85%',
       'Increased user engagement by 60%',
-      'Boosting customer satisfaction rates by 90%'
+      'Boosting customer satisfaction rates by 90%',
+      'Integrated secure payment gateways and expanded application capabilities'
     ]
   },
   {
@@ -26,7 +27,8 @@ export const careerData: CareerMilestone[] = [
     highlights: [
       'Led multiple teams, both in-house and outsourced',
       'Integrated DevOps using GitHub Actions',
-      'Managed integrations with clients like PayTM, PhonePe, and Axis Bank'
+      'Integrated PayTM, PhonePe, and Axis Bank gateways',
+      'Automated end-to-end supply chain via custom ERP'
     ]
   },
   {
@@ -37,7 +39,7 @@ export const careerData: CareerMilestone[] = [
     highlights: [
       'Enhanced user satisfaction by 100% (OnFees)',
       'Improved project success rates by 60%',
-      'Streamlined management and delivery issues'
+      'Streamlined management and delivery issues for multi-tenant SAAS'
     ]
   },
   {
@@ -47,7 +49,8 @@ export const careerData: CareerMilestone[] = [
     description: 'Architected and maintained 20+ online properties without downtime, enhancing system reliability and performance.',
     highlights: [
       'Created serverless image handler (AWS Lambda)',
-      'Developed color search algorithm using Elasticsearch',
+      'Architected Creative Field CQ algorithm for user discovery',
+      'Developed real-time messaging with WebSockets and RBAC',
       'Improved user satisfaction by 90%'
     ]
   },
@@ -68,9 +71,9 @@ export const careerData: CareerMilestone[] = [
     company: 'ePaisa Services',
     description: 'Managed and designed web and mobile applications, ensuring PCI DSS compliance and optimal performance.',
     highlights: [
-      'Maintained and managed applications and web servers',
-      'Aligned technology with market trends',
-      'Enhanced performance and user experience'
+      'Architected Voodle: AWS-based Blender render farm',
+      'Implemented Dugna Security (MFA) for payment integrity',
+      'Aligned technology with market trends'
     ]
   },
   {
@@ -79,8 +82,8 @@ export const careerData: CareerMilestone[] = [
     company: 'MADAR International School',
     description: 'Developed and maintained school management systems using Yii framework, enhancing system reliability.',
     highlights: [
-      'Created scripts to configure servers',
-      'Streamlined code publishing processes',
+      'Created scripts to configure servers and publish code',
+      'Automated deployment processes across servers',
       'Improved deployment efficiency'
     ]
   },
@@ -90,8 +93,8 @@ export const careerData: CareerMilestone[] = [
     company: 'Tata Consultancy Services',
     description: 'Delivered analyzed data using Quantum, SPSS, and other tools, enhancing data-driven decision-making.',
     highlights: [
+      'Automated market questionnaire analysis via Shell Scripts',
       'Automated data analysis processes',
-      'Implemented Shell Scripts to automate repetitive tasks',
       'Reducing manual effort'
     ]
   },
@@ -111,7 +114,7 @@ export const careerData: CareerMilestone[] = [
     company: 'WNS',
     description: 'Worked on Data Analysis using Quantum, SPSS and other tools.',
     highlights: [
-      'Earned highest productivity hours in a month',
+      'Earned highest productivity hours award',
       'Effectively managing multiple projects simultaneously'
     ]
   }
