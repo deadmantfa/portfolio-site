@@ -1,7 +1,7 @@
 # Product Definition - Wenceslaus Dsilva Portfolio
 
 ## Vision & Purpose
-To create a high-end, \"Architectural Authority\" portfolio website that positions Wenceslaus Dsilva as a premier candidate for high-level technology leadership roles. The site blends 20+ years of strategic leadership with a sophisticated, morphing 3D geometric interface and refined editorial storytelling.
+To create a high-end, "Architectural Authority" portfolio website that positions Wenceslaus Dsilva as a premier candidate for high-level technology leadership roles. The site blends 20+ years of strategic leadership (2006-2026) with a sophisticated, morphing 3D geometric interface and refined editorial storytelling.
 
 ## Target Audience
 - **Tech Recruiters and Hiring Managers:** Specifically those at top-tier product companies looking for seasoned leadership with deep technical roots.
@@ -12,11 +12,10 @@ To create a high-end, \"Architectural Authority\" portfolio website that positio
 - **Optimize for Search:** Implement best-in-class SEO to rank for high-value keywords related to CTO and Software Architecture roles.
 
 ## Core Features
-- **Architectural Epochs:** A sophisticated 3D scroll experience that reveals career milestones through floating geometric frames and refined typography, emphasizing 20 years of leadership impact.
+- **Architectural Epochs:** A sophisticated 3D scroll experience that reveals career milestones from 2006 to 2026 through floating geometric frames and refined typography, emphasizing two decades of leadership impact.
 - **Dynamic Skill Cloud:** A reactive visualization of a diverse tech stack including Python, PHP, AWS, Angular, and Serverless frameworks.
-- **Architectural Deep-Dives:** A dynamic system of project case studies featuring interactive "Blueprint" 3D visualizations and comprehensive Architectural Decision Records (ADRs) to prove strategic technical depth.
+- **Architectural Deep-Dives:** A dynamic system of project case studies (including recovered legacy highlights like IndieFolio and ePaisa) featuring interactive "Blueprint" 3D visualizations and comprehensive Architectural Decision Records (ADRs) to prove strategic technical depth.
 - **Architectural Handshake:** A high-end contact interface integrated with a final "Connection" 3D scene, providing a professional and immersive conclusion to the user journey.
 
 ## Unique Value Proposition (The Hook)
-**The Visionary Architect:** Wenceslaus is presented not just as a manager, but as a leader who understands the \"how\" of deep system design and the \"why\" of strategic business alignment.
-
+**The Visionary Architect:** Wenceslaus is presented not just as a manager, but as a leader who understands the "how" of deep system design and the "why" of strategic business alignment.
