@@ -92,7 +92,7 @@ export default function Home() {
             <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
             
             <ArchitecturalGrid />
-            <SkillNebula progress={skillsProgress * 3} />
+            <SkillNebula progress={skillsProgress * 1.5} />
             <VaultScene progress={vaultProgress} />
             <ConnectionScene progress={contactProgress} />
           </ContextBridge>

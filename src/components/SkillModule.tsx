@@ -25,7 +25,7 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    const t = Math.pow(progress, 1.2)
+    const t = Math.min(Math.pow(progress, 1.2), 1)
     
     // Base position from assembly
     const bx = THREE.MathUtils.lerp(startPos[0], endPos[0], t)

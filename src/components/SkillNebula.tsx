@@ -17,30 +17,36 @@ const SkillNebula = ({ progress }: SkillNebulaProps) => {
 
   const moduleData = useMemo(() => {
     const total = skillModules.length
-    const phi = Math.PI * (3 - Math.sqrt(5)) // Golden angle
+    const columns = 5
+    const rows = Math.ceil(total / columns)
+    const spacingX = 4.5
+    const spacingY = 1.8
 
     return skillModules.map((skill, i) => {
       // Start positions (dispersed cloud)
       const startPos: [number, number, number] = [
+        (Math.random() - 0.5) * 60,
         (Math.random() - 0.5) * 50,
-        (Math.random() - 0.5) * 40,
-        (Math.random() - 0.5) * 30
+        (Math.random() - 0.5) * 40
       ]
       
-      // Fibonacci Sphere distribution for end positions
-      const y = 1 - (i / (total - 1)) * 2 // y goes from 1 to -1
-      const radius = Math.sqrt(1 - y * y) // radius at y
-      const theta = phi * i // golden angle increment
+      // Curved Wall distribution
+      const col = i % columns
+      const row = Math.floor(i / columns)
+      
+      // Center the grid
+      const xOffset = (col - (columns - 1) / 2) * spacingX
+      const yOffset = ((rows - 1) / 2 - row) * spacingY
+      
+      // Apply curvature (Cylindrical mapping)
+      const radius = 25
+      const angle = (xOffset / radius)
+      
+      const x = Math.sin(angle) * radius
+      const z = (Math.cos(angle) * radius) - radius // Curve towards camera
+      const y = yOffset
 
-      const x = Math.cos(theta) * radius
-      const z = Math.sin(theta) * radius
-
-      const responsiveRadius = Math.min(viewport.width * 1.2, 14)
-      const endPos: [number, number, number] = [
-        x * responsiveRadius,
-        y * responsiveRadius * 0.8,
-        z * responsiveRadius * 0.4 // Flattened
-      ]
+      const endPos: [number, number, number] = [x - 2, y, z]
 
       return { skill, startPos, endPos }
     })
@@ -49,12 +55,13 @@ const SkillNebula = ({ progress }: SkillNebulaProps) => {
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    // Slow rotation based on progress
-    const targetRotation = progress * Math.PI * 0.2
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotation, 0.05)
+    // Minimal rotation - mostly fixed for readability
+    const targetRotation = (progress - 1) * Math.PI * 0.05
+    const clampedRotation = Math.max(Math.min(targetRotation, 0.1), -0.1)
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, clampedRotation, 0.05)
     
-    // Add a gentle floating movement
-    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2
+    // Subtle float
+    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.15
   })
 
   return (
