@@ -74,5 +74,60 @@ export const skillModules: SkillModule[] = [
     name: 'Critical Thinking',
     category: 'leadership',
     importance: 'Evaluating deep-tech trade-offs with strategic architectural foresight.'
+  },
+  {
+    name: 'Elasticsearch',
+    category: 'infrastructure',
+    importance: 'Powering high-performance discovery with custom color search algorithms.'
+  },
+  {
+    name: 'Yii Framework',
+    category: 'backend',
+    importance: 'Architecting robust, enterprise-grade ERP systems and SAAS products.'
+  },
+  {
+    name: 'Shell Scripting',
+    category: 'infrastructure',
+    importance: '15+ year legacy of automating complex data and server workflows.'
+  },
+  {
+    name: 'Laravel',
+    category: 'backend',
+    importance: 'Building modern, elegant web applications with architectural integrity.'
+  },
+  {
+    name: 'Angular',
+    category: 'frontend',
+    importance: 'Engineering enterprise-scale SPAs with modular and reactive patterns.'
+  },
+  {
+    name: 'Flutter',
+    category: 'frontend',
+    importance: 'Crafting high-performance, native-feeling mobile experiences.'
+  },
+  {
+    name: 'PCI DSS',
+    category: 'infrastructure',
+    importance: 'Ensuring rigorous security standards for global payment ecosystems.'
+  },
+  {
+    name: 'WebSockets',
+    category: 'backend',
+    importance: 'Enabling real-time, low-latency communication for collaborative tools.'
+  },
+  {
+    name: 'MySQL',
+    category: 'infrastructure',
+    importance: 'Foundational mastery of relational data modeling and optimization.'
+  },
+  {
+    name: 'Node.js',
+    category: 'backend',
+    importance: 'Building scalable, event-driven backends for modern SAAS products.'
+  },
+  {
+    name: 'SageMaker',
+    category: 'infrastructure',
+    importance: 'Deploying custom ML models to drive AI-first user personalization.'
   }
 ]
