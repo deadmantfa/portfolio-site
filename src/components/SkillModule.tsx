@@ -32,13 +32,18 @@ const SkillModuleComponent = ({ skill, index, startPos, endPos, progress }: Skil
     const by = THREE.MathUtils.lerp(startPos[1], endPos[1], t)
     const bz = THREE.MathUtils.lerp(startPos[2], endPos[2], t)
 
-    // Displacement on hover
-    const targetZOffset = hovered ? 4 : 0
+    // Displacement on hover: pull towards camera AND move slightly left to avoid the info card on the right
+    const targetZOffset = hovered ? 6 : 0
+    const targetXOffset = hovered ? -2 : 0
     
-    // Current position
-    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx, 0.1)
-    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.1)
-    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.1)
+    // Current position with organic lerping
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.08)
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.08)
+    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.12)
+    
+    // Scale-up effect on hover
+    const targetScale = hovered ? 1.4 : 1
+    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1)
     
     // Proximity logic: dim modules that are vertically distant from the viewport center
     // The group itself moves vertically, so we check local Y relative to group center (which is roughly at 0)
