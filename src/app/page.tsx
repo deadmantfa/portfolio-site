@@ -26,6 +26,7 @@ export default function Home() {
   const vaultSectionRef = useRef<HTMLDivElement>(null!)
   const contactSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
+  const [skillsExitProgress, setSkillsExitProgress] = useState(0)
   const [vaultProgress, setVaultProgress] = useState(0)
   const [contactProgress, setContactProgress] = useState(0)
 
@@ -36,6 +37,7 @@ export default function Home() {
         const sectionHeight = rect.height
         const windowHeight = window.innerHeight
         
+        // Assembly progress (0 to 1)
         if (rect.top < windowHeight && rect.bottom > 0) {
           const p = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + sectionHeight), 0), 1)
           setSkillsProgress(p)
@@ -43,6 +45,14 @@ export default function Home() {
           setSkillsProgress(0)
         } else {
           setSkillsProgress(1)
+        }
+
+        // Exit progress (0 to 1 as we move past the section)
+        if (rect.bottom < windowHeight) {
+          const ep = Math.min(Math.max((windowHeight - rect.bottom) / windowHeight, 0), 1)
+          setSkillsExitProgress(ep)
+        } else {
+          setSkillsExitProgress(0)
         }
       }
 
@@ -92,7 +102,10 @@ export default function Home() {
             <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
             
             <ArchitecturalGrid />
-            <SkillNebula progress={skillsProgress * 1.5} />
+            <SkillNebula 
+              progress={skillsProgress * 1.5} 
+              exitProgress={skillsExitProgress} 
+            />
             <VaultScene progress={vaultProgress} />
             <ConnectionScene progress={contactProgress} />
           </ContextBridge>

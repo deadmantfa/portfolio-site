@@ -9,9 +9,10 @@ import { SkillResourceProvider } from './SkillResourceProvider'
 
 interface SkillNebulaProps {
   progress: number
+  exitProgress: number
 }
 
-const SkillNebula = ({ progress }: SkillNebulaProps) => {
+const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
   const groupRef = useRef<THREE.Group>(null!)
   const { viewport } = useThree()
 
@@ -61,7 +62,16 @@ const SkillNebula = ({ progress }: SkillNebulaProps) => {
     groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, clampedRotation, 0.05)
     
     // Subtle float
-    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.15
+    const floatY = Math.sin(state.clock.elapsedTime * 0.4) * 0.15
+    
+    // Exit logic: sink and fade
+    const exitY = exitProgress * -20
+    groupRef.current.position.y = floatY + exitY
+    
+    // Opacity handling via scale or direct material update (if possible)
+    // For now, let's scale it down slightly as it exits
+    const s = 1 - exitProgress * 0.5
+    groupRef.current.scale.set(s, s, s)
   })
 
   return (
