@@ -1,15 +1,15 @@
 # Implementation Plan: Immersive Skill Redesign & Transition Fix
 
 ## Phase 1: Transition & Overlap Remediation
-- [ ] Task: Section Exit Logic
-    - [ ] Update `src/app/page.tsx` to pass an `exitProgress` or a more granular `totalScroll` value to `SkillNebula`.
-    - [ ] Implement exit animation in `SkillModule.tsx` (e.g., modules disperse or fly upwards when exiting).
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Transition & Overlap Remediation' (Protocol in workflow.md)
+- [x] Task: Section Exit Logic (948466e)
+    - [x] Update `src/app/page.tsx` to pass an `exitProgress` or a more granular `totalScroll` value to `SkillNebula`.
+    - [x] Implement exit animation in `SkillModule.tsx` (e.g., modules disperse or fly upwards when exiting).
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Transition & Overlap Remediation' (Protocol in workflow.md) (948466e)
 
 ## Phase 2: Immersive 3D Helix Implementation
-- [ ] Task: Helix Mathematical Mapping
-    - [ ] Refactor `SkillNebula.tsx` to use a vertical spiral / double-helix distribution for `endPos`.
-    - [ ] Adjust camera/group vertical positioning based on `progress`.
+- [x] Task: Helix Mathematical Mapping (7ea4881)
+    - [x] Refactor `SkillNebula.tsx` to use a vertical spiral / double-helix distribution for `endPos`.
+    - [x] Adjust camera/group vertical positioning based on `progress`.
 - [ ] Task: Interaction Polish
     - [ ] Refine hover logic to "pull" modules toward the camera more smoothly.
     - [ ] Ensure `activeSkill` visibility is optimal relative to the info card.
