@@ -6,6 +6,7 @@ import { skillModules } from '@/data/skills'
 import SkillModuleComponent from './SkillModule'
 import * as THREE from 'three'
 import { SkillResourceProvider } from './SkillResourceProvider'
+import { calculateHelixPosition } from '@/utils/helix'
 
 interface SkillNebulaProps {
   progress: number
@@ -18,27 +19,18 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
 
   const moduleData = useMemo(() => {
     const total = skillModules.length
-    const helixRadius = Math.min(viewport.width * 0.8, 10)
-    const heightFactor = 4 // Vertical spacing between modules
+    const radiusBase = Math.min(viewport.width * 0.5, 6)
+    const heightFactor = 4.5 // Increased vertical spacing
 
     return skillModules.map((skill, i) => {
       // Start positions (dispersed cloud)
       const startPos: [number, number, number] = [
+        (Math.random() - 0.5) * 70,
         (Math.random() - 0.5) * 60,
-        (Math.random() - 0.5) * 50,
-        (Math.random() - 0.5) * 40
+        (Math.random() - 0.5) * 50
       ]
       
-      // Double Helix / Vortex distribution
-      const angle = (i / total) * Math.PI * 4 // 2 full rotations
-      const isSecondStrand = i % 2 === 0
-      const finalAngle = angle + (isSecondStrand ? Math.PI : 0)
-      
-      const x = Math.cos(finalAngle) * helixRadius
-      const z = Math.sin(finalAngle) * helixRadius
-      const y = (i - total / 2) * heightFactor
-
-      const endPos: [number, number, number] = [x, y, z]
+      const endPos = calculateHelixPosition(i, total, radiusBase, heightFactor)
 
       return { skill, startPos, endPos }
     })
@@ -47,23 +39,22 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
   useFrame((state, delta) => {
     if (!groupRef.current) return
     
-    // Slow rotation
-    groupRef.current.rotation.y += delta * 0.1
+    // Smooth auto-rotation
+    groupRef.current.rotation.y += delta * 0.08
     
     // Vertical travel based on progress (0 to 1)
-    // We want to scroll through the helix as the section progresses
-    const totalHeight = skillModules.length * 4
-    const travelRange = totalHeight * 0.8
-    const targetY = (progress * travelRange) - (travelRange / 2)
+    // Map 0..1 progress to full helix height for a dramatic "ascent"
+    const totalHeight = skillModules.length * 4.5
+    const targetY = (progress * totalHeight) - (totalHeight / 2)
     
     // Position handling
-    const floatY = Math.sin(state.clock.elapsedTime * 0.4) * 0.15
-    const exitY = exitProgress * -30
+    const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
+    const exitY = exitProgress * -40 // More pronounced exit
     
-    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -targetY + floatY + exitY, 0.1)
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -targetY + floatY + exitY, 0.08)
     
-    // Responsive scale & exit fade
-    const s = 1 - exitProgress * 0.8
+    // Exit scaling
+    const s = 1 - exitProgress * 0.95
     groupRef.current.scale.set(s, s, s)
   })
 
