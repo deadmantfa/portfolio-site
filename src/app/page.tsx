@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
-import AssemblyScene from '@/components/AssemblyScene'
+import SkillNebula from '@/components/SkillNebula'
 import VaultScene from '@/components/VaultScene'
 import ConnectionScene from '@/components/ConnectionScene'
 import ContactForm from '@/components/ContactForm'
@@ -92,7 +92,7 @@ export default function Home() {
             <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
             
             <ArchitecturalGrid />
-            <AssemblyScene progress={skillsProgress * 3} />
+            <SkillNebula progress={skillsProgress * 3} />
             <VaultScene progress={vaultProgress} />
             <ConnectionScene progress={contactProgress} />
           </ContextBridge>

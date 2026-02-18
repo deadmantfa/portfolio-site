@@ -13,7 +13,7 @@ const SkillResourceContext = createContext<SkillResources | undefined>(undefined
 
 export const SkillResourceProvider = ({ children }: { children: ReactNode }) => {
   const resources = useMemo(() => {
-    const geo = new THREE.BoxGeometry(4, 1.4, 0.1)
+    const geo = new THREE.BoxGeometry(3.5, 1.2, 0.05)
     
     const baseMat = new THREE.MeshStandardMaterial({
       color: "#ffffff",
