@@ -29,6 +29,7 @@ const ConnectionScene = ({ progress }: ConnectionSceneProps) => {
   }, [])
 
   useFrame((state) => {
+    /* eslint-disable react-hooks/exhaustive-deps */
     if (!groupRef.current) return
     const time = state.clock.getElapsedTime()
     

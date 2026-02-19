@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Float, Box, Sphere, Text } from '@react-three/drei'
+import { Float, Sphere, Text, useCursor } from '@react-three/drei'
 import { careerData } from '@/data/career'
 import * as THREE from 'three'
 import { useRouter } from 'next/navigation'
@@ -13,6 +13,8 @@ const TimelineNode = ({ index, milestone, slug }: { index: number, milestone: an
   const meshRef = useRef<THREE.Mesh>(null!)
   const router = useRouter()
   const { epochProgress, activeEpoch } = useScroll()
+  const [hovered, setHover] = useState(false)
+  useCursor(hovered)
   
   // Base spacing between nodes in 3D units
   const spacing = 15
@@ -56,8 +58,8 @@ const TimelineNode = ({ index, milestone, slug }: { index: number, milestone: an
     <group 
       ref={groupRef} 
       onClick={handleClick} 
-      onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer' }}
-      onPointerOut={() => { document.body.style.cursor = 'default' }}
+      onPointerOver={(e) => { e.stopPropagation(); setHover(true) }}
+      onPointerOut={() => setHover(false)}
     >
       <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
         <Sphere ref={meshRef} args={[0.8, 32, 32]}>
