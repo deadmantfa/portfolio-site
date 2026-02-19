@@ -60,14 +60,14 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     const targetRotation = hovered ? Math.sin(state.clock.elapsedTime * 2) * 0.2 : 0
     
     // Current position with organic lerping
-    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.1) // Increased lerp for snappier movement
-    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.1) // Increased lerp
-    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.15) // Increased lerp
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.08) // Decreased lerp for smoother movement
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.08) // Decreased lerp
+    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.12) // Decreased lerp
     groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotation, 0.1)
     
     // Scale-up effect on hover
     const targetScale = hovered ? 1.6 : 1
-    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15) // Increased lerp
+    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.12) // Decreased lerp
     
     // Proximity logic: dim modules that are vertically distant from the viewport center
     const worldPos = new THREE.Vector3()
