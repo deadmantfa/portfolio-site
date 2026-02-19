@@ -28,7 +28,7 @@
     - [ ] Verify text content within the info card is clearly visible.
 - [x] Task: Resolve Ecosystem Overlap (016225d)
     - [ ] Adjust positioning or visibility of elements to prevent visual clutter between Skill Nebula and the year timeline.
-- [ ] Task: Optimize Scroll & Viewport
+- [x] Task: Optimize Scroll & Viewport (02b75d2)
     - [ ] Adjust scroll sensitivity or section heights to improve scroll experience between skills and credentials.
     - [ ] Ensure all skill modules are always accessible for hovering/interaction within the viewport.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Visual Polish & Responsive Audit' (Protocol in workflow.md)
