@@ -90,12 +90,12 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
     
     // Position handling
     const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.15
-    const exitY = exitProgress * -30
+    const exitY = exitProgress * -45
     
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, currentY + floatY + exitY, 0.06)
     
     // Exit scaling
-    const s = 1 - exitProgress * 0.95
+    const s = 1 - exitProgress * 0.98 // Scale down more aggressively
     groupRef.current.scale.set(s, s, s)
   })
 
