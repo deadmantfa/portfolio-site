@@ -56,18 +56,18 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
 
     // Displacement on hover: pull significantly towards camera AND move slightly left to avoid the info card on the right
     const targetZOffset = hovered ? 10 : 0
-    const targetXOffset = hovered ? -3 : 0
+    const targetXOffset = hovered ? -5 : 0
     const targetRotation = hovered ? Math.sin(state.clock.elapsedTime * 2) * 0.2 : 0
     
     // Current position with organic lerping
-    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.08)
-    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.08)
-    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.12)
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.1) // Increased lerp for snappier movement
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, by, 0.1) // Increased lerp
+    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, bz + targetZOffset, 0.15) // Increased lerp
     groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotation, 0.1)
     
     // Scale-up effect on hover
     const targetScale = hovered ? 1.6 : 1
-    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1)
+    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15) // Increased lerp
     
     // Proximity logic: dim modules that are vertically distant from the viewport center
     const worldPos = new THREE.Vector3()
@@ -133,7 +133,7 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
         />
 
         <Text
-          position={[0, 0, 0.1]}
+          position={[0, 0, 0.3]}
           fontSize={0.35}
           color="white"
           font="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf"
