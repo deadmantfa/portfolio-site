@@ -155,7 +155,11 @@ export default function Home() {
         </div>
       </section>
 
-      <div id="epochs" className="relative pb-[20vh] pointer-events-none">
+      <motion.div
+        id="epochs"
+        className="relative pb-[20vh] pointer-events-none"
+        animate={{ opacity: 1 - skillsExitProgress }}
+      >
         {/* Continuous Journey Line */}
         <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/5 to-transparent -translate-x-1/2 z-0 hidden md:block"></div>
         
@@ -220,6 +224,7 @@ export default function Home() {
             </div>
           </section>
         ))}
+      </motion.div>
 
         <section id="skills" ref={skillsSectionRef} className="min-h-[600vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
