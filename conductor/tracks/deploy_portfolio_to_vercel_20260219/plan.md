@@ -10,12 +10,12 @@
 - [x] Task: Push the code to the `origin` remote.
 - [x] Task: Conductor - User Manual Verification 'GitHub Repository Setup' (Protocol in workflow.md)
 
-## Phase 2: Vercel Deployment
+## Phase 2: Vercel Deployment [checkpoint: 3f55fa4]
 
-- [ ] Task: Guide the user to connect their GitHub repository to Vercel.
-- [ ] Task: Guide the user to configure the Vercel project settings.
-- [ ] Task: Guide the user to trigger the first deployment.
-- [ ] Task: Conductor - User Manual Verification 'Vercel Deployment' (Protocol in workflow.md)
+- [x] Task: Guide the user to connect their GitHub repository to Vercel.
+- [x] Task: Guide the user to configure the Vercel project settings.
+- [x] Task: Guide the user to trigger the first deployment.
+- [x] Task: Conductor - User Manual Verification 'Vercel Deployment' (Protocol in workflow.md)
 
 ## Phase 3: Domain Configuration
 
