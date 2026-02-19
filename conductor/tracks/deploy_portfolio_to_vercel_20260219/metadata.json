@@ -1,0 +1,8 @@
+{
+  "track_id": "deploy_portfolio_to_vercel_20260219",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-02-19T23:32:00Z",
+  "updated_at": "2026-02-19T23:32:00Z",
+  "description": "I have gh cli installed lets create a project on github and push all the code there and then lets deploy to vercel as it is free and i have the account ready i also have a domain w1d.pro lets go live"
+}
