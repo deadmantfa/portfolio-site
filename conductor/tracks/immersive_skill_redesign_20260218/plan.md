@@ -26,7 +26,7 @@
     - [ ] Optimize hover animations for smoothness.
     - [ ] Ensure info card position is accurate relative to the hovered module.
     - [ ] Verify text content within the info card is clearly visible.
-- [~] Task: Resolve Ecosystem Overlap
+- [x] Task: Resolve Ecosystem Overlap (37ab13f)
     - [ ] Adjust positioning or visibility of elements to prevent visual clutter between Skill Nebula and the year timeline.
 - [x] Task: Optimize Scroll & Viewport (02b75d2)
     - [ ] Adjust scroll sensitivity or section heights to improve scroll experience between skills and credentials.
