@@ -21,3 +21,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: Immersive Skill Redesign & Transition Fix**
 *Link: [./tracks/immersive_skill_redesign_20260218/](./tracks/immersive_skill_redesign_20260218/)*
+
+---
+
+- [ ] **Track: Deploy Portfolio to Vercel**
+*Link: [./tracks/deploy_portfolio_to_vercel_20260219/](./tracks/deploy_portfolio_to_vercel_20260219/)*
