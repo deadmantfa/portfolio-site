@@ -115,10 +115,9 @@ const SkillNebula = ({ progress, exitProgress }: SkillNebulaProps) => {
         </Points>
 
         {moduleData.map((data, i) => (
-          <SkillModuleComponent 
+          <SkillModuleComponent
             key={i}
-            skill={data.skill} 
-            index={i} 
+            skill={data.skill}
             startPos={data.startPos}
             endPos={data.endPos}
             progress={progress}

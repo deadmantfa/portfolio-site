@@ -48,10 +48,9 @@ const AssemblyScene = ({ progress }: AssemblySceneProps) => {
     <SkillResourceProvider>
       <group ref={groupRef}>
         {moduleData.map((data, i) => (
-          <SkillModuleComponent 
+          <SkillModuleComponent
             key={i}
-            skill={data.skill} 
-            index={i} 
+            skill={data.skill}
             startPos={data.startPos}
             endPos={data.endPos}
             progress={progress}

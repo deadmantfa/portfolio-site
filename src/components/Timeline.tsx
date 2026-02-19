@@ -80,8 +80,7 @@ const TimelineNode = ({ index, milestone, slug }: { index: number, milestone: an
             color="#14b8a6"
             anchorX="left"
             anchorY="bottom"
-            opacity={(activeEpoch === index) ? 0.8 : 0}
-            transparent
+            fillOpacity={(activeEpoch === index) ? 0.8 : 0}
           >
             {`EPOCH 0${index + 1}`}
           </Text>
@@ -91,8 +90,7 @@ const TimelineNode = ({ index, milestone, slug }: { index: number, milestone: an
             color="white"
             anchorX="left"
             anchorY="top"
-            opacity={(activeEpoch === index) ? 1 : 0}
-            transparent
+            fillOpacity={(activeEpoch === index) ? 1 : 0}
           >
             {milestone.year.split(' ')[0]}
           </Text>

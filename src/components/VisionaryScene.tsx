@@ -107,12 +107,10 @@ const ArchitecturalGrid = ({ isBlueprint = false }: { isBlueprint?: boolean }) =
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={positions.length / 3}
-            array={positions}
-            itemSize={3}
+            args={[positions, 3]}
           />
         </bufferGeometry>
-        <shaderMaterial 
+        <shaderMaterial
           ref={materialRef}
           args={[shaderArgs]}
           transparent
@@ -126,15 +124,11 @@ const ArchitecturalGrid = ({ isBlueprint = false }: { isBlueprint?: boolean }) =
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={positions.length / 3}
-            array={positions}
-            itemSize={3}
+            args={[positions, 3]}
           />
           <bufferAttribute
             attach="index"
-            count={indices.length}
-            array={indices}
-            itemSize={1}
+            args={[indices, 1]}
           />
         </bufferGeometry>
         <shaderMaterial 

@@ -87,8 +87,7 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     // Text opacity handling
     if (groupRef.current.children[0]) {
       const billboardGroup = groupRef.current.children[0]
-      // @ts-expect-error - R3F Text is not well typed for opacity props in standard types
-      const text = billboardGroup.children[1]
+      const text = billboardGroup.children[1] as unknown as { fillOpacity: number; strokeOpacity: number } | undefined
       if (text) {
         text.fillOpacity = opacity
         text.strokeOpacity = 0.6 * opacity
@@ -141,8 +140,6 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
           strokeWidth={hovered ? 0.025 : 0.02}
           strokeColor={hovered ? "#6366f1" : "#000000"}
           strokeOpacity={hovered ? 1 : 0.5}
-          side={THREE.DoubleSide}
-          pointerEvents="none"
           anchorX="center"
           anchorY="middle"
         >
