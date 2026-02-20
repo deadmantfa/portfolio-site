@@ -14,10 +14,10 @@ const StructuredData = () => {
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": "https://wenceslaus.pro/#person",
+    "@id": "https://w1d.pro/#person",
     "name": "Wenceslaus Dsilva",
     "jobTitle": "Chief Technology Officer",
-    "url": "https://wenceslaus.pro",
+    "url": "https://w1d.pro",
     "sameAs": [
       "https://linkedin.com/in/wenceslaus-dsilva",
       "https://github.com/deadmantfa"
@@ -36,11 +36,11 @@ const StructuredData = () => {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://wenceslaus.pro/#website",
-    "url": "https://wenceslaus.pro",
+    "@id": "https://w1d.pro/#website",
+    "url": "https://w1d.pro",
     "name": "Wenceslaus Dsilva Portfolio",
     "description": "The professional portfolio of Wenceslaus Dsilva, Visionary Architect.",
-    "publisher": { "@id": "https://wenceslaus.pro/#person" }
+    "publisher": { "@id": "https://w1d.pro/#person" }
   }
 
   const breadcrumbSchema = isProjectPage ? {
@@ -51,19 +51,19 @@ const StructuredData = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://wenceslaus.pro"
+        "item": "https://w1d.pro"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Work",
-        "item": "https://wenceslaus.pro/#epochs"
+        "item": "https://w1d.pro/#epochs"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": projectSlug?.charAt(0).toUpperCase() + (projectSlug?.slice(1) || ''),
-        "item": `https://wenceslaus.pro${pathname}`
+        "item": `https://w1d.pro${pathname}`
       }
     ]
   } : null

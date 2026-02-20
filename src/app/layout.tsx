@@ -36,7 +36,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://wenceslaus.pro'),
+  metadataBase: new URL('https://w1d.pro'),
   title: {
     default: 'Wenceslaus Dsilva | Architectural Leadership & Technical Strategy',
     template: '%s | Wenceslaus Dsilva'
@@ -46,12 +46,12 @@ export const metadata: Metadata = {
   authors: [{ name: 'Wenceslaus Dsilva' }],
   creator: 'Wenceslaus Dsilva',
   alternates: {
-    canonical: 'https://wenceslaus.pro',
+    canonical: 'https://w1d.pro',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://wenceslaus.pro',
+    url: 'https://w1d.pro',
     siteName: 'Wenceslaus Dsilva Portfolio',
     title: 'Wenceslaus Dsilva | Architectural Leadership',
     description: 'Bridging the gap between deep system design and strategic business alignment.',

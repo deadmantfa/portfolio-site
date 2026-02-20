@@ -36,6 +36,6 @@ describe('Global Metadata Configuration', () => {
 
   it('should define a canonical URL base', () => {
     expect(metadata.metadataBase).toBeDefined()
-    expect(metadata.metadataBase?.toString()).toContain('wenceslaus.pro')
+    expect(metadata.metadataBase?.toString()).toContain('w1d.pro')
   })
 })

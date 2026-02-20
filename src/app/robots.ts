@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://wenceslaus.pro/sitemap.xml',
+    sitemap: 'https://w1d.pro/sitemap.xml',
   }
 }
