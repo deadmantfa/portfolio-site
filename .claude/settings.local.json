@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git log:*)",
+      "Bash(git notes:*)",
+      "Bash(git -C /c/Users/deadmantfa/portfolio log --oneline -20)",
+      "Bash(git -C /c/Users/deadmantfa/portfolio show:*)",
+      "Bash(npx vitest:*)",
+      "Bash(npm run build:*)",
+      "Bash(sleep 3:*)",
+      "Bash(cd:*)"
+    ]
+  }
+}

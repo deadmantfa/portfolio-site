@@ -113,12 +113,12 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="relative min-h-screen text-white selection:bg-primary/30 pointer-events-none">
+    <main className="relative min-h-screen text-white selection:bg-primary/30">
       {/* 3D Experience - Background Interaction Layer */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundMarkers />
         <SceneCanvas>
-          <SceneContent 
+          <SceneContent
             progress={skillsProgress * 2.0}
             exitProgress={skillsExitProgress}
             vaultProgress={vaultProgress}
@@ -129,9 +129,9 @@ export default function Home() {
       </div>
 
       {/* Content Layer (on top) */}
-      <div className="relative z-10 pointer-events-none">
+      <div className="relative z-10">
         <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
-        <div className="max-w-6xl animate-reveal pointer-events-none">
+          <div className="max-w-6xl animate-reveal">
           <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary">
             Chief Technology Officer
           </div>
@@ -157,16 +157,16 @@ export default function Home() {
 
       <div
         id="epochs"
-        className="relative pb-[20vh] pointer-events-none"
+        className="relative pb-[20vh]"
       >
         {/* Continuous Journey Line */}
         <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/5 to-transparent -translate-x-1/2 z-0 hidden md:block"></div>
         
         {careerData.map((milestone, index) => (
-          <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 pointer-events-none bg-transparent relative">
+          <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 bg-transparent relative">
             {/* Year Node */}
             <div className="absolute left-8 md:left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 hidden md:flex items-center justify-center">
-              <div className="size-3 rounded-full bg-primary shadow-[0_0_15px_rgba(111,114,241,0.5)]"></div>
+              <div className="size-4 rounded-full bg-primary shadow-[0_0_15px_rgba(111,114,241,0.5)]"></div>
               <div className="absolute left-8 px-3 py-1 rounded-full glass border-primary/20 opacity-40">
                 <span className="font-mono text-[10px] text-primary whitespace-nowrap tracking-widest">{milestone.year}</span>
               </div>
@@ -177,7 +177,7 @@ export default function Home() {
                 <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
                   {index + 1}
                 </div>
-                <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group cursor-pointer hover:border-primary/20 transition-colors pointer-events-auto">
+                <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group cursor-pointer hover:border-primary/20 focus-within:ring-2 focus-within:ring-primary/50 outline-none transition-all pointer-events-auto">
                   <div className="absolute inset-0 tech-grid opacity-0 group-hover:opacity-20 transition-opacity"></div>
                   <div className="absolute inset-0 scanline opacity-0 group-hover:opacity-10 transition-opacity"></div>
                   
@@ -207,13 +207,13 @@ export default function Home() {
                         p.company.toLowerCase().includes(milestone.company.toLowerCase())
                       )
                       return project && (
-                        <Link 
-                          href={`/work/${project.slug}`} 
-                          className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1"
+                        <Link
+                          href={`/work/${project.slug}`}
+                          className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1 cursor-pointer"
                           aria-label={`View ${milestone.company} case study`}
                         >
                           <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
-                          <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
+                          <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
                         </Link>
                       )
                     })()}
@@ -225,7 +225,7 @@ export default function Home() {
         ))}
       </div>
 
-        <section id="skills" ref={skillsSectionRef} className="min-h-[600vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
+        <section id="skills" ref={skillsSectionRef} className="min-h-[600vh] flex flex-col items-center px-8 relative bg-transparent">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
             <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
             {/* Nebula Background Glow */}
@@ -269,7 +269,7 @@ export default function Home() {
                   </div>
                 </section>
         
-                <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative pointer-events-none bg-transparent">
+                <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative bg-transparent">
                   <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
                     <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
                       <EditorialReveal direction="down">
@@ -278,14 +278,15 @@ export default function Home() {
                       </EditorialReveal>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
-                        <div 
-                          tabIndex={0} 
+                        <div
+                          tabIndex={0}
                           onMouseEnter={() => setActiveCredential('edu')}
                           onMouseLeave={() => setActiveCredential(null)}
                           onFocus={() => setActiveCredential('edu')}
                           onBlur={() => setActiveCredential(null)}
-                          className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                          className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
                           aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
+                          role="button"
                         >
                           <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
                           <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
@@ -293,14 +294,15 @@ export default function Home() {
                           <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
                         </div>
 
-                        <div 
-                          tabIndex={0} 
+                        <div
+                          tabIndex={0}
                           onMouseEnter={() => setActiveCredential('cert1')}
                           onMouseLeave={() => setActiveCredential(null)}
                           onFocus={() => setActiveCredential('cert1')}
                           onBlur={() => setActiveCredential(null)}
-                          className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                          className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
                           aria-label="Certification: Elasticsearch Certified Engineer"
+                          role="button"
                         >
                           <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                           <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
@@ -308,14 +310,15 @@ export default function Home() {
                           <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
                         </div>
 
-                        <div 
-                          tabIndex={0} 
+                        <div
+                          tabIndex={0}
                           onMouseEnter={() => setActiveCredential('cert2')}
                           onMouseLeave={() => setActiveCredential(null)}
                           onFocus={() => setActiveCredential('cert2')}
                           onBlur={() => setActiveCredential(null)}
-                          className="glass p-8 rounded-3xl opacity-40 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-primary/50 outline-none transition-all pointer-events-auto group"
+                          className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
                           aria-label="Certification: Google Cloud Professional Architect"
+                          role="button"
                         >
                           <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                           <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
