@@ -1,22 +1,22 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
+import { Archivo, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import StructuredData from '@/components/StructuredData'
 import ArchitecturalLoader from '@/components/ArchitecturalLoader'
 import { ScrollProvider } from '@/components/ScrollProvider'
 
-const inter = Inter({
+const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-sans',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-serif',
   display: 'swap',
 })
 
-const cormorant = Cormorant_Garamond({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-serif',
+  variable: '--font-sans',
   display: 'swap',
 })
 
@@ -81,7 +81,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${archivo.variable} ${jetbrains.variable}`}>
       <head>
         <Suspense fallback={null}>
           <StructuredData />
