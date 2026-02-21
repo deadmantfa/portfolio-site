@@ -164,14 +164,6 @@ export default function Home() {
         
         {careerData.map((milestone, index) => (
           <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 bg-transparent relative">
-            {/* Year Node */}
-            <div className="absolute left-8 md:left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 hidden md:flex items-center justify-center">
-              <div className="size-4 rounded-full bg-primary shadow-[0_0_15px_rgba(111,114,241,0.5)]"></div>
-              <div className="absolute left-8 px-3 py-1 rounded-full glass border-primary/20 opacity-40">
-                <span className="font-mono text-[10px] text-primary whitespace-nowrap tracking-widest">{milestone.year}</span>
-              </div>
-            </div>
-
             <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
               <div className="relative max-w-4xl w-full">
                 <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
