@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
-import SkillNebula from '../components/SkillNebula'
+import { OrbitalSkillMap } from '../components/OrbitalSkillMap'
 import React from 'react'
 
 // Mock R3F and dependencies
@@ -15,19 +15,31 @@ vi.mock('@react-three/drei', () => ({
   Billboard: ({ children }: any) => <div data-testid="mock-billboard">{children}</div>,
   Float: ({ children }: any) => <div data-testid="mock-float">{children}</div>,
   Text: ({ children }: any) => <div data-testid="mock-text">{children}</div>,
-  Points: ({ children }: any) => <div data-testid="skill-particles">{children}</div>,
+  Points: ({ children }: any) => <div data-testid="orbital-particles">{children}</div>,
   PointMaterial: () => <div data-testid="particle-material" />,
+  Line: () => <div data-testid="mock-line" />,
 }))
 
-// Mock SkillModuleComponent
-vi.mock('../components/SkillModule', () => ({
-  default: () => <div data-testid="skill-module" />
+// Mock OrbitalRing component
+vi.mock('../components/OrbitalRing', () => ({
+  OrbitalRing: () => <div data-testid="orbital-ring" />
 }))
 
-describe('SkillNebula Aesthetics', () => {
-  it('renders a particle system for data streams', () => {
-    const { queryByTestId } = render(<SkillNebula progress={0.5} exitProgress={0} />)
-    // This should fail initially as I haven't added the Points component yet
-    expect(queryByTestId('skill-particles')).not.toBeNull()
+// Mock GSAP
+vi.mock('gsap', () => ({
+  default: {
+    to: vi.fn()
+  }
+}))
+
+describe('OrbitalSkillMap Aesthetics', () => {
+  it('renders a particle system for background effect', () => {
+    const { queryByTestId } = render(<OrbitalSkillMap progress={0.5} exitProgress={0} />)
+    expect(queryByTestId('orbital-particles')).not.toBeNull()
+  })
+
+  it('renders orbital rings', () => {
+    const { getAllByTestId } = render(<OrbitalSkillMap progress={0.5} exitProgress={0} />)
+    expect(getAllByTestId('orbital-ring')).toHaveLength(4)
   })
 })

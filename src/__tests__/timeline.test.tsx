@@ -38,6 +38,7 @@ vi.mock('@react-three/drei', () => ({
   Box: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-box">{children}</div>,
   Sphere: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-sphere">{children}</div>,
   Center: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-center">{children}</div>,
+  useCursor: vi.fn(),
 }))
 
 describe('Timeline Component', () => {

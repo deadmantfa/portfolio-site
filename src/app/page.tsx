@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
-import SkillNebula from '@/components/SkillNebula'
+import { OrbitalSkillMap } from '@/components/OrbitalSkillMap'
 import VaultScene from '@/components/VaultScene'
 import ConnectionScene from '@/components/ConnectionScene'
 import ContactForm from '@/components/ContactForm'
@@ -32,9 +32,9 @@ const SceneContent = ({ progress, exitProgress, vaultProgress, contactProgress, 
     <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
     
     <ArchitecturalGrid />
-    <SkillNebula 
-      progress={progress} 
-      exitProgress={exitProgress} 
+    <OrbitalSkillMap
+      progress={progress}
+      exitProgress={exitProgress}
     />
     <VaultScene progress={vaultProgress} />
     <ConnectionScene progress={contactProgress} />

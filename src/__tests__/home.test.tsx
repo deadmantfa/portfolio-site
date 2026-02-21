@@ -23,8 +23,8 @@ vi.mock('@/components/SceneCanvas', () => ({
 vi.mock('@/components/VisionaryScene', () => ({
   default: () => <div data-testid="mock-scene" />
 }))
-vi.mock('@/components/SkillNebula', () => ({
-  default: () => <div data-testid="mock-skill-nebula" />
+vi.mock('@/components/OrbitalSkillMap', () => ({
+  OrbitalSkillMap: () => <div data-testid="mock-orbital-skill-map" />
 }))
 vi.mock('@/components/VaultScene', () => ({
   default: () => <div data-testid="mock-vault" />
@@ -50,7 +50,7 @@ describe('Home Page', () => {
     render(<Home />)
     expect(screen.getByTestId('mock-canvas')).toBeInTheDocument()
     expect(screen.getByTestId('mock-scene')).toBeInTheDocument()
-    expect(screen.getByTestId('mock-skill-nebula')).toBeInTheDocument()
+    expect(screen.getByTestId('mock-orbital-skill-map')).toBeInTheDocument()
     expect(screen.getByTestId('mock-vault')).toBeInTheDocument()
     expect(screen.getByTestId('mock-connection')).toBeInTheDocument()
     expect(screen.getByTestId('mock-contact-form')).toBeInTheDocument()

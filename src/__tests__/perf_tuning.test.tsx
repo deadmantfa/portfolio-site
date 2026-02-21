@@ -29,6 +29,9 @@ vi.mock('@react-three/drei', () => ({
   Float: ({ children }: any) => <div data-testid="mock-float">{children}</div>,
   Text: ({ children }: any) => <div data-testid="mock-text">{children}</div>,
   Box: ({ children }: any) => <div data-testid="mock-box">{children}</div>,
+  Billboard: ({ children }: any) => <div data-testid="mock-billboard">{children}</div>,
+  Sphere: ({ children }: any) => <div data-testid="mock-sphere">{children}</div>,
+  Line: () => <div data-testid="mock-line" />,
 }))
 
 describe('Performance & Architectural Optimizations', () => {
