@@ -48,19 +48,19 @@
     - [x] Implement: Move non-critical scripts to `strategy="lazyOnload"` or `worker`.
 - [x] Task: Conductor - User Manual Verification 'JavaScript Bundle Optimization' (Protocol in workflow.md)
 
-## Phase 4: Accessibility & Structured Data
+## Phase 4: Accessibility & Structured Data [checkpoint: 610f7d2]
 - [x] Task: Accessibility Remediation [84b7cd0]
-    - [ ] Write test: automated a11y checks using `jest-axe` for key components.
-    - [ ] Implement: Fix color contrast ratios to meet WCAG AA.
-    - [ ] Implement: Add missing ARIA labels and alt text.
-    - [ ] Implement: Ensure full keyboard navigation support.
+    - [x] Write test: automated a11y checks using `jest-axe` for key components.
+    - [x] Implement: Fix color contrast ratios to meet WCAG AA.
+    - [x] Implement: Add missing ARIA labels and alt text.
+    - [x] Implement: Ensure full keyboard navigation support.
 - [x] Task: Implement Structured Data (JSON-LD) [3c68f6c]
-    - [ ] Write test: Validate JSON-LD structure for Person, WebSite, and CreativeWork.
-    - [ ] Implement: Create and inject structured data schemas into `layout.tsx` and project pages.
-- [ ] Task: Conductor - User Manual Verification 'Accessibility & Structured Data' (Protocol in workflow.md)
+    - [x] Write test: Validate JSON-LD structure for Person, WebSite, and CreativeWork.
+    - [x] Implement: Create and inject structured data schemas into `layout.tsx` and project pages.
+- [x] Task: Conductor - User Manual Verification 'Accessibility & Structured Data' (Protocol in workflow.md)
 
 ## Phase 5: Final Validation
-- [ ] Task: Final Performance Audit
+- [~] Task: Final Performance Audit
     - [ ] Build project for production (`npm run build`).
     - [ ] Run Lighthouse audit on production build.
     - [ ] Verify Performance > 95 and Accessibility = 100.
