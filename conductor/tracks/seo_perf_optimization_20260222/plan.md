@@ -21,7 +21,7 @@
 - [x] Task: Optimize LCP Image [4788e02]
     - [ ] Write test: Verify LCP image has `priority` attribute.
     - [ ] Implement: Refactor main hero image to use `next/image` with `priority` and accurate `sizes`.
-- [ ] Task: Optimize Secondary Images
+- [~] Task: Optimize Secondary Images
     - [ ] Write test: Verify all other images use `loading="lazy"` (default) and correct formats.
     - [ ] Implement: Audit and update all images in `public/` and components to use `next/image`.
 - [ ] Task: Eliminate Layout Shifts (CLS)
