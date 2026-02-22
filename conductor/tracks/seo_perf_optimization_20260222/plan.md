@@ -17,29 +17,27 @@
     - [x] Generate report and identify largest modules/dependencies.
 - [x] Task: Conductor - User Manual Verification 'Baseline & Analysis' (Protocol in workflow.md)
 
-## Phase 2: Core Web Vitals (Images & Fonts)
+## Phase 2: Core Web Vitals (Images & Fonts) [checkpoint: f5f4c55]
 - [x] Task: Optimize LCP Image [4788e02]
-    - [ ] Write test: Verify LCP image has `priority` attribute.
-    - [ ] Implement: Refactor main hero image to use `next/image` with `priority` and accurate `sizes`.
-- [x] Task: Optimize Secondary Images [no_changes_needed]
+    - [x] Write test: Verify LCP image has `priority` attribute.
+    - [x] Implement: Refactor main hero image to use `next/image` with `priority` and accurate `sizes`.
+- [x] Task: Optimize Secondary Images [c7e3154]
     - Findings:
         - Audit confirmed no raw `<img>` tags in codebase.
         - Next.js `Image` component is already used in `page.tsx` (the only place with raster images).
-
-    - [ ] Write test: Verify all other images use `loading="lazy"` (default) and correct formats.
-    - [ ] Implement: Audit and update all images in `public/` and components to use `next/image`.
-- [x] Task: Eliminate Layout Shifts (CLS) [no_changes_needed]
+    - [x] Write test: Verify all other images use `loading="lazy"` (default) and correct formats.
+    - [x] Implement: Audit and update all images in `public/` and components to use `next/image`.
+- [x] Task: Eliminate Layout Shifts (CLS) [c481122]
     - Findings:
         - `next/font` is already implemented with `display: 'swap'`.
         - Layout has `ScrollProvider` and fixed background, CLS risk is minimal from font loading.
-
-    - [ ] Write test: Verify font loading strategy (optional/swap).
-    - [ ] Implement: Configure `next/font` correctly.
-    - [ ] Implement: Enforce aspect ratio containers for all media/embeds.
-- [ ] Task: Conductor - User Manual Verification 'Core Web Vitals (Images & Fonts)' (Protocol in workflow.md)
+    - [x] Write test: Verify font loading strategy (optional/swap).
+    - [x] Implement: Configure `next/font` correctly.
+    - [x] Implement: Enforce aspect ratio containers for all media/embeds.
+- [x] Task: Conductor - User Manual Verification 'Core Web Vitals (Images & Fonts)' (Protocol in workflow.md)
 
 ## Phase 3: JavaScript Bundle Optimization
-- [ ] Task: Implement Code Splitting
+- [x] Task: Implement Code Splitting [b8d598c]
     - [ ] Write test: Verify component exists (smoke test).
     - [ ] Implement: Convert heavy components (3D Scenes, complex UI) to Dynamic Imports (`next/dynamic`) with loading skeletons.
 - [ ] Task: Optimize Third-Party Scripts
