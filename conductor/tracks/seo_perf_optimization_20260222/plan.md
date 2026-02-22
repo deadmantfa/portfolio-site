@@ -1,26 +1,24 @@
 # Implementation Plan - Optimize Portfolio Performance & Accessibility
 
-## Phase 1: Baseline & Analysis
+## Phase 1: Baseline & Analysis [checkpoint: 3f00a6c]
 - [x] Task: Establish Performance Baseline [checkpoint: manual]
     - Findings:
         - Mobile: Performance 43, LCP 7.5s, TBT 2.8s, CLS 0.
         - Desktop: Performance 94, LCP 1.6s, TBT 90ms, CLS 0.
         - Primary bottleneck is Mobile TBT (JS Execution) and LCP delay.
-
-    - [ ] Run local Lighthouse audit (Mobile & Desktop) to record initial scores.
-    - [ ] Identify key bottlenecks: LCP element, CLS culprits, and TBT sources.
+    - [x] Run local Lighthouse audit (Mobile & Desktop) to record initial scores.
+    - [x] Identify key bottlenecks: LCP element, CLS culprits, and TBT sources.
 - [x] Task: Analyze Bundle Size [checkpoint: manual]
     - Findings:
         - Generated bundle reports.
         - Largest chunks: ~371KB and ~349KB (likely Three.js/R3F/Drei).
         - Confirmed need for aggressive code splitting of 3D components.
-
-    - [ ] Configure `@next/bundle-analyzer`.
-    - [ ] Generate report and identify largest modules/dependencies.
-- [ ] Task: Conductor - User Manual Verification 'Baseline & Analysis' (Protocol in workflow.md)
+    - [x] Configure `@next/bundle-analyzer`.
+    - [x] Generate report and identify largest modules/dependencies.
+- [x] Task: Conductor - User Manual Verification 'Baseline & Analysis' (Protocol in workflow.md)
 
 ## Phase 2: Core Web Vitals (Images & Fonts)
-- [ ] Task: Optimize LCP Image
+- [~] Task: Optimize LCP Image
     - [ ] Write test: Verify LCP image has `priority` attribute.
     - [ ] Implement: Refactor main hero image to use `next/image` with `priority` and accurate `sizes`.
 - [ ] Task: Optimize Secondary Images
