@@ -11,7 +11,10 @@
       "Bash(npx vitest:*)",
       "Bash(npm run build:*)",
       "Bash(sleep 3:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(sleep 5:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)"
     ]
   }
 }

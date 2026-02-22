@@ -31,7 +31,7 @@ export function OrbitalNode({
   const [hoveredLocal, setHoveredLocal] = useState(false)
   const { setActiveSkill } = useScroll()
 
-  const geometry = new THREE.SphereGeometry(0.18, 16, 16)
+  const geometry = new THREE.SphereGeometry(0.6, 24, 24)
 
   useFrame(() => {
     if (!meshRef.current) return

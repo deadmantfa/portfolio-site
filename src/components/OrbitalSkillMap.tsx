@@ -39,8 +39,8 @@ export function OrbitalSkillMap({
     }
   }, [hasScrolledIn])
 
-  // Responsive viewport scale
-  const viewportScale = Math.min(viewport.width / 15, 1)
+  // Responsive viewport scale - allow rings to scale up fully
+  const viewportScale = Math.min(viewport.width / 8, 1.5)
 
   // Skill distribution by category
   const skillsByCategory = useMemo(() => {
@@ -120,7 +120,7 @@ export function OrbitalSkillMap({
         <PointMaterial
           transparent
           color="#6366f1"
-          size={0.02}
+          size={0.08}
           sizeAttenuation={true}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -130,7 +130,7 @@ export function OrbitalSkillMap({
 
       {/* Center hub sphere */}
       <mesh ref={centerHubRef} position={[0, 0, 0]}>
-        <sphereGeometry args={[0.35, 32, 32]} />
+        <sphereGeometry args={[1.2, 32, 32]} />
         <meshStandardMaterial
           color="#6366f1"
           emissive="#6366f1"

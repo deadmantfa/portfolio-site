@@ -1,10 +1,10 @@
 import { type SkillModule } from '@/data/skills'
 
 export const CATEGORY_CONFIG = {
-  leadership: { radius: 2.0, color: '#ec4899', rotationSpeed: 0.06 },
-  frontend: { radius: 3.5, color: '#6366f1', rotationSpeed: -0.04 },
-  backend: { radius: 5.0, color: '#f59e0b', rotationSpeed: 0.05 },
-  infrastructure: { radius: 6.5, color: '#10b981', rotationSpeed: -0.035 },
+  leadership: { radius: 12.0, color: '#ec4899', rotationSpeed: 0.06 },
+  frontend: { radius: 18.0, color: '#6366f1', rotationSpeed: -0.04 },
+  backend: { radius: 24.0, color: '#f59e0b', rotationSpeed: 0.05 },
+  infrastructure: { radius: 30.0, color: '#10b981', rotationSpeed: -0.035 },
 } as const
 
 export type CategoryKey = keyof typeof CATEGORY_CONFIG
