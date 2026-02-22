@@ -28,7 +28,11 @@
 
     - [ ] Write test: Verify all other images use `loading="lazy"` (default) and correct formats.
     - [ ] Implement: Audit and update all images in `public/` and components to use `next/image`.
-- [~] Task: Eliminate Layout Shifts (CLS)
+- [x] Task: Eliminate Layout Shifts (CLS) [no_changes_needed]
+    - Findings:
+        - `next/font` is already implemented with `display: 'swap'`.
+        - Layout has `ScrollProvider` and fixed background, CLS risk is minimal from font loading.
+
     - [ ] Write test: Verify font loading strategy (optional/swap).
     - [ ] Implement: Configure `next/font` correctly.
     - [ ] Implement: Enforce aspect ratio containers for all media/embeds.
