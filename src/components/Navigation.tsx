@@ -180,7 +180,7 @@ const Navigation = () => {
           if (!el) return
           const targetW = (() => {
             el.style.width = 'auto'
-            const w = el.scrollWidth
+            const w = el.scrollWidth + 2 // Add 2px buffer to prevent cutoff
             el.style.width = '0px'
             return w
           })()
@@ -294,15 +294,16 @@ const Navigation = () => {
               className="inline-block overflow-hidden whitespace-nowrap align-bottom"
               style={{ width: 0 }}
             >
-              {'enceslaus'.split('').map((_, i) => (
+              {'enceslaus'.split('').map((char, i) => (
                 <span
                   key={i}
                   ref={(el) => {
                     firstCharRefs.current[i] = el
                   }}
-                  className="inline-block opacity-0"
+                  className="inline-block"
+                  style={{ opacity: 0 }}
                 >
-                  _
+                  {char}
                 </span>
               ))}
             </span>
@@ -328,15 +329,16 @@ const Navigation = () => {
               className="inline-block overflow-hidden whitespace-nowrap align-bottom"
               style={{ width: 0 }}
             >
-              {'silva'.split('').map((_, i) => (
+              {'silva'.split('').map((char, i) => (
                 <span
                   key={i}
                   ref={(el) => {
                     lastCharRefs.current[i] = el
                   }}
-                  className="inline-block opacity-0"
+                  className="inline-block"
+                  style={{ opacity: 0 }}
                 >
-                  _
+                  {char}
                 </span>
               ))}
             </span>

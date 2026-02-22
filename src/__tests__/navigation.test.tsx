@@ -106,17 +106,19 @@ describe('Navigation Component', () => {
   it('renders 9 first-name character spans', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
-    const charSpans = logoLink.querySelectorAll('span[class*="inline-block opacity-0"]')
-    // 9 for 'enceslaus' + 5 for 'silva' = 14 total
-    expect(charSpans).toHaveLength(14)
+    const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
+    const charSpans = wrappers[0]?.querySelectorAll('span[class*="inline-block"]') || []
+    // 9 for 'enceslaus'
+    expect(charSpans).toHaveLength(9)
   })
 
   it('renders 5 last-name character spans', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
     const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
-    // 3 wrappers (enceslaus, space, silva)
-    expect(wrappers).toHaveLength(3)
+    const lastNameSpans = wrappers[2]?.querySelectorAll('span[class*="inline-block"]') || []
+    // 5 for 'silva'
+    expect(lastNameSpans).toHaveLength(5)
   })
 
   it('suffix wrappers start with width 0', () => {
