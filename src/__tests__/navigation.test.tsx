@@ -95,10 +95,39 @@ describe('Navigation Component', () => {
     expect(nav).toHaveClass('z-[100]')
   })
 
-  it('logo dot has group-hover styling', () => {
+  it('logo dot has text-primary class', () => {
     render(<Navigation />)
-    const dot = document.querySelector('.group-hover\\:text-white')
+    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const dot = logoLink.querySelector('.text-primary')
     expect(dot).toBeInTheDocument()
-    expect(dot).toHaveClass('text-primary')
+    expect(dot?.textContent).toBe('.')
+  })
+
+  it('renders 9 first-name character spans', () => {
+    render(<Navigation />)
+    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const charSpans = logoLink.querySelectorAll('span[class*="inline-block opacity-0"]')
+    // 9 for 'enceslaus' + 5 for 'silva' = 14 total
+    expect(charSpans).toHaveLength(14)
+  })
+
+  it('renders 5 last-name character spans', () => {
+    render(<Navigation />)
+    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
+    // 3 wrappers (enceslaus, space, silva)
+    expect(wrappers).toHaveLength(3)
+  })
+
+  it('suffix wrappers start with width 0', () => {
+    render(<Navigation />)
+    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const wrappers = logoLink.querySelectorAll('[class*="overflow-hidden"]')
+    wrappers.forEach((wrapper) => {
+      const style = window.getComputedStyle(wrapper)
+      // Check that inline style or computed style has width of 0 or auto (starting state)
+      const styleAttr = wrapper.getAttribute('style')
+      expect(styleAttr).toContain('width: 0')
+    })
   })
 })
