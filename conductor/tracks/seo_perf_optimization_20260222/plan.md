@@ -40,7 +40,11 @@
 - [x] Task: Implement Code Splitting [b8d598c]
     - [ ] Write test: Verify component exists (smoke test).
     - [ ] Implement: Convert heavy components (3D Scenes, complex UI) to Dynamic Imports (`next/dynamic`) with loading skeletons.
-- [~] Task: Optimize Third-Party Scripts
+- [x] Task: Optimize Third-Party Scripts [no_changes_needed]
+    - Findings:
+        - Audit confirmed no third-party scripts (Analytics, Ads, etc.) are present in the codebase.
+        - `StructuredData` uses `<script type="application/ld+json">`, which is correct and should not be lazy-loaded via `next/script` as it's for SEO bots.
+
     - [ ] Write test: Verify script loading strategy.
     - [ ] Implement: Move non-critical scripts to `strategy="lazyOnload"` or `worker`.
 - [ ] Task: Conductor - User Manual Verification 'JavaScript Bundle Optimization' (Protocol in workflow.md)
