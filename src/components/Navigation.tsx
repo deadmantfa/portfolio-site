@@ -172,36 +172,34 @@ const Navigation = () => {
       clearDecode()
 
       if (!prefersReducedMotion()) {
-        // 1. Dot collapses from layout (maxWidth: 0 instead of scale: 0)
+        // 1. Dot exits dramatically
         gsap.to(dotRef.current, {
-          maxWidth: 0,
+          scale: 0,
           opacity: 0,
           duration: 0.18,
           ease: 'back.in(2)',
         })
 
-        // 2. Open suffix wrappers (maxWidth: 0 → 300)
-        gsap.to(firstWrapRef.current, {
-          maxWidth: 300,
-          duration: 0.45,
-          ease: 'power3.out',
-        })
-        gsap.to(lastWrapRef.current, {
-          maxWidth: 300,
-          duration: 0.45,
-          delay: 0.12,
-          ease: 'power3.out',
-        })
+        // 2. Open suffix wrappers (width 0 → fixed width)
+        const openWrapper = (el: HTMLSpanElement | null, targetWidth: number, delay = 0) => {
+          if (!el) return
+          setTimeout(() => {
+            el.style.width = `${targetWidth}px`
+          }, delay * 1000)
+        }
+
+        openWrapper(firstWrapRef.current, 150, 0) // opens immediately (enceslaus)
+        openWrapper(lastWrapRef.current, 120, 0.12) // last name opens just after (silva)
 
         // 3. Trigger decode (independent of GSAP — uses setInterval)
         startDecode(firstCharRefs.current, 'enceslaus'.split(''), 40)
         startDecode(lastCharRefs.current, 'silva'.split(''), 180)
       } else {
         // Reduced motion: instant swap, no animation
-        dotRef.current!.style.maxWidth = '0px'
         dotRef.current!.style.opacity = '0'
-        firstWrapRef.current!.style.maxWidth = '300px'
-        lastWrapRef.current!.style.maxWidth = '300px'
+        // Use fixed widths instead of 'auto' to prevent cutoff
+        firstWrapRef.current!.style.width = '150px'
+        lastWrapRef.current!.style.width = '120px'
         firstCharRefs.current.forEach((el, i) => {
           if (el) {
             el.textContent = 'enceslaus'[i]
@@ -231,15 +229,15 @@ const Navigation = () => {
 
         // 2. Wrappers collapse
         gsap.to([firstWrapRef.current, lastWrapRef.current], {
-          maxWidth: 0,
+          width: 0,
           duration: 0.2,
           delay: 0.08,
           ease: 'power2.in',
         })
 
-        // 3. Dot returns to layout
+        // 3. Dot returns
         gsap.to(dotRef.current, {
-          maxWidth: '1em',
+          scale: 1,
           opacity: 1,
           duration: 0.25,
           delay: 0.15,
@@ -247,10 +245,9 @@ const Navigation = () => {
         })
       } else {
         // Instant reset
-        dotRef.current!.style.maxWidth = '1em'
         dotRef.current!.style.opacity = '1'
-        firstWrapRef.current!.style.maxWidth = '0px'
-        lastWrapRef.current!.style.maxWidth = '0px'
+        firstWrapRef.current!.style.width = '0px'
+        lastWrapRef.current!.style.width = '0px'
         const allChars = [...firstCharRefs.current, ...lastCharRefs.current].filter(Boolean)
         allChars.forEach((el) => {
           if (el) el.style.opacity = '0'
@@ -321,7 +318,7 @@ const Navigation = () => {
             <span
               ref={firstWrapRef}
               className="inline-block overflow-hidden whitespace-nowrap align-bottom"
-              style={{ maxWidth: 0, width: 'auto' }}
+              style={{ width: 0 }}
             >
               {'enceslaus'.split('').map((char, i) => (
                 <span
@@ -335,15 +332,14 @@ const Navigation = () => {
                   {char}
                 </span>
               ))}
-              <span className="inline-block">&nbsp;</span>
             </span>
 
-            <span
-              ref={dotRef}
-              className="text-primary inline-block overflow-hidden"
-              style={{ maxWidth: '1em' }}
-            >
+            <span ref={dotRef} className="text-primary inline-block">
               .
+            </span>
+
+            <span className="inline-block" style={{ marginLeft: '-0.15em', marginRight: '-0.15em' }}>
+              {' '}
             </span>
 
             <span ref={dRef} className="inline-block">
@@ -353,7 +349,7 @@ const Navigation = () => {
             <span
               ref={lastWrapRef}
               className="inline-block overflow-hidden whitespace-nowrap align-bottom"
-              style={{ maxWidth: 0, width: 'auto' }}
+              style={{ width: 0 }}
             >
               {'silva'.split('').map((char, i) => (
                 <span

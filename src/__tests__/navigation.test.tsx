@@ -106,30 +106,30 @@ describe('Navigation Component', () => {
   it('renders 9 first-name character spans', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
-    const wrappers = logoLink.querySelectorAll('[style*="max-width: 0"]')
+    const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
     const charSpans = wrappers[0]?.querySelectorAll('span[class*="inline-block"]') || []
-    // 9 for 'enceslaus' + 1 trailing space
-    expect(charSpans).toHaveLength(10)
+    // 9 for 'enceslaus'
+    expect(charSpans).toHaveLength(9)
   })
 
   it('renders 5 last-name character spans', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
-    const wrappers = logoLink.querySelectorAll('[style*="max-width: 0"]')
+    const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
     const lastNameSpans = wrappers[1]?.querySelectorAll('span[class*="inline-block"]') || []
     // 5 for 'silva'
     expect(lastNameSpans).toHaveLength(5)
   })
 
-  it('suffix wrappers start with maxWidth 0', () => {
+  it('suffix wrappers start with width 0', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
-    const wrappers = logoLink.querySelectorAll('[style*="max-width: 0"]')
-    // Should have 2 wrappers (enceslaus and silva, space integrated)
+    const wrappers = logoLink.querySelectorAll('[class*="overflow-hidden"]')
+    // Should have 2 wrappers now (enceslaus and silva, no space wrapper)
     expect(wrappers).toHaveLength(2)
     wrappers.forEach((wrapper) => {
       const styleAttr = wrapper.getAttribute('style')
-      expect(styleAttr).toContain('max-width: 0')
+      expect(styleAttr).toContain('width: 0')
     })
   })
 })

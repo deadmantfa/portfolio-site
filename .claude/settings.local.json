@@ -22,8 +22,7 @@
       "Bash(cd \"C:\\\\Users\\\\deadmantfa\\\\portfolio\" && npm run lint 2>&1)",
       "Bash(test:*)",
       "Bash(cd \"C:\\\\Users\\\\deadmantfa\\\\portfolio\" && CI=true npm test -- src/__tests__/Navigation.test.tsx 2>&1)",
-      "Bash(cd C:/Users/deadmantfa/portfolio && CI=true npm test -- src/__tests__/Navigation.test.tsx 2>&1)",
-      "Bash(cd C:\\\\Users\\\\deadmantfa\\\\portfolio:*)"
+      "Bash(cd C:/Users/deadmantfa/portfolio && CI=true npm test -- src/__tests__/Navigation.test.tsx 2>&1)"
     ]
   }
 }
