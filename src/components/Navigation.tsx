@@ -400,7 +400,7 @@ const Navigation = () => {
                 onMouseEnter={() => handleMouseEnter(section)}
                 onMouseLeave={() => handleMouseLeave(section)}
                 className={`relative z-10 transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded px-2 ${
-                  activeSection === section ? 'text-primary' : 'text-foreground/40 hover:text-foreground/70'
+                  activeSection === section ? 'text-primary' : 'text-foreground/60 hover:text-foreground/80'
                 }`}
               >
                 {sectionLabels[section]}
@@ -412,7 +412,7 @@ const Navigation = () => {
             href="/CV/Wenceslaus-Dsilva-2025.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="View Curriculum Vitae (PDF)"
+            aria-label="CV - Curriculum Vitae"
             className="bg-white/10 hover:bg-primary px-6 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-[0.2em] text-foreground hover:text-background transition-all active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           >
             CV

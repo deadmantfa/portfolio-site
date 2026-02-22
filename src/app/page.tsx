@@ -1,9 +1,6 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { SkillsGrid } from '@/components/SkillsGrid'
-import ContactForm from '@/components/ContactForm'
-import SocialLinks from '@/components/SocialLinks'
 import { careerData } from '@/data/career'
 import { projects } from '@/data/projects'
 import Link from 'next/link'
@@ -12,6 +9,10 @@ import BackgroundMarkers from '@/components/BackgroundMarkers'
 import { useScroll } from '@/components/ScrollProvider'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+
+const SkillsGrid = dynamic(() => import('@/components/SkillsGrid').then(m => m.SkillsGrid), { ssr: false })
+const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false })
+const SocialLinks = dynamic(() => import('@/components/SocialLinks'), { ssr: false })
 
 // Dynamically import the heavy 3D scene
 // loading: () => null prevents flash of unstyled content or heavy loading state, 
@@ -30,8 +31,12 @@ export default function Home() {
   const [skillsExitProgress, setSkillsExitProgress] = useState(0)
   const [vaultProgress, setVaultProgress] = useState(0)
   const [contactProgress, setContactProgress] = useState(0)
+  const [showScene, setShowScene] = useState(false)
 
   useEffect(() => {
+    // Aggressively delay 3D scene initialization to ensure content is prioritized
+    const timer = setTimeout(() => setShowScene(true), 3000)
+
     const handleScrollProgress = () => {
       if (skillsSectionRef.current) {
         const rect = skillsSectionRef.current.getBoundingClientRect()
@@ -87,7 +92,10 @@ export default function Home() {
 
     window.addEventListener('scroll', handleScrollProgress, { passive: true })
     handleScrollProgress()
-    return () => window.removeEventListener('scroll', handleScrollProgress)
+    return () => {
+      window.removeEventListener('scroll', handleScrollProgress)
+      clearTimeout(timer)
+    }
   }, [])
 
   return (
@@ -95,22 +103,24 @@ export default function Home() {
       {/* 3D Experience - Background Interaction Layer */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundMarkers />
-        <HomeScene
-          progress={skillsProgress * 2.0}
-          exitProgress={skillsExitProgress}
-          vaultProgress={vaultProgress}
-          contactProgress={contactProgress}
-        />
+        {showScene && (
+          <HomeScene
+            progress={skillsProgress * 2.0}
+            exitProgress={skillsExitProgress}
+            vaultProgress={vaultProgress}
+            contactProgress={contactProgress}
+          />
+        )}
       </div>
 
       {/* Content Layer (on top) */}
       <div className="relative z-10">
         <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
-          <div className="max-w-6xl animate-reveal">
-            <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary">
+          <div className="max-w-6xl">
+            <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary animate-reveal">
               Chief Technology Officer
             </div>
-            <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary/20">
+            <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary/20 animate-reveal" style={{ animationDelay: '0.1s' }}>
                <Image
                 src="/images/hero/profile.jpg"
                 alt="Wenceslaus Dsilva - CTO & Architect"
@@ -124,19 +134,19 @@ export default function Home() {
               The Visionary <br/> 
               <span className="text-primary pr-4">Architect.</span>
             </h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto animate-reveal" style={{ animationDelay: '0.2s' }}>
               <p className="text-xl md:text-2xl font-light text-zinc-400 leading-relaxed font-sans">
                 20+ years of pioneering technical excellence and strategic leadership at the intersection of high-scale engineering and business innovation.
               </p>
               <div className="flex flex-col justify-end border-l border-white/10 pl-8">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-2">Current Epoch</p>
+                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 mb-2">Current Epoch</p>
                 <p className="text-xl text-zinc-200 font-serif italic">Driving Scalable Growth @ Rooftop</p>
               </div>
             </div>
           </div>
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
             <div className="h-24 w-px bg-gradient-to-b from-primary/50 to-transparent"></div>
-            <span className="vertical-text text-[11px] font-mono uppercase tracking-[0.5em] text-zinc-600">Explore Journey</span>
+            <span className="vertical-text text-[11px] font-mono uppercase tracking-[0.5em] text-zinc-400">Explore Journey</span>
           </div>
         </section>
 
@@ -190,7 +200,7 @@ export default function Home() {
                             aria-label={`View ${milestone.company} case study`}
                           >
                             <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
-                            <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
+                            <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-400 group-hover/btn:text-primary">→</div>
                           </Link>
                         )
                       })()}
@@ -240,14 +250,14 @@ export default function Home() {
                   onMouseLeave={() => setActiveCredential(null)}
                   onFocus={() => setActiveCredential('edu')}
                   onBlur={() => setActiveCredential(null)}
-                  className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
+                  className="glass p-8 rounded-3xl opacity-80 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
                   aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
                   role="button"
                 >
-                  <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
+                  <p className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
                   <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                  <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
+                  <p className="text-zinc-400 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
                 </div>
 
                 <div
@@ -256,14 +266,14 @@ export default function Home() {
                   onMouseLeave={() => setActiveCredential(null)}
                   onFocus={() => setActiveCredential('cert1')}
                   onBlur={() => setActiveCredential(null)}
-                  className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
+                  className="glass p-8 rounded-3xl opacity-80 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
                   aria-label="Certification: Elasticsearch Certified Engineer"
                   role="button"
                 >
-                  <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                  <p className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
                   <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                  <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
+                  <p className="text-zinc-400 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
                 </div>
 
                 <div
@@ -272,14 +282,14 @@ export default function Home() {
                   onMouseLeave={() => setActiveCredential(null)}
                   onFocus={() => setActiveCredential('cert2')}
                   onBlur={() => setActiveCredential(null)}
-                  className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
+                  className="glass p-8 rounded-3xl opacity-80 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
                   aria-label="Certification: Google Cloud Professional Architect"
                   role="button"
                 >
-                  <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                  <p className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
                   <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                  <p className="text-zinc-500 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
+                  <p className="text-zinc-400 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
                 </div>
               </div>
             </div>

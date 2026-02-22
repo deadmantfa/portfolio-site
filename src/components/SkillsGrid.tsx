@@ -132,7 +132,7 @@ function SkillsGrid() {
             onClick={() => handleFilterChange(filter.key)}
             className={`px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-150 cursor-pointer flex items-center gap-2 ${
               activeFilter === filter.key
-                ? 'text-white'
+                ? 'text-black font-bold'
                 : 'bg-zinc-900/40 text-zinc-400 hover:bg-zinc-800 hover:text-white'
             }`}
             style={
@@ -142,13 +142,12 @@ function SkillsGrid() {
                       filter.key === 'all'
                         ? '#6366f1'
                         : CATEGORY_CONFIG[filter.key as CategoryKey].color,
-                    color: 'white',
                   }
                 : undefined
             }
           >
             {filter.label}
-            <span className="text-[10px] opacity-75">
+            <span className="text-[10px]">
               ({skillCounts[filter.key]})
             </span>
           </button>

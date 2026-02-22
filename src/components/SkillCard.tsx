@@ -87,10 +87,9 @@ function SkillCard({ skill, color, onActivate, onDeactivate, onOpenModal }: Skil
           {skill.name}
         </h3>
         <div
-          className="inline-flex items-center justify-center px-2 py-1 rounded text-xs font-mono uppercase tracking-wider"
+          className="inline-flex items-center justify-center px-2 py-1 rounded text-xs font-mono uppercase tracking-wider text-white"
           style={{
-            backgroundColor: color + '22',
-            color,
+            backgroundColor: color + '33',
           }}
         >
           {skill.category}

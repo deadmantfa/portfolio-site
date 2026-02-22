@@ -17,12 +17,12 @@ const ArchitecturalLoader = () => {
           clearInterval(interval)
           return 100
         }
-        return prev + 2 // Increments every 50ms
+        return prev + 10 // Much faster increments for performance
       })
     }, 50)
 
-    // Fail-safe: force finish after 3 seconds maximum
-    const failSafe = setTimeout(() => setIsFinished(true), 3000)
+    // Fail-safe: force finish after 1.5 seconds maximum
+    const failSafe = setTimeout(() => setIsFinished(true), 1500)
 
     return () => {
       clearInterval(interval)
@@ -35,7 +35,7 @@ const ArchitecturalLoader = () => {
 
   useEffect(() => {
     if (effectiveProgress >= 100) {
-      const timeout = setTimeout(() => setIsFinished(true), 500)
+      const timeout = setTimeout(() => setIsFinished(true), 100)
       return () => clearTimeout(timeout)
     }
   }, [effectiveProgress])
@@ -46,7 +46,7 @@ const ArchitecturalLoader = () => {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: 'blur(10px)', scale: 1.05 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center"
         >
           <div className="relative w-64 h-px bg-white/5 overflow-hidden mb-8">

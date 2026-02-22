@@ -10,10 +10,15 @@ interface SceneCanvasProps {
 const SceneCanvas = ({ children }: SceneCanvasProps) => {
   return (
     <Canvas
-      shadows
+      shadows={false}
       camera={{ position: [0, 0, 20], fov: 50 }}
-      gl={{ antialias: true, alpha: true }} 
-      dpr={[1, 2]}
+      gl={{ 
+        antialias: false, 
+        alpha: true,
+        powerPreference: 'high-performance'
+      }} 
+      dpr={[1, 1.5]} // Capped at 1.5 for performance
+      performance={{ min: 0.5 }} // Allow downscaling if frame rate drops
       style={{ pointerEvents: 'auto' }}
     >
       <Suspense fallback={null}>

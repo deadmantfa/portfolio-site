@@ -8,7 +8,7 @@
   --color-card: oklch(15% 0.02 264);
   --color-border: oklch(25% 0.02 264);
   --animate-float: float 6s ease-in-out infinite;
-  --animate-reveal: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-reveal: reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -16,7 +16,7 @@
   }
 
   @keyframes reveal {
-    from { opacity: 0; transform: translateY(40px) skewY(2deg); }
+    from { opacity: 0; transform: translateY(20px) skewY(2deg); }
     to { opacity: 1; transform: translateY(0) skewY(0); }
   }
 }
