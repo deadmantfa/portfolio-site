@@ -133,15 +133,21 @@ const Navigation = () => {
       if (!span) return
 
       const delay = baseDelay + i * 55 // 55ms stagger per char
-      const cycleMs = 38 // speed of each random char swap
-      const cycles = 5 + Math.floor(Math.random() * 4) + i // more cycles for later chars → wave feel
+      const cycleMs = 50 // SLOWER speed of each random char swap (was 38) - make visible
+      const cycles = 8 + Math.floor(Math.random() * 3) + i // more cycles for later chars → wave feel
 
       const timer = setTimeout(() => {
+        if (!span) return
         span.style.opacity = '1'
         span.style.color = 'var(--color-primary)' // start in indigo
+        span.textContent = GLITCH_CHARS[0] // start with a glitch char visible
 
         let count = 0
         const interval = setInterval(() => {
+          if (!span) {
+            clearInterval(interval)
+            return
+          }
           if (count < cycles) {
             span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
             count++
@@ -175,21 +181,17 @@ const Navigation = () => {
           ease: 'back.in(2)',
         })
 
-        // 2. Open suffix wrappers (width 0 → scrollWidth)
-        const openWrapper = (el: HTMLSpanElement | null, delay = 0) => {
+        // 2. Open suffix wrappers (width 0 → fixed width)
+        const openWrapper = (el: HTMLSpanElement | null, targetWidth: number, delay = 0) => {
           if (!el) return
-          const targetW = (() => {
-            el.style.width = 'auto'
-            const w = el.scrollWidth + 12 // Add 12px buffer to prevent cutoff of last char
-            el.style.width = '0px'
-            return w
-          })()
-          gsap.to(el, { width: targetW, duration: 0.45, delay, ease: 'power3.out' })
+          setTimeout(() => {
+            el.style.width = `${targetWidth}px`
+          }, delay * 1000)
         }
 
-        openWrapper(firstWrapRef.current) // opens immediately
-        openWrapper(spaceWrapRef.current, 0.08) // slight delay
-        openWrapper(lastWrapRef.current, 0.12) // last name opens just after
+        openWrapper(firstWrapRef.current, 150, 0) // opens immediately (enceslaus)
+        openWrapper(spaceWrapRef.current, 20, 0.08) // slight delay (space)
+        openWrapper(lastWrapRef.current, 120, 0.12) // last name opens just after (silva)
 
         // 3. Trigger decode (independent of GSAP — uses setInterval)
         startDecode(firstCharRefs.current, 'enceslaus'.split(''), 40)
@@ -197,9 +199,10 @@ const Navigation = () => {
       } else {
         // Reduced motion: instant swap, no animation
         dotRef.current!.style.opacity = '0'
-        firstWrapRef.current!.style.width = 'auto'
-        spaceWrapRef.current!.style.width = 'auto'
-        lastWrapRef.current!.style.width = 'auto'
+        // Use fixed widths instead of 'auto' to prevent cutoff
+        firstWrapRef.current!.style.width = '150px'
+        spaceWrapRef.current!.style.width = '20px'
+        lastWrapRef.current!.style.width = '120px'
         firstCharRefs.current.forEach((el, i) => {
           if (el) {
             el.textContent = 'enceslaus'[i]
