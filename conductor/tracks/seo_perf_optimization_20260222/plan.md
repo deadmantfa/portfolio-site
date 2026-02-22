@@ -18,7 +18,7 @@
 - [x] Task: Conductor - User Manual Verification 'Baseline & Analysis' (Protocol in workflow.md)
 
 ## Phase 2: Core Web Vitals (Images & Fonts)
-- [~] Task: Optimize LCP Image
+- [x] Task: Optimize LCP Image [4788e02]
     - [ ] Write test: Verify LCP image has `priority` attribute.
     - [ ] Implement: Refactor main hero image to use `next/image` with `priority` and accurate `sizes`.
 - [ ] Task: Optimize Secondary Images
