@@ -54,7 +54,7 @@
     - [ ] Implement: Fix color contrast ratios to meet WCAG AA.
     - [ ] Implement: Add missing ARIA labels and alt text.
     - [ ] Implement: Ensure full keyboard navigation support.
-- [~] Task: Implement Structured Data (JSON-LD)
+- [x] Task: Implement Structured Data (JSON-LD) [3c68f6c]
     - [ ] Write test: Validate JSON-LD structure for Person, WebSite, and CreativeWork.
     - [ ] Implement: Create and inject structured data schemas into `layout.tsx` and project pages.
 - [ ] Task: Conductor - User Manual Verification 'Accessibility & Structured Data' (Protocol in workflow.md)
