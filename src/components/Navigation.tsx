@@ -180,16 +180,20 @@ const Navigation = () => {
           ease: 'back.in(2)',
         })
 
-        // 2. Open suffix wrappers (width 0 → fixed width)
-        const openWrapper = (el: HTMLSpanElement | null, targetWidth: number, delay = 0) => {
+        // 2. Open suffix wrappers (width 0 → scrollWidth + 12px buffer)
+        const openWrapper = (el: HTMLSpanElement | null, delay = 0) => {
           if (!el) return
-          setTimeout(() => {
-            el.style.width = `${targetWidth}px`
-          }, delay * 1000)
+          const targetW = (() => {
+            el.style.width = 'auto'
+            const w = el.scrollWidth + 12 // Add 12px buffer to prevent cutoff of last char
+            el.style.width = '0px'
+            return w
+          })()
+          gsap.to(el, { width: targetW, duration: 0.45, delay, ease: 'power3.out' })
         }
 
-        openWrapper(firstWrapRef.current, 150, 0) // opens immediately (enceslaus)
-        openWrapper(lastWrapRef.current, 120, 0.12) // last name opens just after (silva)
+        openWrapper(firstWrapRef.current, 0) // opens immediately
+        openWrapper(lastWrapRef.current, 0.12) // last name opens just after
 
         // 3. Trigger decode (independent of GSAP — uses setInterval)
         startDecode(firstCharRefs.current, 'enceslaus'.split(''), 40)
@@ -197,9 +201,16 @@ const Navigation = () => {
       } else {
         // Reduced motion: instant swap, no animation
         dotRef.current!.style.opacity = '0'
-        // Use fixed widths instead of 'auto' to prevent cutoff
-        firstWrapRef.current!.style.width = '150px'
-        lastWrapRef.current!.style.width = '120px'
+        // Calculate actual widths needed
+        const calcWidth = (el: HTMLSpanElement | null) => {
+          if (!el) return 0
+          el.style.width = 'auto'
+          const w = el.scrollWidth + 12
+          el.style.width = '0px'
+          return w
+        }
+        firstWrapRef.current!.style.width = `${calcWidth(firstWrapRef.current)}px`
+        lastWrapRef.current!.style.width = `${calcWidth(lastWrapRef.current)}px`
         firstCharRefs.current.forEach((el, i) => {
           if (el) {
             el.textContent = 'enceslaus'[i]
