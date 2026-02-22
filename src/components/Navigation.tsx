@@ -190,7 +190,7 @@ const Navigation = () => {
         }
 
         openWrapper(firstWrapRef.current, 150, 0) // opens immediately (enceslaus)
-        openWrapper(spaceWrapRef.current, 20, 0.08) // slight delay (space)
+        openWrapper(spaceWrapRef.current, 4, 0.08) // slight delay (space)
         openWrapper(lastWrapRef.current, 120, 0.12) // last name opens just after (silva)
 
         // 3. Trigger decode (independent of GSAP — uses setInterval)
@@ -201,7 +201,7 @@ const Navigation = () => {
         dotRef.current!.style.opacity = '0'
         // Use fixed widths instead of 'auto' to prevent cutoff
         firstWrapRef.current!.style.width = '150px'
-        spaceWrapRef.current!.style.width = '20px'
+        spaceWrapRef.current!.style.width = '4px'
         lastWrapRef.current!.style.width = '120px'
         firstCharRefs.current.forEach((el, i) => {
           if (el) {
