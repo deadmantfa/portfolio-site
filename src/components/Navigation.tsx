@@ -180,7 +180,7 @@ const Navigation = () => {
           if (!el) return
           const targetW = (() => {
             el.style.width = 'auto'
-            const w = el.scrollWidth + 6 // Add 6px buffer to prevent cutoff of last char
+            const w = el.scrollWidth + 12 // Add 12px buffer to prevent cutoff of last char
             el.style.width = '0px'
             return w
           })()
