@@ -3,7 +3,8 @@
 import { useEffect, useState, useRef } from 'react'
 import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
-import { OrbitalSkillMap } from '@/components/OrbitalSkillMap'
+import { SkillBackdrop } from '@/components/SkillBackdrop'
+import { SkillsGrid } from '@/components/SkillsGrid'
 import VaultScene from '@/components/VaultScene'
 import ConnectionScene from '@/components/ConnectionScene'
 import ContactForm from '@/components/ContactForm'
@@ -11,7 +12,6 @@ import SocialLinks from '@/components/SocialLinks'
 import { careerData } from '@/data/career'
 import { projects } from '@/data/projects'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
 import EditorialReveal from '@/components/EditorialReveal'
 import BackgroundMarkers from '@/components/BackgroundMarkers'
 import { useScroll, ScrollContext } from '@/components/ScrollProvider'
@@ -32,7 +32,7 @@ const SceneContent = ({ progress, exitProgress, vaultProgress, contactProgress, 
     <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
     
     <ArchitecturalGrid />
-    <OrbitalSkillMap
+    <SkillBackdrop
       progress={progress}
       exitProgress={exitProgress}
     />
@@ -42,7 +42,7 @@ const SceneContent = ({ progress, exitProgress, vaultProgress, contactProgress, 
 )
 
 export default function Home() {
-  const { activeSkill, setActiveCredential } = useScroll()
+  const { setActiveCredential } = useScroll()
   const ContextBridge = useContextBridge(ScrollContext)
   
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
@@ -217,45 +217,24 @@ export default function Home() {
         ))}
       </div>
 
-        <section id="skills" ref={skillsSectionRef} className="min-h-[600vh] flex flex-col items-center px-8 relative bg-transparent">
-          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+        <section
+          id="skills"
+          ref={skillsSectionRef}
+          className="min-h-[150vh] flex flex-col items-center px-8 relative bg-transparent"
+          style={{ isolation: 'isolate' }}
+        >
+          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none z-40">
             <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
             {/* Nebula Background Glow */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_70%)] pointer-events-none"></div>
             
-            <div className="max-w-7xl w-full h-full flex flex-col justify-between p-8 md:p-24 z-10 pointer-events-none">
+            <div className="max-w-7xl w-full flex flex-col justify-start p-8 md:p-24 z-10 pointer-events-none overflow-visible">
                       <EditorialReveal direction="down">
                         <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
                       </EditorialReveal>
-                      
-                      <div className="self-end max-w-sm w-full min-h-48 flex flex-col items-center justify-center pointer-events-auto bg-black/40 backdrop-blur-xl rounded-[2.5rem] p-10 border border-white/10 shadow-2xl relative z-20">
-                        <AnimatePresence mode="wait">
-                          {activeSkill ? (
-                            <motion.div
-                              key={activeSkill.name}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: -20 }}
-                              className="text-left w-full"
-                            >
-                              <span className="font-mono text-[9px] text-primary uppercase tracking-[0.5em] mb-3 block">Module: {activeSkill.category}</span>
-                              <h3 className="text-3xl md:text-4xl font-serif italic text-white mb-4 uppercase tracking-tighter">{activeSkill.name}</h3>
-                              <p className="text-sm md:text-base text-zinc-400 font-light italic leading-relaxed font-serif">
-                                &quot;{activeSkill.importance}&quot;
-                              </p>
-                            </motion.div>
-                          ) : (
-                            <motion.div
-                              key="idle"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="text-left w-full opacity-40"
-                            >
-                              <p className="font-mono text-[9px] text-zinc-500 uppercase tracking-[0.5em] mb-3 font-bold">Assembly Active</p>
-                              <p className="text-lg font-serif italic text-zinc-600">Dissect the monolith to reveal technical depth.</p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+
+                      <div className="pointer-events-auto py-6 pb-32">
+                        <SkillsGrid />
                       </div>
                     </div>
                   </div>
