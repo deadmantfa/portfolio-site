@@ -14,7 +14,14 @@
       "Bash(cd:*)",
       "Bash(sleep 5:*)",
       "Bash(grep:*)",
-      "Bash(head:*)"
+      "Bash(head:*)",
+      "Bash(cd /c/Users/deadmantfa/.claude/skills/ui-ux-pro-max && python3 scripts/search.py \"portfolio skills card grid interactive modern professional minimalist\" --design-system -p \"Portfolio Ecosystem\" -f markdown 2>&1)",
+      "Bash(cd /c/Users/deadmantfa/.claude/skills/ui-ux-pro-max && python3 scripts/search.py \"card grid layout information hierarchy hover interactive animation\" --domain ux -n 8 -f markdown 2>&1)",
+      "Bash(cd /c/Users/deadmantfa/.claude/skills/ui-ux-pro-max && python3 scripts/search.py \"card layout grid masonry responsive mobile tablet\" --domain ux -n 6 -f markdown 2>&1)",
+      "Bash(tail:*)",
+      "Bash(cd \"C:\\\\Users\\\\deadmantfa\\\\portfolio\" && npm run lint 2>&1)",
+      "Bash(test:*)",
+      "Bash(cd \"C:\\\\Users\\\\deadmantfa\\\\portfolio\" && CI=true npm test -- src/__tests__/Navigation.test.tsx 2>&1)"
     ]
   }
 }

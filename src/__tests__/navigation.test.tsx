@@ -1,8 +1,26 @@
 import { render, screen } from '@testing-library/react'
-import Navigation from '../components/Navigation'
-import { expect, it, describe } from 'vitest'
+import { Navigation } from '@/components/Navigation'
 
 describe('Navigation Component', () => {
+  beforeEach(() => {
+    // Mock IntersectionObserver
+    global.IntersectionObserver = vi.fn().mockImplementation(() => ({
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    })) as unknown as typeof IntersectionObserver
+
+    // Mock gsap
+    vi.mock('gsap', () => ({
+      default: {
+        to: vi.fn().mockReturnValue(Promise.resolve()),
+        timeline: vi.fn().mockReturnValue({
+          to: vi.fn().mockReturnThis(),
+        }),
+      },
+    }))
+  })
+
   it('renders the main navigation links', () => {
     render(<Navigation />)
     expect(screen.getByText(/Epochs/i)).toBeInTheDocument()
@@ -15,5 +33,72 @@ describe('Navigation Component', () => {
     const cvLink = screen.getByLabelText(/Curriculum Vitae/i)
     expect(cvLink).toBeInTheDocument()
     expect(cvLink).toHaveAttribute('href', '/CV/Wenceslaus-Dsilva-2025.pdf')
+  })
+
+  it('renders logo with home link', () => {
+    render(<Navigation />)
+    const homeLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    expect(homeLink).toBeInTheDocument()
+    expect(homeLink).toHaveAttribute('href', '/')
+  })
+
+  it('navigation links have correct href attributes', () => {
+    render(<Navigation />)
+    const epochsLink = screen.getByText('Epochs').closest('a')
+    const ecosystemLink = screen.getByText('Ecosystem').closest('a')
+    const contactLink = screen.getByText('Contact').closest('a')
+
+    expect(epochsLink).toHaveAttribute('href', '#epochs')
+    expect(ecosystemLink).toHaveAttribute('href', '#skills')
+    expect(contactLink).toHaveAttribute('href', '#contact')
+  })
+
+  it('navigation links have focus-visible ring styles', () => {
+    render(<Navigation />)
+    const epochsLink = screen.getByText('Epochs').closest('a')
+    expect(epochsLink).toHaveClass('focus-visible:ring-2')
+    expect(epochsLink).toHaveClass('focus-visible:ring-primary')
+  })
+
+  it('indicator pill has aria-hidden attribute', () => {
+    render(<Navigation />)
+    const indicator = document.querySelector('[aria-hidden="true"]')
+    expect(indicator).toBeInTheDocument()
+  })
+
+  it('inactive links have correct text color classes', () => {
+    render(<Navigation />)
+    const epochsLink = screen.getByText('Epochs').closest('a')
+    expect(epochsLink).toHaveClass('text-foreground/40')
+  })
+
+  it('CV button has correct styling classes', () => {
+    render(<Navigation />)
+    const cvLink = screen.getByLabelText('View Curriculum Vitae (PDF)')
+    expect(cvLink).toHaveClass('bg-white/10')
+    expect(cvLink).toHaveClass('hover:bg-primary')
+    expect(cvLink).toHaveClass('active:scale-95')
+  })
+
+  it('logo link has rounded focus ring', () => {
+    render(<Navigation />)
+    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    expect(logoLink).toHaveClass('rounded-lg')
+    expect(logoLink).toHaveClass('focus-visible:ring-2')
+  })
+
+  it('navigation container has fixed positioning', () => {
+    render(<Navigation />)
+    const nav = screen.getByRole('navigation')
+    expect(nav).toHaveClass('fixed')
+    expect(nav).toHaveClass('top-6')
+    expect(nav).toHaveClass('z-[100]')
+  })
+
+  it('logo dot has group-hover styling', () => {
+    render(<Navigation />)
+    const dot = document.querySelector('.group-hover\\:text-white')
+    expect(dot).toBeInTheDocument()
+    expect(dot).toHaveClass('text-primary')
   })
 })

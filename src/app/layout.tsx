@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Archivo, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
-import Navigation from '@/components/Navigation'
+import { Navigation } from '@/components/Navigation'
 import StructuredData from '@/components/StructuredData'
 import ArchitecturalLoader from '@/components/ArchitecturalLoader'
 import { ScrollProvider } from '@/components/ScrollProvider'
