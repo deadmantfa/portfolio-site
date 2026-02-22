@@ -33,7 +33,6 @@ const Navigation = () => {
   const dotRef = useRef<HTMLSpanElement>(null)
   const firstWrapRef = useRef<HTMLSpanElement>(null)
   const lastWrapRef = useRef<HTMLSpanElement>(null)
-  const spaceWrapRef = useRef<HTMLSpanElement>(null)
   const firstCharRefs = useRef<(HTMLSpanElement | null)[]>([])
   const lastCharRefs = useRef<(HTMLSpanElement | null)[]>([])
   const decodeIntervalsRef = useRef<ReturnType<typeof setInterval>[]>([])
@@ -190,7 +189,6 @@ const Navigation = () => {
         }
 
         openWrapper(firstWrapRef.current, 150, 0) // opens immediately (enceslaus)
-        openWrapper(spaceWrapRef.current, 1, 0.08) // slight delay (space)
         openWrapper(lastWrapRef.current, 120, 0.12) // last name opens just after (silva)
 
         // 3. Trigger decode (independent of GSAP — uses setInterval)
@@ -201,7 +199,6 @@ const Navigation = () => {
         dotRef.current!.style.opacity = '0'
         // Use fixed widths instead of 'auto' to prevent cutoff
         firstWrapRef.current!.style.width = '150px'
-        spaceWrapRef.current!.style.width = '1px'
         lastWrapRef.current!.style.width = '120px'
         firstCharRefs.current.forEach((el, i) => {
           if (el) {
@@ -231,7 +228,7 @@ const Navigation = () => {
         })
 
         // 2. Wrappers collapse
-        gsap.to([firstWrapRef.current, spaceWrapRef.current, lastWrapRef.current], {
+        gsap.to([firstWrapRef.current, lastWrapRef.current], {
           width: 0,
           duration: 0.2,
           delay: 0.08,
@@ -250,7 +247,6 @@ const Navigation = () => {
         // Instant reset
         dotRef.current!.style.opacity = '1'
         firstWrapRef.current!.style.width = '0px'
-        spaceWrapRef.current!.style.width = '0px'
         lastWrapRef.current!.style.width = '0px'
         const allChars = [...firstCharRefs.current, ...lastCharRefs.current].filter(Boolean)
         allChars.forEach((el) => {
@@ -342,12 +338,8 @@ const Navigation = () => {
               .
             </span>
 
-            <span
-              ref={spaceWrapRef}
-              className="inline-block overflow-hidden whitespace-nowrap align-bottom"
-              style={{ width: 0 }}
-            >
-              &nbsp;
+            <span className="inline-block">
+              {' '}
             </span>
 
             <span ref={dRef} className="inline-block">

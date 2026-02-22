@@ -116,7 +116,7 @@ describe('Navigation Component', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
     const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
-    const lastNameSpans = wrappers[2]?.querySelectorAll('span[class*="inline-block"]') || []
+    const lastNameSpans = wrappers[1]?.querySelectorAll('span[class*="inline-block"]') || []
     // 5 for 'silva'
     expect(lastNameSpans).toHaveLength(5)
   })
@@ -125,9 +125,9 @@ describe('Navigation Component', () => {
     render(<Navigation />)
     const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
     const wrappers = logoLink.querySelectorAll('[class*="overflow-hidden"]')
+    // Should have 2 wrappers now (enceslaus and silva, no space wrapper)
+    expect(wrappers).toHaveLength(2)
     wrappers.forEach((wrapper) => {
-      const style = window.getComputedStyle(wrapper)
-      // Check that inline style or computed style has width of 0 or auto (starting state)
       const styleAttr = wrapper.getAttribute('style')
       expect(styleAttr).toContain('width: 0')
     })
