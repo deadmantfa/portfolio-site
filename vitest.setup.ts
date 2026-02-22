@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
+import * as matchers from 'jest-axe'
+
+expect.extend(matchers)
 
 class IntersectionObserver {
+
   observe = vi.fn()
   disconnect = vi.fn()
   unobserve = vi.fn()
