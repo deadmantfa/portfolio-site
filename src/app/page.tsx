@@ -1,12 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import SceneCanvas from '@/components/SceneCanvas'
-import ArchitecturalGrid from '@/components/VisionaryScene'
-import { SkillBackdrop } from '@/components/SkillBackdrop'
 import { SkillsGrid } from '@/components/SkillsGrid'
-import VaultScene from '@/components/VaultScene'
-import ConnectionScene from '@/components/ConnectionScene'
 import ContactForm from '@/components/ContactForm'
 import SocialLinks from '@/components/SocialLinks'
 import { careerData } from '@/data/career'
@@ -14,36 +9,19 @@ import { projects } from '@/data/projects'
 import Link from 'next/link'
 import EditorialReveal from '@/components/EditorialReveal'
 import BackgroundMarkers from '@/components/BackgroundMarkers'
-import { useScroll, ScrollContext } from '@/components/ScrollProvider'
-import { useContextBridge } from '@react-three/drei'
+import { useScroll } from '@/components/ScrollProvider'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
-// Stable component to avoid 'Cannot create components during render' lint error
-const SceneContent = ({ progress, exitProgress, vaultProgress, contactProgress, bridge: Bridge }: { 
-  progress: number, 
-  exitProgress: number, 
-  vaultProgress: number, 
-  contactProgress: number,
-  bridge: React.ComponentType<{ children: React.ReactNode }>
-}) => (
-  <Bridge>
-    {/* Brighter, more consistent global lighting */}
-    <ambientLight intensity={0.5} />
-    <directionalLight position={[0, 10, 10]} intensity={2} color="#6366f1" />
-    <pointLight position={[-10, -10, 5]} intensity={1} color="#fbbf24" />
-    
-    <ArchitecturalGrid />
-    <SkillBackdrop
-      progress={progress}
-      exitProgress={exitProgress}
-    />
-    <VaultScene progress={vaultProgress} />
-    <ConnectionScene progress={contactProgress} />
-  </Bridge>
-)
+// Dynamically import the heavy 3D scene
+// loading: () => null prevents flash of unstyled content or heavy loading state, 
+// keeping the background markers visible
+const HomeScene = dynamic(() => import('@/components/HomeScene'), { 
+  ssr: false,
+})
 
 export default function Home() {
   const { setActiveCredential } = useScroll()
-  const ContextBridge = useContextBridge(ScrollContext)
   
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
   const vaultSectionRef = useRef<HTMLDivElement>(null!)
@@ -117,121 +95,112 @@ export default function Home() {
       {/* 3D Experience - Background Interaction Layer */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundMarkers />
-        <SceneCanvas>
-          <SceneContent
-            progress={skillsProgress * 2.0}
-            exitProgress={skillsExitProgress}
-            vaultProgress={vaultProgress}
-            contactProgress={contactProgress}
-            bridge={ContextBridge}
-          />
-        </SceneCanvas>
+        <HomeScene
+          progress={skillsProgress * 2.0}
+          exitProgress={skillsExitProgress}
+          vaultProgress={vaultProgress}
+          contactProgress={contactProgress}
+        />
       </div>
 
       {/* Content Layer (on top) */}
       <div className="relative z-10">
         <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
           <div className="max-w-6xl animate-reveal">
-import Image from 'next/image'
-// ... imports
-
-// ... existing code
-
-          <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary">
-            Chief Technology Officer
-          </div>
-          <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary/20">
-             <Image
-              src="/images/hero/profile.jpg"
-              alt="Wenceslaus Dsilva - CTO & Architect"
-              fill
-              priority
-              sizes="(max-width: 768px) 128px, 192px"
-              className="object-cover"
-            />
-          </div>
-          <h1 className="text-[15vw] md:text-[12rem] leading-[0.8] tracking-tighter font-serif italic mb-12">
-// ... existing code
-            The Visionary <br/> 
-            <span className="text-primary pr-4">Architect.</span>
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto">
-            <p className="text-xl md:text-2xl font-light text-zinc-400 leading-relaxed font-sans">
-              20+ years of pioneering technical excellence and strategic leadership at the intersection of high-scale engineering and business innovation.
-            </p>
-            <div className="flex flex-col justify-end border-l border-white/10 pl-8">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-2">Current Epoch</p>
-              <p className="text-xl text-zinc-200 font-serif italic">Driving Scalable Growth @ Rooftop</p>
+            <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary">
+              Chief Technology Officer
+            </div>
+            <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary/20">
+               <Image
+                src="/images/hero/profile.jpg"
+                alt="Wenceslaus Dsilva - CTO & Architect"
+                fill
+                priority
+                sizes="(max-width: 768px) 128px, 192px"
+                className="object-cover"
+              />
+            </div>
+            <h1 className="text-[15vw] md:text-[12rem] leading-[0.8] tracking-tighter font-serif italic mb-12">
+              The Visionary <br/> 
+              <span className="text-primary pr-4">Architect.</span>
+            </h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto">
+              <p className="text-xl md:text-2xl font-light text-zinc-400 leading-relaxed font-sans">
+                20+ years of pioneering technical excellence and strategic leadership at the intersection of high-scale engineering and business innovation.
+              </p>
+              <div className="flex flex-col justify-end border-l border-white/10 pl-8">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-2">Current Epoch</p>
+                <p className="text-xl text-zinc-200 font-serif italic">Driving Scalable Growth @ Rooftop</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-          <div className="h-24 w-px bg-gradient-to-b from-primary/50 to-transparent"></div>
-          <span className="vertical-text text-[11px] font-mono uppercase tracking-[0.5em] text-zinc-600">Explore Journey</span>
-        </div>
-      </section>
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+            <div className="h-24 w-px bg-gradient-to-b from-primary/50 to-transparent"></div>
+            <span className="vertical-text text-[11px] font-mono uppercase tracking-[0.5em] text-zinc-600">Explore Journey</span>
+          </div>
+        </section>
 
-      <div
-        id="epochs"
-        className="relative pb-[20vh]"
-      >
-        {/* Continuous Journey Line */}
-        <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/5 to-transparent -translate-x-1/2 z-0 hidden md:block"></div>
-        
-        {careerData.map((milestone, index) => (
-          <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 bg-transparent relative">
-            <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
-              <div className="relative max-w-4xl w-full">
-                <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
-                  {index + 1}
-                </div>
-                <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group cursor-pointer hover:border-primary/20 focus-within:ring-2 focus-within:ring-primary/50 outline-none transition-all pointer-events-auto">
-                  <div className="absolute inset-0 tech-grid opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                  <div className="absolute inset-0 scanline opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                  
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-12 relative z-10">
-                    <span className="font-mono text-[11px] text-primary uppercase tracking-[0.3em]">{milestone.year}</span>
-                    <div className="h-px w-24 bg-white/10"></div>
-                    <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em]">{milestone.company}</span>
+        <div
+          id="epochs"
+          className="relative pb-[20vh]"
+        >
+          {/* Continuous Journey Line */}
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/5 to-transparent -translate-x-1/2 z-0 hidden md:block"></div>
+          
+          {careerData.map((milestone, index) => (
+            <section key={index} className="flex min-h-screen w-full flex-col items-center justify-center px-8 md:px-24 bg-transparent relative">
+              <div className={`w-full flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+                <div className="relative max-w-4xl w-full">
+                  <div className="absolute -top-24 -left-12 opacity-[0.05] text-[15rem] md:text-[25rem] font-serif italic select-none pointer-events-none leading-none">
+                    {index + 1}
                   </div>
-                  <EditorialReveal direction="up" className="relative z-10">
-                    <h2 className="text-5xl md:text-8xl font-serif italic text-white mb-10 leading-[0.9] tracking-tighter">{milestone.role}</h2>
-                  </EditorialReveal>
-                  <EditorialReveal direction="up" delay={0.2} className="relative z-10">
-                    <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed mb-12 max-w-2xl font-sans font-light">{milestone.description}</p>
-                  </EditorialReveal>
-                  <div className="flex flex-col md:flex-row justify-between items-end gap-10 pt-12 border-t border-white/5 relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
-                      {milestone.highlights?.slice(0, 2).map((h, i) => (
-                        <div key={i} className="flex gap-4">
-                          <span className="text-primary font-mono text-xs">/0{i+1}</span>
-                          <p className="text-sm text-zinc-300 font-light leading-snug">{h}</p>
-                        </div>
-                      ))}
+                  <div className="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden group cursor-pointer hover:border-primary/20 focus-within:ring-2 focus-within:ring-primary/50 outline-none transition-all pointer-events-auto">
+                    <div className="absolute inset-0 tech-grid opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                    <div className="absolute inset-0 scanline opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                    
+                    <div className="flex flex-wrap items-center justify-between gap-4 mb-12 relative z-10">
+                      <span className="font-mono text-[11px] text-primary uppercase tracking-[0.3em]">{milestone.year}</span>
+                      <div className="h-px w-24 bg-white/10"></div>
+                      <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em]">{milestone.company}</span>
                     </div>
-                    {(() => {
-                      const project = projects.find(p => 
-                        milestone.company.toLowerCase().includes(p.company.toLowerCase()) ||
-                        p.company.toLowerCase().includes(milestone.company.toLowerCase())
-                      )
-                      return project && (
-                        <Link
-                          href={`/work/${project.slug}`}
-                          className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1 cursor-pointer"
-                          aria-label={`View ${milestone.company} case study`}
-                        >
-                          <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
-                          <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
-                        </Link>
-                      )
-                    })()}
+                    <EditorialReveal direction="up" className="relative z-10">
+                      <h2 className="text-5xl md:text-8xl font-serif italic text-white mb-10 leading-[0.9] tracking-tighter">{milestone.role}</h2>
+                    </EditorialReveal>
+                    <EditorialReveal direction="up" delay={0.2} className="relative z-10">
+                      <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed mb-12 max-w-2xl font-sans font-light">{milestone.description}</p>
+                    </EditorialReveal>
+                    <div className="flex flex-col md:flex-row justify-between items-end gap-10 pt-12 border-t border-white/5 relative z-10">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+                        {milestone.highlights?.slice(0, 2).map((h, i) => (
+                          <div key={i} className="flex gap-4">
+                            <span className="text-primary font-mono text-xs">/0{i+1}</span>
+                            <p className="text-sm text-zinc-300 font-light leading-snug">{h}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {(() => {
+                        const project = projects.find(p => 
+                          milestone.company.toLowerCase().includes(p.company.toLowerCase()) ||
+                          p.company.toLowerCase().includes(milestone.company.toLowerCase())
+                        )
+                        return project && (
+                          <Link
+                            href={`/work/${project.slug}`}
+                            className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1 cursor-pointer"
+                            aria-label={`View ${milestone.company} case study`}
+                          >
+                            <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
+                            <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-500 group-hover/btn:text-primary">→</div>
+                          </Link>
+                        )
+                      })()}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        ))}
-      </div>
+            </section>
+          ))}
+        </div>
 
         <section
           id="skills"
@@ -245,89 +214,89 @@ import Image from 'next/image'
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_70%)] pointer-events-none"></div>
             
             <div className="max-w-7xl w-full flex flex-col justify-start p-8 md:p-24 z-10 pointer-events-none overflow-visible">
-                      <EditorialReveal direction="down">
-                        <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
-                      </EditorialReveal>
+              <EditorialReveal direction="down">
+                <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none opacity-5 uppercase tracking-tighter pointer-events-none">Ecosystem.</h2>
+              </EditorialReveal>
 
-                      <div className="pointer-events-auto py-6 pb-32">
-                        <SkillsGrid />
-                      </div>
-                    </div>
-                  </div>
-                </section>
-        
-                <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative bg-transparent">
-                  <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
-                    <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
-                      <EditorialReveal direction="down">
-                        <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">The Vault</span>
-                        <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
-                      </EditorialReveal>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
-                        <div
-                          tabIndex={0}
-                          onMouseEnter={() => setActiveCredential('edu')}
-                          onMouseLeave={() => setActiveCredential(null)}
-                          onFocus={() => setActiveCredential('edu')}
-                          onBlur={() => setActiveCredential(null)}
-                          className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
-                          aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
-                          role="button"
-                        >
-                          <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
-                          <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
-                          <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                          <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
-                        </div>
-
-                        <div
-                          tabIndex={0}
-                          onMouseEnter={() => setActiveCredential('cert1')}
-                          onMouseLeave={() => setActiveCredential(null)}
-                          onFocus={() => setActiveCredential('cert1')}
-                          onBlur={() => setActiveCredential(null)}
-                          className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
-                          aria-label="Certification: Elasticsearch Certified Engineer"
-                          role="button"
-                        >
-                          <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
-                          <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
-                          <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                          <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
-                        </div>
-
-                        <div
-                          tabIndex={0}
-                          onMouseEnter={() => setActiveCredential('cert2')}
-                          onMouseLeave={() => setActiveCredential(null)}
-                          onFocus={() => setActiveCredential('cert2')}
-                          onBlur={() => setActiveCredential(null)}
-                          className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
-                          aria-label="Certification: Google Cloud Professional Architect"
-                          role="button"
-                        >
-                          <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
-                          <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
-                          <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                          <p className="text-zinc-500 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-                
-                <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto py-12">  
-                  <EditorialReveal direction="up" className="mb-8">
-                    <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let&apos;s <br/> <span className="text-primary pr-4">Connect.</span></h2>
-                  </EditorialReveal>
-                  
-                  <div className="max-w-4xl w-full flex flex-col items-center gap-8">
-                    <ContactForm />
-                    <SocialLinks />
-                  </div>
-                </section>
+              <div className="pointer-events-auto py-6 pb-32">
+                <SkillsGrid />
               </div>
-  </main>
-)
+            </div>
+          </div>
+        </section>
+        
+        <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative bg-transparent">
+          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+            <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
+              <EditorialReveal direction="down">
+                <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">The Vault</span>
+                <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
+              </EditorialReveal>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
+                <div
+                  tabIndex={0}
+                  onMouseEnter={() => setActiveCredential('edu')}
+                  onMouseLeave={() => setActiveCredential(null)}
+                  onFocus={() => setActiveCredential('edu')}
+                  onBlur={() => setActiveCredential(null)}
+                  className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
+                  aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
+                  role="button"
+                >
+                  <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
+                  <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
+                  <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                  <p className="text-zinc-500 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
+                </div>
+
+                <div
+                  tabIndex={0}
+                  onMouseEnter={() => setActiveCredential('cert1')}
+                  onMouseLeave={() => setActiveCredential(null)}
+                  onFocus={() => setActiveCredential('cert1')}
+                  onBlur={() => setActiveCredential(null)}
+                  className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
+                  aria-label="Certification: Elasticsearch Certified Engineer"
+                  role="button"
+                >
+                  <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                  <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
+                  <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                  <p className="text-zinc-500 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
+                </div>
+
+                <div
+                  tabIndex={0}
+                  onMouseEnter={() => setActiveCredential('cert2')}
+                  onMouseLeave={() => setActiveCredential(null)}
+                  onFocus={() => setActiveCredential('cert2')}
+                  onBlur={() => setActiveCredential(null)}
+                  className="glass p-8 rounded-3xl opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
+                  aria-label="Certification: Google Cloud Professional Architect"
+                  role="button"
+                >
+                  <p className="text-zinc-500 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                  <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
+                  <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                  <p className="text-zinc-500 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto py-12">  
+          <EditorialReveal direction="up" className="mb-8">
+            <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let&apos;s <br/> <span className="text-primary pr-4">Connect.</span></h2>
+          </EditorialReveal>
+          
+          <div className="max-w-4xl w-full flex flex-col items-center gap-8">
+            <ContactForm />
+            <SocialLinks />
+          </div>
+        </section>
+      </div>
+    </main>
+  )
 }

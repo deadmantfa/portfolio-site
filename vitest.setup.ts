@@ -33,3 +33,14 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 })
+
+// Mock Element.prototype.animate for Framer Motion
+Element.prototype.animate = vi.fn().mockImplementation(() => ({
+  finished: Promise.resolve(),
+  cancel: vi.fn(),
+  play: vi.fn(),
+  pause: vi.fn(),
+  reverse: vi.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+}));
