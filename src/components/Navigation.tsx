@@ -180,7 +180,7 @@ const Navigation = () => {
           if (!el) return
           const targetW = (() => {
             el.style.width = 'auto'
-            const w = el.scrollWidth + 2 // Add 2px buffer to prevent cutoff
+            const w = el.scrollWidth + 6 // Add 6px buffer to prevent cutoff of last char
             el.style.width = '0px'
             return w
           })()
@@ -268,6 +268,33 @@ const Navigation = () => {
       decodeTimersRef.current.push(resetTimer)
     }
   }
+
+  // Idle pulse animation on logo (hint to hover)
+  useEffect(() => {
+    if (prefersReducedMotion() || !dotRef.current) return
+
+    // Create a repeating pulse animation on the dot to hint interactivity
+    const pulseTimeline = gsap.timeline({ repeat: -1 })
+    pulseTimeline
+      .to(dotRef.current, {
+        scale: 1.2,
+        opacity: 0.7,
+        duration: 1.2,
+        ease: 'sine.inOut',
+      })
+      .to(dotRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'sine.inOut',
+      })
+
+    return () => {
+      if (pulseTimeline && typeof pulseTimeline.kill === 'function') {
+        pulseTimeline.kill()
+      }
+    }
+  }, [])
 
   // Cleanup on unmount
   useEffect(() => {
