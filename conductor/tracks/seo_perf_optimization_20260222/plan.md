@@ -49,7 +49,7 @@
 - [x] Task: Conductor - User Manual Verification 'JavaScript Bundle Optimization' (Protocol in workflow.md)
 
 ## Phase 4: Accessibility & Structured Data
-- [~] Task: Accessibility Remediation
+- [x] Task: Accessibility Remediation [84b7cd0]
     - [ ] Write test: automated a11y checks using `jest-axe` for key components.
     - [ ] Implement: Fix color contrast ratios to meet WCAG AA.
     - [ ] Implement: Add missing ARIA labels and alt text.
