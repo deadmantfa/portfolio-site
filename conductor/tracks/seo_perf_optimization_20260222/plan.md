@@ -40,7 +40,7 @@
 - [x] Task: Implement Code Splitting [b8d598c]
     - [ ] Write test: Verify component exists (smoke test).
     - [ ] Implement: Convert heavy components (3D Scenes, complex UI) to Dynamic Imports (`next/dynamic`) with loading skeletons.
-- [ ] Task: Optimize Third-Party Scripts
+- [~] Task: Optimize Third-Party Scripts
     - [ ] Write test: Verify script loading strategy.
     - [ ] Implement: Move non-critical scripts to `strategy="lazyOnload"` or `worker`.
 - [ ] Task: Conductor - User Manual Verification 'JavaScript Bundle Optimization' (Protocol in workflow.md)
