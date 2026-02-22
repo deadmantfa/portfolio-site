@@ -36,21 +36,20 @@
     - [x] Implement: Enforce aspect ratio containers for all media/embeds.
 - [x] Task: Conductor - User Manual Verification 'Core Web Vitals (Images & Fonts)' (Protocol in workflow.md)
 
-## Phase 3: JavaScript Bundle Optimization
+## Phase 3: JavaScript Bundle Optimization [checkpoint: a665888]
 - [x] Task: Implement Code Splitting [b8d598c]
-    - [ ] Write test: Verify component exists (smoke test).
-    - [ ] Implement: Convert heavy components (3D Scenes, complex UI) to Dynamic Imports (`next/dynamic`) with loading skeletons.
+    - [x] Write test: Verify component exists (smoke test).
+    - [x] Implement: Convert heavy components (3D Scenes, complex UI) to Dynamic Imports (`next/dynamic`) with loading skeletons.
 - [x] Task: Optimize Third-Party Scripts [no_changes_needed]
     - Findings:
         - Audit confirmed no third-party scripts (Analytics, Ads, etc.) are present in the codebase.
         - `StructuredData` uses `<script type="application/ld+json">`, which is correct and should not be lazy-loaded via `next/script` as it's for SEO bots.
-
-    - [ ] Write test: Verify script loading strategy.
-    - [ ] Implement: Move non-critical scripts to `strategy="lazyOnload"` or `worker`.
-- [ ] Task: Conductor - User Manual Verification 'JavaScript Bundle Optimization' (Protocol in workflow.md)
+    - [x] Write test: Verify script loading strategy.
+    - [x] Implement: Move non-critical scripts to `strategy="lazyOnload"` or `worker`.
+- [x] Task: Conductor - User Manual Verification 'JavaScript Bundle Optimization' (Protocol in workflow.md)
 
 ## Phase 4: Accessibility & Structured Data
-- [ ] Task: Accessibility Remediation
+- [~] Task: Accessibility Remediation
     - [ ] Write test: automated a11y checks using `jest-axe` for key components.
     - [ ] Implement: Fix color contrast ratios to meet WCAG AA.
     - [ ] Implement: Add missing ARIA labels and alt text.
