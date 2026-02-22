@@ -21,7 +21,11 @@
 - [x] Task: Optimize LCP Image [4788e02]
     - [ ] Write test: Verify LCP image has `priority` attribute.
     - [ ] Implement: Refactor main hero image to use `next/image` with `priority` and accurate `sizes`.
-- [~] Task: Optimize Secondary Images
+- [x] Task: Optimize Secondary Images [no_changes_needed]
+    - Findings:
+        - Audit confirmed no raw `<img>` tags in codebase.
+        - Next.js `Image` component is already used in `page.tsx` (the only place with raster images).
+
     - [ ] Write test: Verify all other images use `loading="lazy"` (default) and correct formats.
     - [ ] Implement: Audit and update all images in `public/` and components to use `next/image`.
 - [ ] Task: Eliminate Layout Shifts (CLS)
