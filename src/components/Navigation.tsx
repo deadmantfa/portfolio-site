@@ -338,7 +338,7 @@ const Navigation = () => {
               .
             </span>
 
-            <span className="inline-block">
+            <span className="inline-block" style={{ marginLeft: '-0.15em', marginRight: '-0.15em' }}>
               {' '}
             </span>
 
