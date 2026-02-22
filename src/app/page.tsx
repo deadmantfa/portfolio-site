@@ -132,10 +132,26 @@ export default function Home() {
       <div className="relative z-10">
         <section className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
           <div className="max-w-6xl animate-reveal">
+import Image from 'next/image'
+// ... imports
+
+// ... existing code
+
           <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary">
             Chief Technology Officer
           </div>
+          <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary/20">
+             <Image
+              src="/images/hero/profile.jpg"
+              alt="Wenceslaus Dsilva - CTO & Architect"
+              fill
+              priority
+              sizes="(max-width: 768px) 128px, 192px"
+              className="object-cover"
+            />
+          </div>
           <h1 className="text-[15vw] md:text-[12rem] leading-[0.8] tracking-tighter font-serif italic mb-12">
+// ... existing code
             The Visionary <br/> 
             <span className="text-primary pr-4">Architect.</span>
           </h1>
