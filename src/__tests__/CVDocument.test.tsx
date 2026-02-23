@@ -38,4 +38,15 @@ describe('CVDocument Component', () => {
     const { getByText } = render(<CVDocument data={data} />);
     expect(getByText(data.summary)).toBeDefined();
   });
+
+  it('should render the interactive bridge section', () => {
+    const { getByText } = render(<CVDocument data={data} />);
+    expect(getByText('Interactive Architectural Bridge')).toBeDefined();
+    expect(getByText('w1d.pro/deep-dives')).toBeDefined();
+  });
+
+  it('should render the QR code if provided', () => {
+    const { getByAltText } = render(<CVDocument data={data} qrCode="data:image/png;base64,fake" />);
+    expect(getByAltText('pdf-img')).toBeDefined();
+  });
 });

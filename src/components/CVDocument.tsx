@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { CVData } from '../utils/cv-data-extractor';
 
 /**
@@ -141,6 +141,45 @@ const styles = StyleSheet.create({
     color: '#9ca3af',
     marginTop: 2,
   },
+  footer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 40,
+    right: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 16,
+    borderTop: '1px solid #1f2937',
+  },
+  bridgeContent: {
+    width: '75%',
+  },
+  bridgeTitle: {
+    fontSize: 9,
+    fontFamily: 'Helvetica-Bold',
+    color: '#6366f1',
+    textTransform: 'uppercase',
+    marginBottom: 4,
+  },
+  bridgeText: {
+    fontSize: 7.5,
+    color: '#9ca3af',
+    lineHeight: 1.4,
+  },
+  bridgeLink: {
+    fontSize: 8,
+    fontFamily: 'Helvetica-Bold',
+    color: '#f3f4f6',
+    marginTop: 4,
+  },
+  qrCode: {
+    width: 60,
+    height: 60,
+    padding: 4,
+    backgroundColor: '#ffffff',
+    borderRadius: 2,
+  },
 });
 
 const CVHeader = ({ personalInfo }: { personalInfo: CVData['personalInfo'] }) => (
@@ -217,7 +256,20 @@ const CVSkills = ({ skills }: { skills: CVData['skills'] }) => (
   </View>
 );
 
-export const CVDocument = ({ data }: { data: CVData }) => (
+const CVBridge = ({ qrCode }: { qrCode?: string }) => (
+  <View style={styles.footer}>
+    <View style={styles.bridgeContent}>
+      <Text style={styles.bridgeTitle}>Interactive Architectural Bridge</Text>
+      <Text style={styles.bridgeText}>
+        Scan to explore immersive 3D case studies, deep-dive ADRs, and live project demonstrations in the digital portfolio.
+      </Text>
+      <Text style={styles.bridgeLink}>w1d.pro/deep-dives</Text>
+    </View>
+    {qrCode && <Image src={qrCode} style={styles.qrCode} />}
+  </View>
+);
+
+export const CVDocument = ({ data, qrCode }: { data: CVData; qrCode?: string }) => (
   <Document author="Wenceslaus Dsilva" title="Wenceslaus Dsilva CV 2026">
     <Page size="A4" style={styles.page}>
       <CVHeader personalInfo={data.personalInfo} />
@@ -225,6 +277,7 @@ export const CVDocument = ({ data }: { data: CVData }) => (
       <CVMetrics metrics={data.metrics} />
       <CVExperience experience={data.experience} />
       <CVSkills skills={data.skills} />
+      <CVBridge qrCode={qrCode} />
     </Page>
   </Document>
 );
