@@ -1,18 +1,5 @@
-import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { CVData } from '../utils/cv-data-extractor';
-
-// Register premium fonts for the high-end architectural aesthetic
-Font.register({
-  family: 'SpaceGrotesk',
-  src: 'https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkFLxY79q49VpG1K-uX-6Y.ttf',
-  fontWeight: 'normal',
-});
-
-Font.register({
-  family: 'SpaceGrotesk-Bold',
-  src: 'https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkFLxY79q49VpG1K-uX-6Y.ttf', // Fallback to same for now or find bold
-  fontWeight: 'bold',
-});
 
 /**
  * Professional Dark Mode styles for the executive CV.
@@ -27,7 +14,7 @@ const styles = StyleSheet.create({
     paddingRight: 40,
     backgroundColor: '#030712', // Slate 950
     color: '#ffffff',
-    fontFamily: 'SpaceGrotesk',
+    fontFamily: 'Helvetica',
     fontSize: 9,
     lineHeight: 1.4,
   },
@@ -38,7 +25,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    fontFamily: 'Helvetica-Bold', // Keep Helvetica for bold until confirmed
+    fontFamily: 'Helvetica-Bold',
     textTransform: 'uppercase',
     letterSpacing: 2,
     marginBottom: 2,
@@ -62,7 +49,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 9,
     color: '#e5e7eb', // Gray 200
-    fontStyle: 'italic',
     lineHeight: 1.5,
   },
   section: {
@@ -95,7 +81,6 @@ const styles = StyleSheet.create({
   company: {
     fontSize: 9,
     color: '#9ca3af', // Gray 400
-    fontStyle: 'italic',
   },
   year: {
     fontSize: 7.5,
