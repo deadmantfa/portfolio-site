@@ -2,7 +2,7 @@
 
 import { testimonials } from '@/data/testimonials'
 import EditorialReveal from './EditorialReveal'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { Linkedin, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
@@ -12,12 +12,6 @@ export { TestimonialsCarousel }
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-interface CarouselState {
-  currentIndex: number
-  isAutoPlaying: boolean
-  isTransitioning: boolean
-}
 
 function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testimonials)[0]; isActive: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null)
@@ -31,7 +25,7 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         gsap.to(cardRef.current, {
           opacity: 1,
           y: 0,
-          duration: 0.6,
+          duration: 0.8,
           ease: 'power2.out',
         })
       } else {
@@ -54,7 +48,7 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
   return (
     <div
       ref={cardRef}
-      className={`absolute inset-0 glass rounded-2xl p-8 md:p-10 border border-white/10 pointer-events-auto flex flex-col ${
+      className={`absolute inset-0 glass rounded-2xl p-8 md:p-10 border border-white/10 flex flex-col ${
         isActive ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
       style={{ opacity: isActive ? 1 : 0, transform: isActive ? 'translateY(0)' : 'translateY(20px)' }}
@@ -109,71 +103,57 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
 function TestimonialsCarousel() {
   const containerRef = useRef<HTMLDivElement>(null)
   const carouselRef = useRef<HTMLDivElement>(null)
-  const stateRef = useRef<CarouselState>({
-    currentIndex: 0,
-    isAutoPlaying: true,
-    isTransitioning: false,
-  })
+  const autoPlayRef = useRef(true)
+  const autoPlayIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
-  const goToSlide = (index: number) => {
-    if (stateRef.current.isTransitioning) return
+  const [currentIndex, setCurrentIndex] = useState(0)
 
+  const goToSlide = useCallback((index: number) => {
     const clampedIndex = Math.max(0, Math.min(index, testimonials.length - 1))
-    stateRef.current.currentIndex = clampedIndex
-    stateRef.current.isTransitioning = false
+    setCurrentIndex(clampedIndex)
+  }, [])
 
-    // Force re-render
-    if (containerRef.current) {
-      containerRef.current.dispatchEvent(new Event('slide-change'))
-    }
-  }
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length)
+  }, [])
 
-  const nextSlide = () => {
-    const nextIndex = (stateRef.current.currentIndex + 1) % testimonials.length
-    goToSlide(nextIndex)
-  }
-
-  const prevSlide = () => {
-    const prevIndex = (stateRef.current.currentIndex - 1 + testimonials.length) % testimonials.length
-    goToSlide(prevIndex)
-  }
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+  }, [])
 
   // Auto-play effect
   useEffect(() => {
-    if (!stateRef.current.isAutoPlaying || prefersReducedMotion()) return
+    if (prefersReducedMotion()) return
 
-    const interval = setInterval(() => {
-      if (!stateRef.current.isTransitioning) {
-        nextSlide()
+    const startAutoPlay = () => {
+      if (autoPlayIntervalRef.current) {
+        clearInterval(autoPlayIntervalRef.current)
       }
-    }, 5000) // Change slide every 5 seconds
 
-    return () => clearInterval(interval)
+      autoPlayIntervalRef.current = setInterval(() => {
+        if (autoPlayRef.current) {
+          setCurrentIndex((prev) => (prev + 1) % testimonials.length)
+        }
+      }, 5000) // Change slide every 5 seconds
+    }
+
+    startAutoPlay()
+
+    return () => {
+      if (autoPlayIntervalRef.current) {
+        clearInterval(autoPlayIntervalRef.current)
+      }
+    }
   }, [])
 
   // Handle pause on hover
   const handleMouseEnter = () => {
-    stateRef.current.isAutoPlaying = false
+    autoPlayRef.current = false
   }
 
   const handleMouseLeave = () => {
-    stateRef.current.isAutoPlaying = true
+    autoPlayRef.current = true
   }
-
-  // Force component re-render on slide change
-  const [, setCurrentSlide] = useState(0)
-
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    const handleSlideChange = () => {
-      setCurrentSlide(stateRef.current.currentIndex)
-    }
-
-    container.addEventListener('slide-change', handleSlideChange)
-    return () => container.removeEventListener('slide-change', handleSlideChange)
-  }, [])
 
   return (
     <div ref={containerRef} className="w-full">
@@ -199,7 +179,7 @@ function TestimonialsCarousel() {
         {/* Slides */}
         <div className="relative h-[420px] md:h-[350px] w-full">
           {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={index} testimonial={testimonial} isActive={index === stateRef.current.currentIndex} />
+            <TestimonialCard key={index} testimonial={testimonial} isActive={index === currentIndex} />
           ))}
         </div>
 
@@ -227,10 +207,10 @@ function TestimonialsCarousel() {
               key={index}
               onClick={() => goToSlide(index)}
               className={`size-2 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none ${
-                index === stateRef.current.currentIndex ? 'bg-primary w-6' : 'bg-white/30 hover:bg-white/50'
+                index === currentIndex ? 'bg-primary w-6' : 'bg-white/30 hover:bg-white/50'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
-              aria-current={index === stateRef.current.currentIndex ? 'true' : 'false'}
+              aria-current={index === currentIndex ? 'true' : 'false'}
             />
           ))}
         </div>
@@ -238,7 +218,7 @@ function TestimonialsCarousel() {
 
       {/* Counter */}
       <div className="mt-6 flex items-center justify-center gap-2 text-sm text-zinc-400">
-        <span className="font-mono">{stateRef.current.currentIndex + 1}</span>
+        <span className="font-mono">{currentIndex + 1}</span>
         <span>/</span>
         <span className="font-mono">{testimonials.length}</span>
       </div>
