@@ -35,7 +35,7 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         // Create new timeline for this card
         timelineRef.current = gsap.timeline()
 
-        // Main card: blur fade + scale entrance
+        // Main card: blur reveal entrance (smooth, premium feel)
         timelineRef.current.to(
           cardRef.current,
           {
@@ -43,19 +43,19 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
             y: 0,
             scale: 1,
             backdropFilter: 'blur(0px)',
-            duration: 0.7,
+            duration: 0.8,
             ease: 'power2.out',
           },
           0
         )
 
-        // Subtle glow pulse - very minimal
+        // Glow entrance
         timelineRef.current.to(
           glowRef.current,
           {
             opacity: 0.5,
             scale: 1.1,
-            duration: 0.4,
+            duration: 0.5,
             ease: 'power2.out',
           },
           0.1
@@ -72,31 +72,31 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
             repeat: -1,
             repeatDelay: 0.2,
           },
-          0.5
+          0.6
         )
 
-        // Quote entrance
+        // Quote entrance - staggered after card
         timelineRef.current.to(
           quoteRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.5,
+            duration: 0.6,
             ease: 'power2.out',
           },
-          0.15
+          0.2
         )
 
-        // Author entrance
+        // Author entrance - staggered after quote
         timelineRef.current.to(
           authorRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.5,
+            duration: 0.6,
             ease: 'power2.out',
           },
-          0.25
+          0.35
         )
       } else {
         // Reduced motion: instant states
@@ -119,22 +119,47 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         }
       }
     } else {
-      // Inactive card - reset to hidden state
+      // Inactive card - animate exit with blur increase (smooth exit)
       if (!prefersReducedMotion()) {
-        gsap.set(cardRef.current, {
-          opacity: 0,
-          y: 12,
-          scale: 0.98,
-          backdropFilter: 'blur(12px)',
-        })
-        gsap.set([quoteRef.current, authorRef.current], {
-          opacity: 0,
-          y: 12,
-        })
-        gsap.set(glowRef.current, {
-          opacity: 0,
-          scale: 0.5,
-        })
+        timelineRef.current = gsap.timeline()
+
+        // Quote and author fade out
+        timelineRef.current.to(
+          [quoteRef.current, authorRef.current],
+          {
+            opacity: 0,
+            y: -6,
+            duration: 0.4,
+            ease: 'power2.in',
+          },
+          0
+        )
+
+        // Card blur and fade out (smoother exit)
+        timelineRef.current.to(
+          cardRef.current,
+          {
+            opacity: 0,
+            y: 12,
+            scale: 0.98,
+            backdropFilter: 'blur(12px)',
+            duration: 0.5,
+            ease: 'power2.in',
+          },
+          0.1
+        )
+
+        // Glow fade out
+        timelineRef.current.to(
+          glowRef.current,
+          {
+            opacity: 0,
+            scale: 0.5,
+            duration: 0.4,
+            ease: 'power2.in',
+          },
+          0
+        )
       } else {
         cardRef.current.style.opacity = '0'
         cardRef.current.style.transform = 'translateY(12px) scale(0.98)'
