@@ -149,7 +149,7 @@ function OpenSourceShowcase() {
       </EditorialReveal>
 
       <EditorialReveal direction="down" delay={0.1}>
-        <p className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em] mb-12">
+        <p className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em] mb-8 md:mb-12">
           Open Source Contributions
         </p>
       </EditorialReveal>

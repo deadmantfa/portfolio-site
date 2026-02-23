@@ -238,7 +238,7 @@ export default function Home() {
 
         <section
           id="lab"
-          className="relative py-24 px-8 flex flex-col items-center bg-transparent"
+          className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent"
         >
           <div className="max-w-7xl w-full">
             <OpenSourceShowcase />
@@ -253,7 +253,7 @@ export default function Home() {
                 <h2 className="text-6xl md:text-[8rem] font-serif italic leading-none text-white uppercase tracking-tighter mb-12">Credentials.</h2>
               </EditorialReveal>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 mt-12 md:mt-24 px-6 md:px-0">
                 <div
                   tabIndex={0}
                   onMouseEnter={() => setActiveCredential('edu')}
@@ -308,14 +308,14 @@ export default function Home() {
 
         <section
           id="signals"
-          className="relative py-24 px-8 flex flex-col items-center bg-transparent"
+          className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent"
         >
           <div className="max-w-7xl w-full">
             <TestimonialsSection />
           </div>
         </section>
 
-        <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto py-12">  
+        <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-6 md:px-8 text-center bg-transparent relative pointer-events-auto py-16 md:py-12">  
           <EditorialReveal direction="up" className="mb-8">
             <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let&apos;s <br/> <span className="text-primary pr-4">Connect.</span></h2>
           </EditorialReveal>

@@ -23,7 +23,7 @@ export const repos: RepoCard[] = [
     stars: 10,
     forks: 0,
     topics: ['audio', 'pdf', 'streamlit', 'gtts'],
-    url: 'https://github.com/wenceslaus/audiobookmaker',
+    url: 'https://github.com/deadmantfa/audiobookmaker',
   },
   {
     name: 'edusec-college-management-system',
@@ -32,7 +32,7 @@ export const repos: RepoCard[] = [
     stars: 9,
     forks: 45,
     topics: ['cms', 'college', 'management', 'education'],
-    url: 'https://github.com/wenceslaus/edusec-college-management-system',
+    url: 'https://github.com/deadmantfa/edusec-college-management-system',
   },
   {
     name: 'yii2-advanced-template-starter',
@@ -41,7 +41,7 @@ export const repos: RepoCard[] = [
     stars: 3,
     forks: 0,
     topics: ['yii2', 'oauth2', 'elasticsearch', 'enterprise'],
-    url: 'https://github.com/wenceslaus/yii2-advanced-template-starter',
+    url: 'https://github.com/deadmantfa/yii2-advanced-template-starter',
   },
   {
     name: 'serverless-kanbanization',
@@ -50,7 +50,7 @@ export const repos: RepoCard[] = [
     stars: 1,
     forks: 0,
     topics: ['serverless', 'lambda', 'github', 'automation'],
-    url: 'https://github.com/wenceslaus/serverless-kanbanization',
+    url: 'https://github.com/deadmantfa/serverless-kanbanization',
   },
   {
     name: 'yii2-zoho-api-client',
@@ -59,6 +59,6 @@ export const repos: RepoCard[] = [
     stars: 1,
     forks: 2,
     topics: ['yii2', 'zoho', 'crm', 'api'],
-    url: 'https://github.com/wenceslaus/yii2-zoho-api-client',
+    url: 'https://github.com/deadmantfa/yii2-zoho-api-client',
   },
 ]

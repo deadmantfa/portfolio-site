@@ -4,6 +4,7 @@ import { testimonials } from '@/data/testimonials'
 import EditorialReveal from './EditorialReveal'
 import { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
+import { Linkedin } from 'lucide-react'
 
 export { TestimonialsSection }
 
@@ -11,7 +12,7 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-function TestimonialCard({ quote, name, title, company, initials }: { quote: string; name: string; title: string; company: string; initials: string }) {
+function TestimonialCard({ quote, name, title, company, initials, linkedinUrl }: { quote: string; name: string; title: string; company: string; initials: string; linkedinUrl?: string }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [hasAnimated, setHasAnimated] = useState(false)
 
@@ -51,16 +52,29 @@ function TestimonialCard({ quote, name, title, company, initials }: { quote: str
         "{quote}"
       </p>
 
-      <div className="flex items-center gap-4">
-        <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-          <span className="text-sm font-mono font-bold text-primary">{initials}</span>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4 flex-grow">
+          <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+            <span className="text-sm font-mono font-bold text-primary">{initials}</span>
+          </div>
+          <div className="flex-grow">
+            <p className="text-white font-serif italic">{name}</p>
+            <p className="text-sm text-zinc-400">
+              {title} · {company}
+            </p>
+          </div>
         </div>
-        <div>
-          <p className="text-white font-serif italic">{name}</p>
-          <p className="text-sm text-zinc-400">
-            {title} · {company}
-          </p>
-        </div>
+        {linkedinUrl && (
+          <a
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 text-zinc-400 hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded p-1"
+            aria-label={`${name}'s LinkedIn profile`}
+          >
+            <Linkedin className="size-5" />
+          </a>
+        )}
       </div>
     </div>
   )
@@ -78,14 +92,22 @@ function TestimonialsSection() {
       </EditorialReveal>
 
       <EditorialReveal direction="down" delay={0.1}>
-        <p className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em] mb-12">
+        <p className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em] mb-8 md:mb-12">
           What Others Say
         </p>
       </EditorialReveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         {testimonials.map((testimonial, index) => (
-          <TestimonialCard key={index} {...testimonial} />
+          <TestimonialCard
+            key={index}
+            quote={testimonial.quote}
+            name={testimonial.name}
+            title={testimonial.title}
+            company={testimonial.company}
+            initials={testimonial.initials}
+            linkedinUrl={testimonial.linkedinUrl}
+          />
         ))}
       </div>
     </div>
