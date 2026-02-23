@@ -121,7 +121,7 @@ export default function Home() {
             <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary animate-reveal">
               Chief Technology Officer
             </div>
-            <div className="mb-8 animate-reveal" style={{ animationDelay: '0.1s' }}>
+            <div className="mb-8 animate-reveal hidden" style={{ animationDelay: '0.1s' }}>
               <ProfileGlitch
                 src="/images/hero/profile.jpg"
                 alt="Wenceslaus Dsilva - CTO & Architect"
