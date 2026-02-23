@@ -272,7 +272,14 @@ const CVBridge = ({ qrCode }: { qrCode?: string }) => (
 );
 
 export const CVDocument = ({ data, qrCode }: { data: CVData; qrCode?: string }) => (
-  <Document author="Wenceslaus Dsilva" title="Wenceslaus Dsilva CV 2026">
+  <Document
+    author="Wenceslaus Dsilva"
+    title="Wenceslaus Dsilva CV 2026"
+    subject="Chief Technology Officer & Technical Architect CV"
+    keywords="CTO, Architect, Serverless, Cloud, Leadership, ROI"
+    creator="Wenceslaus Dsilva Portfolio (w1d.pro)"
+    producer="react-pdf"
+  >
     <Page size="A4" style={styles.page}>
       <CVHeader personalInfo={data.personalInfo} />
       <CVSummary summary={data.summary} />
