@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wenceslaus Dsilva — CTO & Technical Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      background: #0a0a0b;
+    }
+
+    body {
+      background: #0a0a0b;
+      color: #fafafa;
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.4;
+      font-size: 10.5px;
+    }
+
+    .container {
+      width: 8.5in;
+      height: 11in;
+      background: #0a0a0b;
+      color: #fafafa;
+      padding: 0.4in;
+      margin: 20px auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 0.12in;
+      padding-bottom: 0.1in;
+      border-bottom: 2px solid #6366f1;
+    }
+
+    .name {
+      font-family: 'Archivo', serif;
+      font-size: 32px;
+      font-weight: 700;
+      font-style: italic;
+      color: #6366f1;
+      line-height: 1;
+      margin-bottom: 0.05in;
+      letter-spacing: -1px;
+    }
+
+    .title {
+      font-size: 11px;
+      color: #a1a1aa;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.05in;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.1in;
+      font-size: 9px;
+      color: #d4d4d8;
+      line-height: 1.3;
+    }
+
+    .contact a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    /* Headline */
+    .headline {
+      font-size: 11px;
+      color: #f59e0b;
+      font-weight: 600;
+      margin-bottom: 0.06in;
+    }
+
+    /* What I Do */
+    .what-i-do {
+      margin-bottom: 0.08in;
+      font-size: 10px;
+      color: #d4d4d8;
+    }
+
+    .what-i-do strong {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    /* Testimonial */
+    .testimonial {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 2px solid #14b8a6;
+      padding: 0.08in;
+      margin-bottom: 0.08in;
+      font-size: 9px;
+      line-height: 1.4;
+      color: #d4d4d8;
+      font-style: italic;
+    }
+
+    .testimonial-attr {
+      font-style: normal;
+      font-weight: 600;
+      color: #14b8a6;
+      margin-top: 0.03in;
+      font-size: 8px;
+    }
+
+    /* Metrics Grid */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.06in;
+      margin-bottom: 0.08in;
+    }
+
+    .metric {
+      border: 1px solid #f59e0b;
+      padding: 0.08in;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f59e0b;
+      line-height: 1.1;
+      margin-bottom: 0.02in;
+    }
+
+    .metric-lbl {
+      font-size: 8px;
+      color: #a1a1aa;
+    }
+
+    /* Specializations */
+    .spec {
+      font-size: 10px;
+      color: #d4d4d8;
+      margin-bottom: 0.08in;
+      padding-left: 0.06in;
+      border-left: 2px solid #14b8a6;
+    }
+
+    /* Current Impact */
+    .current {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 3px solid #6366f1;
+      padding: 0.08in;
+      margin-bottom: 0.08in;
+      font-size: 9px;
+      line-height: 1.4;
+      color: #d4d4d8;
+    }
+
+    .current-title {
+      font-weight: 700;
+      color: #6366f1;
+      font-size: 10px;
+      margin-bottom: 0.03in;
+    }
+
+    /* Sections */
+    .section-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #14b8a6;
+      margin-bottom: 0.05in;
+      padding-left: 0.06in;
+      border-left: 2px solid #14b8a6;
+    }
+
+    /* Experience */
+    .role {
+      margin-bottom: 0.06in;
+      padding-left: 0.06in;
+      border-left: 2px solid #6366f1;
+    }
+
+    .role-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      margin-bottom: 0.01in;
+    }
+
+    .role-title {
+      font-weight: 600;
+      color: #fafafa;
+    }
+
+    .role-dates {
+      color: #a1a1aa;
+      font-size: 8px;
+    }
+
+    .role-company {
+      font-weight: 600;
+      color: #6366f1;
+      font-size: 10px;
+      margin-bottom: 0.01in;
+    }
+
+    .role-desc {
+      font-size: 9px;
+      color: #a1a1aa;
+      line-height: 1.3;
+    }
+
+    /* Skills */
+    .skill-cat {
+      margin-bottom: 0.05in;
+    }
+
+    .skill-type {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #14b8a6;
+      margin-bottom: 0.02in;
+    }
+
+    .skill-list {
+      font-size: 9px;
+      color: #d4d4d8;
+      line-height: 1.3;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 0.08in;
+      margin-bottom: 0.08in;
+    }
+
+    @media print {
+      body {
+        background: #0a0a0b;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        margin: 0;
+        box-shadow: none;
+        width: 100%;
+        height: auto;
+        padding: 0.4in;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="name">Wenceslaus Dsilva</div>
+      <div class="title">CTO & Technical Architect</div>
+      <div class="contact">
+        <span>📍 Mumbai</span>
+        <span>📞 +91 766 618 0904</span>
+        <span><a href="mailto:wenceslausdsilva+cv@gmail.com">Email</a></span>
+        <span><a href="https://w1d.pro">w1d.pro</a></span>
+        <span><a href="https://github.com/wenceslaus">GitHub</a></span>
+        <span><a href="https://linkedin.com/in/wenceslaus-dsilva">LinkedIn</a></span>
+      </div>
+    </div>
+
+    <!-- Headline -->
+    <div class="headline">Scales systems 10x+. Builds high-performing teams. Turns infrastructure into competitive advantage.</div>
+
+    <!-- What I Do -->
+    <div class="what-i-do">
+      <strong>What I Do:</strong> Scale systems 10x+ without proportional cost increases • Build and lead high-performance engineering teams • Drive AI adoption for competitive advantage
+    </div>
+
+    <!-- Testimonial -->
+    <div class="testimonial">
+      "Strategic thinker who stays ahead of technology trends while building exceptionally strong teams."
+      <div class="testimonial-attr">— Kavan Antani, CEO & Forbes 30u30 Asia</div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-val">85%</div>
+        <div class="metric-lbl">Runtime ↓</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">$50M+</div>
+        <div class="metric-lbl">Transactions</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">100%</div>
+        <div class="metric-lbl">Uptime</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">20+</div>
+        <div class="metric-lbl">Years</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">100K+</div>
+        <div class="metric-lbl">Users</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">10K+</div>
+        <div class="metric-lbl">DAU</div>
+      </div>
+    </div>
+
+    <!-- Specializations -->
+    <div class="spec">
+      <strong>Specializations:</strong> 40% Cloud Cost Reduction • 99.9%+ Uptime at Scale • Serverless Cost Savings • AI-Driven User Personalization
+    </div>
+
+    <!-- Current Impact -->
+    <div class="current">
+      <div class="current-title">Current Impact: Rooftop (2022–Now)</div>
+      Directing technology strategy during 3–5x yearly growth. Reduced runtime 85% and cloud costs 40% YoY via serverless transformation. Driving AI-powered personalization; maintaining 99.9% SLA.
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid">
+      <!-- Left: Experience -->
+      <div>
+        <div class="section-title">▸ EXPERIENCE</div>
+
+        <div class="role">
+          <div class="role-header">
+            <span class="role-title">CTO</span>
+            <span class="role-dates">2022–Now</span>
+          </div>
+          <div class="role-company">Rooftop</div>
+          <div class="role-desc">Reduced infrastructure costs 40% YoY and runtime 85% during 3–5x growth. Implemented AI-driven personalization; maintained 99.9% SLA.</div>
+        </div>
+
+        <div class="role">
+          <div class="role-header">
+            <span class="role-title">CTO</span>
+            <span class="role-dates">2019–21</span>
+          </div>
+          <div class="role-company">Food Darzee</div>
+          <div class="role-desc">Scaled 1K→10K+ daily active users while improving operational efficiency 75%. Led multi-team coordination across 3 product verticals.</div>
+        </div>
+
+        <div class="role">
+          <div class="role-header">
+            <span class="role-title">CTO</span>
+            <span class="role-dates">2015–18</span>
+          </div>
+          <div class="role-company">IndieFolio Network</div>
+          <div class="role-desc">Maintained 100% uptime across 3 years scaling 10K→100K+ creatives. Pioneered color-based discovery; managed 20+ properties without downtime.</div>
+        </div>
+
+        <div class="role">
+          <div class="role-header">
+            <span class="role-title">Architect</span>
+            <span class="role-dates">2013–14</span>
+          </div>
+          <div class="role-company">ePaisa Services</div>
+          <div class="role-desc">Built secure payment infrastructure processing millions daily with zero breaches. Achieved PCI DSS compliance; pioneered multi-region render farm.</div>
+        </div>
+      </div>
+
+      <!-- Right: Skills -->
+      <div>
+        <div class="section-title">▸ COMPETENCIES</div>
+
+        <div class="skill-cat">
+          <div class="skill-type">Leadership</div>
+          <div class="skill-list">Team Building • AI Strategy • Design Thinking • Critical Thinking</div>
+        </div>
+
+        <div class="skill-cat">
+          <div class="skill-type">Frontend</div>
+          <div class="skill-list">React • Next.js • Three.js • Angular • Flutter</div>
+        </div>
+
+        <div class="skill-cat">
+          <div class="skill-type">Backend</div>
+          <div class="skill-list">Node.js • TypeScript • PHP • Python • WebSockets • Yii Framework</div>
+        </div>
+
+        <div class="skill-cat">
+          <div class="skill-type">Infrastructure</div>
+          <div class="skill-list">AWS • Serverless • Docker • Kubernetes • SageMaker • PostgreSQL • Redis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
