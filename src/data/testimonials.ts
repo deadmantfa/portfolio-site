@@ -5,7 +5,7 @@ export interface Testimonial {
   company: string
   initials: string
   linkedinUrl?: string
-  imagePath?: string // e.g., '/images/testimonials/gavin-fonseca.jpg'
+  imagePath?: string
 }
 
 export const testimonials: Testimonial[] = [
@@ -52,7 +52,16 @@ export const testimonials: Testimonial[] = [
     company: 'TCS',
     initials: 'DJ',
     linkedinUrl: 'https://www.linkedin.com/in/dineshtjethwa',
-    imagePath: '/images/testimonials/dinesh-jethwa.jpg',
+    imagePath: '/images/testimonials/dinesh-jethwa.png',
+  },
+  {
+    quote: 'Very professional and hard working, he knows all about IT. He is an excellent person in his work and great personality.',
+    name: 'Selim Kahi',
+    title: 'General Manager',
+    company: 'Telecom Company',
+    initials: 'SK',
+    linkedinUrl: 'https://www.linkedin.com/in/selim-kahi-7123118/',
+    imagePath: '/images/testimonials/selim-kahi.jpg',
   },
   {
     quote: 'Wency is a proactive contributor who would make a great addition to any team. He impressed all of us by his knowledge on the subject, and the way he used to tackle any problem. He is innovative, dedicated and a bright person.',
@@ -62,5 +71,41 @@ export const testimonials: Testimonial[] = [
     initials: 'HM',
     linkedinUrl: 'https://www.linkedin.com/in/harshidi-mudaliar-657b8850/',
     imagePath: '/images/testimonials/harshidi-mudaliar.jpg',
+  },
+  {
+    quote: 'Wenceslaus has been an excellent employee, with his commitments unquestionable. He never refused to work even on weekends and holidays to meet client commitments and deadlines and was always positive towards work.',
+    name: 'Sameer Shahakar',
+    title: 'Digital Transformation & RPA Expert',
+    company: 'TCS',
+    initials: 'SS',
+    linkedinUrl: 'https://www.linkedin.com/in/sameershahakar',
+    imagePath: '/images/testimonials/sameer-shahakar.jpg',
+  },
+  {
+    quote: 'I have had the opportunity to work with Wenceslaus Dsilva for almost 3 years during which he has shown a great sense of professionalism and commitment. He has always been keen on sharpening his skills and widening his scopes of knowledge especially in the IT domain. He is personable, adaptable, approachable and supportive.',
+    name: 'Hassan Sabbah',
+    title: 'School Principal & Development Director',
+    company: 'Emirates National Schools',
+    initials: 'HS',
+    linkedinUrl: 'https://www.linkedin.com/in/hassan-s-9382b927/',
+    imagePath: '/images/testimonials/hassan-sabbah.jpg',
+  },
+  {
+    quote: 'Wenceslaus is a hardworking honest young man. He is multi-talented and a good problem solver. His abilities to learn new material is excellent and so are his computer programming abilities. He will be an asset to any firm he joins in future.',
+    name: 'Saad Bahjat Abou-Chakra',
+    title: 'Author, Researcher & Public Speaker',
+    company: 'Applied Linguistics & Educational Leadership',
+    initials: 'SB',
+    linkedinUrl: 'https://www.linkedin.com/in/saadbahajtabouchakra/',
+    imagePath: '/images/testimonials/saad-bahjat-abou-chakra.jpg',
+  },
+  {
+    quote: 'If challenges are there in your project or Work consider this comment "Wency is On". He was good in scripting specially Quantum, HTML and SPSS. He is a great team player with good management skills.',
+    name: 'Mayursinh Solanki',
+    title: 'Leadership & Digital Transformation Expert',
+    company: 'Data Analytics & BI',
+    initials: 'MS',
+    linkedinUrl: 'https://www.linkedin.com/in/mayursinh-solanki-49579258/',
+    imagePath: '/images/testimonials/mayursinh-solanki.jpg',
   },
 ]

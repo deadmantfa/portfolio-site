@@ -13,7 +13,7 @@ import { ProfileGlitch } from '@/components/ProfileGlitch'
 
 const SkillsGrid = dynamic(() => import('@/components/SkillsGrid').then(m => m.SkillsGrid), { ssr: false })
 const OpenSourceShowcase = dynamic(() => import('@/components/OpenSourceShowcase').then(m => m.OpenSourceShowcase), { ssr: false })
-const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection').then(m => m.TestimonialsSection), { ssr: false })
+const TestimonialsCarousel = dynamic(() => import('@/components/TestimonialsCarousel').then(m => m.TestimonialsCarousel), { ssr: false })
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false })
 const SocialLinks = dynamic(() => import('@/components/SocialLinks'), { ssr: false })
 
@@ -311,7 +311,7 @@ export default function Home() {
           className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent"
         >
           <div className="max-w-7xl w-full">
-            <TestimonialsSection />
+            <TestimonialsCarousel />
           </div>
         </section>
 
