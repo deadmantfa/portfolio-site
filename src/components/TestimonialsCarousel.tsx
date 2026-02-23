@@ -15,32 +15,74 @@ const prefersReducedMotion = () =>
 
 function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testimonials)[0]; isActive: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null)
+  const quoteRef = useRef<HTMLParagraphElement>(null)
+  const authorRef = useRef<HTMLDivElement>(null)
   const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
-    if (!cardRef.current) return
+    if (!cardRef.current || !quoteRef.current || !authorRef.current) return
 
     if (isActive) {
       if (!prefersReducedMotion()) {
-        gsap.to(cardRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power2.out',
-        })
+        // Entrance animation with staggered elements
+        gsap.timeline()
+          .to(cardRef.current, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.4,
+            ease: 'power2.out',
+          }, 0)
+          .to(
+            quoteRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.35,
+              ease: 'power2.out',
+            },
+            0.05
+          )
+          .to(
+            authorRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.35,
+              ease: 'power2.out',
+            },
+            0.1
+          )
       } else {
         cardRef.current.style.opacity = '1'
-        cardRef.current.style.transform = 'translateY(0)'
+        cardRef.current.style.transform = 'translateY(0) scale(1)'
+        if (quoteRef.current) {
+          quoteRef.current.style.opacity = '1'
+          quoteRef.current.style.transform = 'translateY(0)'
+        }
+        if (authorRef.current) {
+          authorRef.current.style.opacity = '1'
+          authorRef.current.style.transform = 'translateY(0)'
+        }
       }
     } else {
       if (!prefersReducedMotion()) {
-        gsap.set(cardRef.current, {
+        gsap.set([cardRef.current, quoteRef.current, authorRef.current], {
           opacity: 0,
-          y: 20,
+          y: 12,
+          scale: 0.98,
         })
       } else {
         cardRef.current.style.opacity = '0'
-        cardRef.current.style.transform = 'translateY(20px)'
+        cardRef.current.style.transform = 'translateY(12px) scale(0.98)'
+        if (quoteRef.current) {
+          quoteRef.current.style.opacity = '0'
+          quoteRef.current.style.transform = 'translateY(12px)'
+        }
+        if (authorRef.current) {
+          authorRef.current.style.opacity = '0'
+          authorRef.current.style.transform = 'translateY(12px)'
+        }
       }
     }
   }, [isActive])
@@ -48,21 +90,55 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
   return (
     <div
       ref={cardRef}
-      className={`absolute inset-0 glass rounded-2xl p-8 md:p-10 border border-white/10 flex flex-col ${
+      className={`absolute inset-0 rounded-3xl p-8 md:p-12 flex flex-col pointer-events-auto transition-all duration-300 ${
         isActive ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
-      style={{ opacity: isActive ? 1 : 0, transform: isActive ? 'translateY(0)' : 'translateY(20px)' }}
+      style={{
+        opacity: isActive ? 1 : 0,
+        transform: isActive ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.98)',
+        background:
+          'linear-gradient(135deg, rgba(28, 25, 23, 0.7) 0%, rgba(68, 64, 60, 0.5) 100%)',
+        backdropFilter: 'blur(12px)',
+        border: '1px solid rgba(202, 138, 4, 0.2)',
+        boxShadow:
+          '0 8px 32px -4px rgba(202, 138, 4, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+      }}
     >
+      {/* Decorative gradient accent */}
+      <div
+        className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, #CA8A04 0%, transparent 70%)',
+          filter: 'blur(30px)',
+        }}
+      />
+
       {/* Quote */}
-      <p className="text-lg md:text-xl font-serif italic text-white mb-8 leading-relaxed flex-grow">
-        "{testimonial.quote}"
+      <p
+        ref={quoteRef}
+        className="text-lg md:text-2xl font-light text-white mb-10 leading-relaxed flex-grow relative z-10"
+        style={{
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateY(0)' : 'translateY(12px)',
+        }}
+      >
+        <span className="text-3xl md:text-4xl text-amber-500/40 mr-2">&#8220;</span>
+        {testimonial.quote}
+        <span className="text-3xl md:text-4xl text-amber-500/40 ml-2">&#8221;</span>
       </p>
 
       {/* Author Info */}
-      <div className="flex items-center justify-between gap-4 pt-6 border-t border-white/10">
-        <div className="flex items-center gap-4 flex-grow">
-          {/* Avatar */}
-          <div className="relative size-12 rounded-full flex-shrink-0 overflow-hidden">
+      <div
+        ref={authorRef}
+        className="flex items-center justify-between gap-4 pt-8 border-t border-white/10 relative z-10"
+        style={{
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateY(0)' : 'translateY(12px)',
+        }}
+      >
+        <div className="flex items-center gap-4 flex-grow min-w-0">
+          {/* Avatar with premium styling */}
+          <div className="relative size-14 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-amber-500/30 transition-all duration-300 hover:ring-amber-500/60">
             {testimonial.imagePath && !imageError ? (
               <Image
                 src={testimonial.imagePath}
@@ -72,16 +148,14 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
                 onError={() => setImageError(true)}
               />
             ) : (
-              <div className="size-full bg-primary/20 flex items-center justify-center">
-                <span className="text-sm font-mono font-bold text-primary">{testimonial.initials}</span>
+              <div className="size-full bg-gradient-to-br from-amber-500/20 to-amber-900/20 flex items-center justify-center">
+                <span className="text-sm font-semibold text-amber-500">{testimonial.initials}</span>
               </div>
             )}
           </div>
           <div className="flex-grow min-w-0">
-            <p className="text-white font-serif italic truncate">{testimonial.name}</p>
-            <p className="text-xs md:text-sm text-zinc-400 truncate">
-              {testimonial.title}
-            </p>
+            <p className="text-white font-medium truncate">{testimonial.name}</p>
+            <p className="text-xs md:text-sm text-zinc-400 truncate">{testimonial.title}</p>
           </div>
         </div>
         {testimonial.linkedinUrl && (
@@ -89,7 +163,7 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
             href={testimonial.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 text-zinc-400 hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded p-1"
+            className="flex-shrink-0 size-10 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer"
             aria-label={`${testimonial.name}'s LinkedIn profile`}
           >
             <Linkedin className="size-5" />
@@ -107,6 +181,7 @@ function TestimonialsCarousel() {
   const autoPlayIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isHovering, setIsHovering] = useState(false)
 
   const goToSlide = useCallback((index: number) => {
     const clampedIndex = Math.max(0, Math.min(index, testimonials.length - 1))
@@ -131,10 +206,10 @@ function TestimonialsCarousel() {
       }
 
       autoPlayIntervalRef.current = setInterval(() => {
-        if (autoPlayRef.current) {
+        if (autoPlayRef.current && !isHovering) {
           setCurrentIndex((prev) => (prev + 1) % testimonials.length)
         }
-      }, 5000) // Change slide every 5 seconds
+      }, 6000) // Change slide every 6 seconds
     }
 
     startAutoPlay()
@@ -144,14 +219,16 @@ function TestimonialsCarousel() {
         clearInterval(autoPlayIntervalRef.current)
       }
     }
-  }, [])
+  }, [isHovering])
 
   // Handle pause on hover
   const handleMouseEnter = () => {
+    setIsHovering(true)
     autoPlayRef.current = false
   }
 
   const handleMouseLeave = () => {
+    setIsHovering(false)
     autoPlayRef.current = true
   }
 
@@ -164,7 +241,7 @@ function TestimonialsCarousel() {
       </EditorialReveal>
 
       <EditorialReveal direction="down" delay={0.1}>
-        <p className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em] mb-8 md:mb-12">
+        <p className="font-mono text-[11px] text-amber-600/70 uppercase tracking-[0.3em] mb-8 md:mb-12 font-semibold">
           What Others Say
         </p>
       </EditorialReveal>
@@ -172,42 +249,44 @@ function TestimonialsCarousel() {
       {/* Carousel Container */}
       <div
         ref={carouselRef}
-        className="relative bg-transparent rounded-2xl"
+        className="relative bg-transparent rounded-3xl overflow-hidden group"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Slides */}
-        <div className="relative h-[420px] md:h-[350px] w-full">
+        <div className="relative h-[480px] md:h-[400px] w-full">
           {testimonials.map((testimonial, index) => (
             <TestimonialCard key={index} testimonial={testimonial} isActive={index === currentIndex} />
           ))}
         </div>
 
-        {/* Navigation Buttons */}
+        {/* Navigation Buttons - Premium style */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 size-10 rounded-full bg-primary/20 hover:bg-primary/40 text-white flex items-center justify-center transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer group/btn"
           aria-label="Previous testimonial"
         >
-          <ChevronLeft className="size-5" />
+          <ChevronLeft className="size-6 group-hover/btn:scale-110 transition-transform" />
         </button>
 
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 size-10 rounded-full bg-primary/20 hover:bg-primary/40 text-white flex items-center justify-center transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer group/btn"
           aria-label="Next testimonial"
         >
-          <ChevronRight className="size-5" />
+          <ChevronRight className="size-6 group-hover/btn:scale-110 transition-transform" />
         </button>
 
-        {/* Dot Indicators */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        {/* Dot Indicators - Premium style */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`size-2 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none ${
-                index === currentIndex ? 'bg-primary w-6' : 'bg-white/30 hover:bg-white/50'
+              className={`rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer ${
+                index === currentIndex
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-400 w-8 h-2.5 shadow-lg shadow-amber-500/50'
+                  : 'bg-white/20 hover:bg-white/40 size-2'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
               aria-current={index === currentIndex ? 'true' : 'false'}
@@ -216,11 +295,14 @@ function TestimonialsCarousel() {
         </div>
       </div>
 
-      {/* Counter */}
-      <div className="mt-6 flex items-center justify-center gap-2 text-sm text-zinc-400">
-        <span className="font-mono">{currentIndex + 1}</span>
-        <span>/</span>
-        <span className="font-mono">{testimonials.length}</span>
+      {/* Counter with premium styling */}
+      <div className="mt-8 flex items-center justify-center gap-3 text-sm">
+        <div className="flex items-center gap-2 font-mono text-white">
+          <span className="text-lg font-semibold text-amber-500">{currentIndex + 1}</span>
+          <span className="text-zinc-500">/</span>
+          <span className="text-zinc-400">{testimonials.length}</span>
+        </div>
+        <div className="w-16 h-0.5 bg-gradient-to-r from-amber-500 to-amber-500/0 rounded-full" />
       </div>
     </div>
   )
