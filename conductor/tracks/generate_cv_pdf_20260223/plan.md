@@ -15,7 +15,7 @@
 ## Phase 3: PDF Generation & Integration
 - [x] Task: Create a script/utility to generate the PDF file and save it to `public/CV/Wenceslaus-Dsilva-2026.pdf`. e806283
 - [x] Task: Implement a downloadable button or link in the portfolio UI (e.g., in the Navigation or Footer). 84d4727
-- [ ] Task: Ensure the PDF generation is integrated into the build process or accessible via a dedicated route.
+- [x] Task: Ensure the PDF generation is integrated into the build process or accessible via a dedicated route. 314b94b
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: PDF Generation & Integration' (Protocol in workflow.md)
 
 ## Phase 4: Final Polish & Verification
