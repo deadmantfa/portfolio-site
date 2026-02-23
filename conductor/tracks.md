@@ -26,8 +26,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Deploy Portfolio to Vercel**
   *Link: [./tracks/deploy_portfolio_to_vercel_20260219/](./tracks/deploy_portfolio_to_vercel_20260219/)*
-
----
-
-- [x] **Track: Generate Professional 1-Page CV PDF**
-  *Link: [./tracks/generate_cv_pdf_20260223/](./tracks/generate_cv_pdf_20260223/)*

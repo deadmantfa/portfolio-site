@@ -1,0 +1,8 @@
+{
+  "track_id": "generate_cv_pdf_20260223",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-23T12:00:00Z",
+  "updated_at": "2026-02-23T12:00:00Z",
+  "description": "Generate a professional 1-page CV PDF using React-PDF, focusing on an Executive Leader narrative and professional Dark Mode aesthetic."
+}
