@@ -7,6 +7,7 @@ export interface CVData {
     name: string;
     title: string;
     email: string;
+    phone: string;
     location: string;
     linkedin: string;
     portfolio: string;
@@ -37,6 +38,7 @@ export function extractCVData(): CVData {
     name: 'Wenceslaus Dsilva',
     title: 'Chief Technology Officer | Strategic Architect',
     email: 'wenceslausdsilva@gmail.com',
+    phone: '+91 766 618 0904',
     location: 'Mumbai, India',
     linkedin: 'linkedin.com/in/wenceslaus-dsilva',
     portfolio: 'w1d.pro'

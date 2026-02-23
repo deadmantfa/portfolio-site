@@ -20,7 +20,7 @@ async function generate() {
     
     // 2. Generate high-resolution QR code for the Interactive Bridge
     // Links back to the deep-dive case studies on the live portfolio
-    const qrCodeDataUri = await QRCode.toDataURL('https://w1d.pro/work', {
+    const qrCodeDataUri = await QRCode.toDataURL('https://w1d.pro', {
       margin: 1,
       width: 300,
       color: {
@@ -28,7 +28,7 @@ async function generate() {
         light: '#ffffff',
       },
     });
-    console.log('✓ QR Code generated for w1d.pro/work');
+    console.log('✓ QR Code generated for w1d.pro');
 
     // 3. Define output path
     const outputPath = path.resolve(process.cwd(), 'public/CV/Wenceslaus-Dsilva-2026.pdf');

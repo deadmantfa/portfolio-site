@@ -31,7 +31,7 @@ describe('CVDocument Component', () => {
 
   it('should contain the user name', () => {
     const { getByText } = render(<CVDocument data={data} />);
-    expect(getByText('Wenceslaus Dsilva')).toBeDefined();
+    expect(getByText('WENCESLAUS DSILVA')).toBeDefined();
   });
 
   it('should contain the executive summary', () => {
@@ -40,9 +40,9 @@ describe('CVDocument Component', () => {
   });
 
   it('should render the interactive bridge section', () => {
-    const { getByText } = render(<CVDocument data={data} />);
+    const { getByText, getAllByText } = render(<CVDocument data={data} />);
     expect(getByText('Interactive Architectural Bridge')).toBeDefined();
-    expect(getByText('w1d.pro/deep-dives')).toBeDefined();
+    expect(getAllByText('w1d.pro')).toBeDefined();
   });
 
   it('should render the QR code if provided', () => {
