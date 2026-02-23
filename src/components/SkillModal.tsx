@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { type SkillModule } from '@/data/skills'
 import { getSkillIcon } from '@/utils/skillIcons'
 import gsap from 'gsap'
@@ -24,6 +25,22 @@ function SkillModal({ skill, color, isOpen, onClose }: SkillModalProps) {
   const badgeRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLDivElement>(null)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Mount component for portal (SSR safety)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Handle body scroll-lock when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = ''
+      }
+    }
+  }, [isOpen])
 
   // Handle keyboard escape key
   useEffect(() => {
@@ -148,22 +165,22 @@ function SkillModal({ skill, color, isOpen, onClose }: SkillModalProps) {
     })
   }
 
-  if (!isOpen || !skill) return null
+  if (!mounted || !isOpen || !skill) return null
 
   const SkillIcon = getSkillIcon(skill.name)
 
-  return (
+  const modalContent = (
     <div
       ref={backdropRef}
       onClick={handleClose}
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
       style={{ opacity: 0 }}
     >
       {/* Modal Container */}
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-12 max-w-2xl w-full shadow-2xl"
+        className="relative bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-12 max-w-2xl w-full shadow-2xl max-h-[90vh] overflow-y-auto"
         style={{
           scale: 0.8,
           opacity: 0,
@@ -248,4 +265,6 @@ function SkillModal({ skill, color, isOpen, onClose }: SkillModalProps) {
       </div>
     </div>
   )
+
+  return createPortal(modalContent, document.body)
 }
