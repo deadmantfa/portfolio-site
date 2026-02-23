@@ -25,21 +25,16 @@ function SkillModal({ skill, color, isOpen, onClose }: SkillModalProps) {
   const badgeRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLDivElement>(null)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  // Ensure component is mounted before rendering portal (SSR safety)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   // Handle body scroll-lock when modal is open
   useEffect(() => {
-    if (isOpen && mounted) {
+    if (isOpen) {
       document.body.style.overflow = 'hidden'
-    } else {
+    }
+    return () => {
       document.body.style.overflow = ''
     }
-  }, [isOpen, mounted])
+  }, [isOpen])
 
   // Handle keyboard escape key
   useEffect(() => {
@@ -164,8 +159,8 @@ function SkillModal({ skill, color, isOpen, onClose }: SkillModalProps) {
     })
   }
 
-  // Only render portal if mounted, modal is open, and skill exists
-  if (!mounted || !isOpen || !skill) return null
+  // Only render portal if modal is open and skill exists
+  if (!isOpen || !skill) return null
 
   const SkillIcon = getSkillIcon(skill.name)
 
