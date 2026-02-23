@@ -35,7 +35,7 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         // Create new timeline for this card
         timelineRef.current = gsap.timeline()
 
-        // Main card: blur reveal entrance (smooth, premium feel)
+        // Main card: long, smooth blur reveal entrance
         timelineRef.current.to(
           cardRef.current,
           {
@@ -43,22 +43,22 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
             y: 0,
             scale: 1,
             backdropFilter: 'blur(0px)',
-            duration: 0.8,
-            ease: 'power2.out',
+            duration: 1.2,
+            ease: 'power1.out',
           },
           0
         )
 
-        // Glow entrance
+        // Glow entrance - longer, gentler
         timelineRef.current.to(
           glowRef.current,
           {
             opacity: 0.5,
             scale: 1.1,
-            duration: 0.5,
-            ease: 'power2.out',
+            duration: 0.8,
+            ease: 'power1.out',
           },
-          0.1
+          0.2
         )
 
         // Very subtle breathing glow - low opacity, small scale range
@@ -72,31 +72,31 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
             repeat: -1,
             repeatDelay: 0.2,
           },
-          0.6
+          1.0
         )
 
-        // Quote entrance - staggered after card
+        // Quote entrance - longer fade
         timelineRef.current.to(
           quoteRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
+            duration: 0.9,
+            ease: 'power1.out',
           },
-          0.2
+          0.3
         )
 
-        // Author entrance - staggered after quote
+        // Author entrance - longest fade
         timelineRef.current.to(
           authorRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
+            duration: 0.9,
+            ease: 'power1.out',
           },
-          0.35
+          0.5
         )
       } else {
         // Reduced motion: instant states
@@ -119,55 +119,48 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         }
       }
     } else {
-      // Inactive card - animate exit with blur increase (smooth exit)
+      // Inactive card - very long, smooth exit for premium feel
       if (!prefersReducedMotion()) {
         timelineRef.current = gsap.timeline()
 
-        // Quote and author fade out
+        // Content fades out first
         timelineRef.current.to(
           [quoteRef.current, authorRef.current],
           {
             opacity: 0,
-            y: -6,
-            duration: 0.4,
-            ease: 'power2.in',
+            duration: 0.7,
+            ease: 'power1.in',
           },
           0
         )
 
-        // Card blur and fade out (smoother exit)
+        // Card itself fades with blur - long, smooth exit
         timelineRef.current.to(
           cardRef.current,
           {
             opacity: 0,
-            y: 12,
-            scale: 0.98,
-            backdropFilter: 'blur(12px)',
-            duration: 0.5,
-            ease: 'power2.in',
+            backdropFilter: 'blur(16px)',
+            duration: 1.0,
+            ease: 'power1.in',
           },
-          0.1
+          0.2
         )
 
-        // Glow fade out
+        // Glow fades out
         timelineRef.current.to(
           glowRef.current,
           {
             opacity: 0,
-            scale: 0.5,
-            duration: 0.4,
-            ease: 'power2.in',
+            duration: 0.7,
+            ease: 'power1.in',
           },
           0
         )
       } else {
         cardRef.current.style.opacity = '0'
-        cardRef.current.style.transform = 'translateY(12px) scale(0.98)'
-        cardRef.current.style.backdropFilter = 'blur(12px)'
+        cardRef.current.style.backdropFilter = 'blur(16px)'
         quoteRef.current.style.opacity = '0'
-        quoteRef.current.style.transform = 'translateY(12px)'
         authorRef.current.style.opacity = '0'
-        authorRef.current.style.transform = 'translateY(12px)'
         glowRef.current.style.opacity = '0'
       }
     }
