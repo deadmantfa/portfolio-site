@@ -1,9 +1,9 @@
 # Implementation Plan: Generate Professional 1-Page CV PDF
 
-## Phase 1: Setup & Data Preparation
+## Phase 1: Setup & Data Preparation [checkpoint: c5c1d1c]
 - [x] Task: Install `@react-pdf/renderer` and `qrcode.react` (for the QR code). c67f7bd
 - [x] Task: Create a data-extraction utility to pull metrics and experience from `product.md` and portfolio data files. 355cfa9
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup & Data Preparation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Setup & Data Preparation' (Protocol in workflow.md) f2c3fec
 
 ## Phase 2: CV Component Design (React-PDF)
 - [ ] Task: Implement the `CVDocument` base component with professional Dark Mode styling and premium typography.
