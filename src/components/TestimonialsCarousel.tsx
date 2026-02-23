@@ -15,47 +15,79 @@ const prefersReducedMotion = () =>
 
 function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testimonials)[0]; isActive: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLParagraphElement>(null)
   const authorRef = useRef<HTMLDivElement>(null)
   const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
-    if (!cardRef.current || !quoteRef.current || !authorRef.current) return
+    if (!cardRef.current || !quoteRef.current || !authorRef.current || !glowRef.current) return
 
     if (isActive) {
       if (!prefersReducedMotion()) {
-        // Entrance animation with staggered elements
+        // Blur reveal animation - card entrance with blur clearing
         gsap.timeline()
-          .to(cardRef.current, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.4,
-            ease: 'power2.out',
-          }, 0)
+          // Main card: blur fade + scale entrance
+          .to(
+            cardRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              backdropFilter: 'blur(0px)',
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            0
+          )
+          // Glow pulse effect
+          .to(
+            glowRef.current,
+            {
+              opacity: 0.8,
+              scale: 1.2,
+              duration: 0.5,
+              ease: 'power2.out',
+            },
+            0.1
+          )
+          .to(
+            glowRef.current,
+            {
+              opacity: 0.3,
+              scale: 0.8,
+              duration: 1.2,
+              ease: 'sine.inOut',
+              repeat: -1,
+            },
+            0.6
+          )
+          // Quote staggered entrance
           .to(
             quoteRef.current,
             {
               opacity: 1,
               y: 0,
-              duration: 0.35,
+              duration: 0.5,
               ease: 'power2.out',
             },
-            0.05
+            0.15
           )
+          // Author staggered entrance
           .to(
             authorRef.current,
             {
               opacity: 1,
               y: 0,
-              duration: 0.35,
+              duration: 0.5,
               ease: 'power2.out',
             },
-            0.1
+            0.25
           )
       } else {
         cardRef.current.style.opacity = '1'
         cardRef.current.style.transform = 'translateY(0) scale(1)'
+        cardRef.current.style.backdropFilter = 'blur(0px)'
         if (quoteRef.current) {
           quoteRef.current.style.opacity = '1'
           quoteRef.current.style.transform = 'translateY(0)'
@@ -64,17 +96,29 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
           authorRef.current.style.opacity = '1'
           authorRef.current.style.transform = 'translateY(0)'
         }
+        if (glowRef.current) {
+          glowRef.current.style.opacity = '0.3'
+        }
       }
     } else {
       if (!prefersReducedMotion()) {
+        // Set initial state with blur
         gsap.set([cardRef.current, quoteRef.current, authorRef.current], {
           opacity: 0,
           y: 12,
           scale: 0.98,
         })
+        gsap.set(cardRef.current, {
+          backdropFilter: 'blur(12px)',
+        })
+        gsap.set(glowRef.current, {
+          opacity: 0,
+          scale: 0.5,
+        })
       } else {
         cardRef.current.style.opacity = '0'
         cardRef.current.style.transform = 'translateY(12px) scale(0.98)'
+        cardRef.current.style.backdropFilter = 'blur(12px)'
         if (quoteRef.current) {
           quoteRef.current.style.opacity = '0'
           quoteRef.current.style.transform = 'translateY(12px)'
@@ -82,6 +126,9 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         if (authorRef.current) {
           authorRef.current.style.opacity = '0'
           authorRef.current.style.transform = 'translateY(12px)'
+        }
+        if (glowRef.current) {
+          glowRef.current.style.opacity = '0'
         }
       }
     }
@@ -96,20 +143,21 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
       style={{
         opacity: isActive ? 1 : 0,
         transform: isActive ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.98)',
-        background:
-          'linear-gradient(135deg, rgba(28, 25, 23, 0.7) 0%, rgba(68, 64, 60, 0.5) 100%)',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(202, 138, 4, 0.2)',
+        backdropFilter: isActive ? 'blur(0px)' : 'blur(12px)',
+        background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.8) 0%, rgba(39, 39, 42, 0.6) 100%)',
+        border: '1px solid rgb(99, 102, 241, 0.15)',
         boxShadow:
-          '0 8px 32px -4px rgba(202, 138, 4, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+          '0 8px 32px -4px rgba(99, 102, 241, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.08)',
       }}
     >
-      {/* Decorative gradient accent */}
+      {/* Glow effect - primary blue pulse */}
       <div
-        className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none"
+        ref={glowRef}
+        className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, #CA8A04 0%, transparent 70%)',
-          filter: 'blur(30px)',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%)',
+          filter: 'blur(40px)',
+          opacity: 0.3,
         }}
       />
 
@@ -122,9 +170,9 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
           transform: isActive ? 'translateY(0)' : 'translateY(12px)',
         }}
       >
-        <span className="text-3xl md:text-4xl text-amber-500/40 mr-2">&#8220;</span>
+        <span className="text-3xl md:text-4xl text-primary/40 mr-2">&#8220;</span>
         {testimonial.quote}
-        <span className="text-3xl md:text-4xl text-amber-500/40 ml-2">&#8221;</span>
+        <span className="text-3xl md:text-4xl text-primary/40 ml-2">&#8221;</span>
       </p>
 
       {/* Author Info */}
@@ -137,8 +185,8 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         }}
       >
         <div className="flex items-center gap-4 flex-grow min-w-0">
-          {/* Avatar with premium styling */}
-          <div className="relative size-14 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-amber-500/30 transition-all duration-300 hover:ring-amber-500/60">
+          {/* Avatar with primary color ring */}
+          <div className="relative size-14 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-primary/30 transition-all duration-300 hover:ring-primary/60">
             {testimonial.imagePath && !imageError ? (
               <Image
                 src={testimonial.imagePath}
@@ -148,14 +196,14 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
                 onError={() => setImageError(true)}
               />
             ) : (
-              <div className="size-full bg-gradient-to-br from-amber-500/20 to-amber-900/20 flex items-center justify-center">
-                <span className="text-sm font-semibold text-amber-500">{testimonial.initials}</span>
+              <div className="size-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                <span className="text-sm font-semibold text-primary">{testimonial.initials}</span>
               </div>
             )}
           </div>
           <div className="flex-grow min-w-0">
             <p className="text-white font-medium truncate">{testimonial.name}</p>
-            <p className="text-xs md:text-sm text-zinc-400 truncate">{testimonial.title}</p>
+            <p className="text-xs md:text-sm text-foreground/60 truncate">{testimonial.title}</p>
           </div>
         </div>
         {testimonial.linkedinUrl && (
@@ -163,7 +211,7 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
             href={testimonial.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 size-10 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer"
+            className="flex-shrink-0 size-10 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer"
             aria-label={`${testimonial.name}'s LinkedIn profile`}
           >
             <Linkedin className="size-5" />
@@ -241,7 +289,7 @@ function TestimonialsCarousel() {
       </EditorialReveal>
 
       <EditorialReveal direction="down" delay={0.1}>
-        <p className="font-mono text-[11px] text-amber-600/70 uppercase tracking-[0.3em] mb-8 md:mb-12 font-semibold">
+        <p className="font-mono text-[11px] text-primary/60 uppercase tracking-[0.3em] mb-8 md:mb-12 font-semibold">
           What Others Say
         </p>
       </EditorialReveal>
@@ -260,10 +308,10 @@ function TestimonialsCarousel() {
           ))}
         </div>
 
-        {/* Navigation Buttons - Premium style */}
+        {/* Navigation Buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer group/btn"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
           aria-label="Previous testimonial"
         >
           <ChevronLeft className="size-6 group-hover/btn:scale-110 transition-transform" />
@@ -271,21 +319,21 @@ function TestimonialsCarousel() {
 
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer group/btn"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
           aria-label="Next testimonial"
         >
           <ChevronRight className="size-6 group-hover/btn:scale-110 transition-transform" />
         </button>
 
-        {/* Dot Indicators - Premium style */}
+        {/* Dot Indicators */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none cursor-pointer ${
+              className={`rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer ${
                 index === currentIndex
-                  ? 'bg-gradient-to-r from-amber-500 to-amber-400 w-8 h-2.5 shadow-lg shadow-amber-500/50'
+                  ? 'bg-primary w-8 h-2.5 shadow-lg shadow-primary/50'
                   : 'bg-white/20 hover:bg-white/40 size-2'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
@@ -295,14 +343,14 @@ function TestimonialsCarousel() {
         </div>
       </div>
 
-      {/* Counter with premium styling */}
+      {/* Counter */}
       <div className="mt-8 flex items-center justify-center gap-3 text-sm">
         <div className="flex items-center gap-2 font-mono text-white">
-          <span className="text-lg font-semibold text-amber-500">{currentIndex + 1}</span>
-          <span className="text-zinc-500">/</span>
-          <span className="text-zinc-400">{testimonials.length}</span>
+          <span className="text-lg font-semibold text-primary">{currentIndex + 1}</span>
+          <span className="text-border">/</span>
+          <span className="text-foreground/60">{testimonials.length}</span>
         </div>
-        <div className="w-16 h-0.5 bg-gradient-to-r from-amber-500 to-amber-500/0 rounded-full" />
+        <div className="w-16 h-0.5 bg-gradient-to-r from-primary to-primary/0 rounded-full" />
       </div>
     </div>
   )
