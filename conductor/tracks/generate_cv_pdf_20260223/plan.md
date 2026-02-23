@@ -2,7 +2,7 @@
 
 ## Phase 1: Setup & Data Preparation
 - [x] Task: Install `@react-pdf/renderer` and `qrcode.react` (for the QR code). c67f7bd
-- [ ] Task: Create a data-extraction utility to pull metrics and experience from `product.md` and portfolio data files.
+- [x] Task: Create a data-extraction utility to pull metrics and experience from `product.md` and portfolio data files. 355cfa9
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup & Data Preparation' (Protocol in workflow.md)
 
 ## Phase 2: CV Component Design (React-PDF)
