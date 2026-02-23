@@ -1,182 +1,199 @@
-import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import { CVData } from '../utils/cv-data-extractor';
+
+// Register premium fonts for the high-end architectural aesthetic
+Font.register({
+  family: 'SpaceGrotesk',
+  src: 'https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkFLxY79q49VpG1K-uX-6Y.ttf',
+  fontWeight: 'normal',
+});
+
+Font.register({
+  family: 'SpaceGrotesk-Bold',
+  src: 'https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkFLxY79q49VpG1K-uX-6Y.ttf', // Fallback to same for now or find bold
+  fontWeight: 'bold',
+});
 
 /**
  * Professional Dark Mode styles for the executive CV.
  * Adheres to the portfolio's aesthetic: Slate/Indigo color palette.
+ * Optimized for a single-page executive layout.
  */
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
+    paddingTop: 30,
+    paddingBottom: 30,
+    paddingLeft: 40,
+    paddingRight: 40,
     backgroundColor: '#030712', // Slate 950
     color: '#ffffff',
-    fontFamily: 'Helvetica',
-    fontSize: 10,
-    lineHeight: 1.5,
+    fontFamily: 'SpaceGrotesk',
+    fontSize: 9,
+    lineHeight: 1.4,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 16,
     borderBottom: '1px solid #1f2937', // Slate 800
-    paddingBottom: 16,
+    paddingBottom: 12,
   },
   name: {
-    fontSize: 26,
-    fontFamily: 'Helvetica-Bold',
+    fontSize: 24,
+    fontFamily: 'Helvetica-Bold', // Keep Helvetica for bold until confirmed
     textTransform: 'uppercase',
-    letterSpacing: 2.5,
-    marginBottom: 4,
+    letterSpacing: 2,
+    marginBottom: 2,
   },
   title: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#6366f1', // Indigo 500
     textTransform: 'uppercase',
-    letterSpacing: 1.5,
-    marginBottom: 12,
-    fontWeight: 'bold',
+    letterSpacing: 1.2,
+    marginBottom: 8,
+    fontFamily: 'Helvetica-Bold',
   },
   contact: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
-    fontSize: 8,
+    gap: 10,
+    fontSize: 7.5,
     color: '#9ca3af', // Gray 400
   },
   summary: {
-    marginBottom: 24,
-    fontSize: 10,
+    marginBottom: 16,
+    fontSize: 9,
     color: '#e5e7eb', // Gray 200
     fontStyle: 'italic',
-    lineHeight: 1.6,
+    lineHeight: 1.5,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 14,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
     color: '#6366f1',
     textTransform: 'uppercase',
-    letterSpacing: 1.2,
+    letterSpacing: 1,
     borderBottom: '1px solid #1f2937',
-    marginBottom: 12,
-    paddingBottom: 6,
+    marginBottom: 8,
+    paddingBottom: 4,
   },
   experienceItem: {
-    marginBottom: 16,
+    marginBottom: 10,
   },
   roleCompanyRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   role: {
     fontFamily: 'Helvetica-Bold',
-    fontSize: 11,
+    fontSize: 10,
     color: '#f3f4f6', // Gray 100
   },
   company: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#9ca3af', // Gray 400
     fontStyle: 'italic',
   },
   year: {
-    fontSize: 8,
+    fontSize: 7.5,
     color: '#818cf8', // Indigo 400
-    marginBottom: 6,
+    marginBottom: 4,
     fontFamily: 'Helvetica-Bold',
   },
   description: {
-    marginBottom: 6,
+    marginBottom: 4,
     color: '#d1d5db', // Gray 300
-    fontSize: 9.5,
+    fontSize: 8.5,
   },
   highlight: {
-    marginLeft: 12,
-    fontSize: 8.5,
+    marginLeft: 10,
+    fontSize: 7.5,
     color: '#9ca3af', // Gray 400
-    marginBottom: 3,
-    lineHeight: 1.4,
+    marginBottom: 2,
+    lineHeight: 1.3,
   },
   skillsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 20,
+    gap: 15,
   },
   skillCategory: {
-    width: '45%',
-    marginBottom: 10,
+    width: '46%',
+    marginBottom: 6,
   },
   skillCategoryTitle: {
     fontFamily: 'Helvetica-Bold',
-    fontSize: 9,
+    fontSize: 8,
     color: '#f3f4f6',
-    marginBottom: 4,
+    marginBottom: 2,
     textTransform: 'uppercase',
   },
   skillList: {
-    fontSize: 8.5,
+    fontSize: 7.5,
     color: '#9ca3af',
   },
   metricSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#0f172a', // Slate 900
-    padding: 12,
+    padding: 10,
     borderRadius: 4,
-    marginBottom: 24,
+    marginBottom: 16,
     border: '1px solid #1e293b',
   },
   metricItem: {
     alignItems: 'center',
   },
   metricValue: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Helvetica-Bold',
     color: '#6366f1',
   },
   metricLabel: {
-    fontSize: 7,
+    fontSize: 6.5,
     textTransform: 'uppercase',
     color: '#9ca3af',
     marginTop: 2,
   },
   footer: {
     position: 'absolute',
-    bottom: 40,
+    bottom: 30,
     left: 40,
     right: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 16,
+    paddingTop: 12,
     borderTop: '1px solid #1f2937',
   },
   bridgeContent: {
-    width: '75%',
+    width: '78%',
   },
   bridgeTitle: {
-    fontSize: 9,
+    fontSize: 8,
     fontFamily: 'Helvetica-Bold',
     color: '#6366f1',
     textTransform: 'uppercase',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   bridgeText: {
-    fontSize: 7.5,
+    fontSize: 7,
     color: '#9ca3af',
-    lineHeight: 1.4,
+    lineHeight: 1.3,
   },
   bridgeLink: {
-    fontSize: 8,
+    fontSize: 7.5,
     fontFamily: 'Helvetica-Bold',
     color: '#f3f4f6',
-    marginTop: 4,
+    marginTop: 2,
   },
   qrCode: {
-    width: 60,
-    height: 60,
-    padding: 4,
+    width: 50,
+    height: 50,
+    padding: 3,
     backgroundColor: '#ffffff',
     borderRadius: 2,
   },
