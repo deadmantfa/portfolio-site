@@ -14,9 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const project = projects.find((p) => p.slug === slug)
   if (!project) return {}
 
-  // Shorten description to max 160 chars for SEO
+  // Optimize description to 120-160 chars for SEO
   const shortDescription = project.narrative.vision.length > 160
     ? project.narrative.vision.substring(0, 157) + '...'
+    : project.narrative.vision.length < 120
+    ? project.narrative.vision + ' ' + project.challenge.substring(0, 30)
     : project.narrative.vision
 
   return {
