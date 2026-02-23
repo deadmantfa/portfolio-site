@@ -12,11 +12,11 @@
 - [x] Task: Refine the layout to strictly adhere to the 1-page executive format. 3cc09ad
 - [x] Task: Conductor - User Manual Verification 'Phase 2: CV Component Design (React-PDF)' (Protocol in workflow.md) fb930ac
 
-## Phase 3: PDF Generation & Integration
+## Phase 3: PDF Generation & Integration [checkpoint: 811c7ca]
 - [x] Task: Create a script/utility to generate the PDF file and save it to `public/CV/Wenceslaus-Dsilva-2026.pdf`. e806283
 - [x] Task: Implement a downloadable button or link in the portfolio UI (e.g., in the Navigation or Footer). 84d4727
 - [x] Task: Ensure the PDF generation is integrated into the build process or accessible via a dedicated route. 314b94b
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: PDF Generation & Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: PDF Generation & Integration' (Protocol in workflow.md) 6476173
 
 ## Phase 4: Final Polish & Verification
 - [ ] Task: Conduct a final visual audit of the generated PDF (spacing, typography, alignment).
