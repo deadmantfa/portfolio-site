@@ -5,6 +5,7 @@ import EditorialReveal from './EditorialReveal'
 import { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import { Linkedin } from 'lucide-react'
+import Image from 'next/image'
 
 export { TestimonialsSection }
 
@@ -12,9 +13,10 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-function TestimonialCard({ quote, name, title, company, initials, linkedinUrl }: { quote: string; name: string; title: string; company: string; initials: string; linkedinUrl?: string }) {
+function TestimonialCard({ quote, name, title, company, initials, linkedinUrl, imagePath }: { quote: string; name: string; title: string; company: string; initials: string; linkedinUrl?: string; imagePath?: string }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [hasAnimated, setHasAnimated] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
     if (!cardRef.current || hasAnimated || prefersReducedMotion()) return
@@ -54,8 +56,21 @@ function TestimonialCard({ quote, name, title, company, initials, linkedinUrl }:
 
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-grow">
-          <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-            <span className="text-sm font-mono font-bold text-primary">{initials}</span>
+          {/* Avatar with image fallback */}
+          <div className="relative size-12 rounded-full flex-shrink-0 overflow-hidden">
+            {imagePath && !imageError ? (
+              <Image
+                src={imagePath}
+                alt={name}
+                fill
+                className="object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="size-full bg-primary/20 flex items-center justify-center">
+                <span className="text-sm font-mono font-bold text-primary">{initials}</span>
+              </div>
+            )}
           </div>
           <div className="flex-grow">
             <p className="text-white font-serif italic">{name}</p>
@@ -107,6 +122,7 @@ function TestimonialsSection() {
             company={testimonial.company}
             initials={testimonial.initials}
             linkedinUrl={testimonial.linkedinUrl}
+            imagePath={testimonial.imagePath}
           />
         ))}
       </div>

@@ -5,6 +5,7 @@ export interface Testimonial {
   company: string
   initials: string
   linkedinUrl?: string
+  imagePath?: string // e.g., '/images/testimonials/gavin-fonseca.jpg'
 }
 
 export const testimonials: Testimonial[] = [
@@ -15,6 +16,7 @@ export const testimonials: Testimonial[] = [
     company: 'TCS',
     initials: 'GF',
     linkedinUrl: 'https://www.linkedin.com/in/gavinfonseca',
+    imagePath: '/images/testimonials/gavin-fonseca.jpg',
   },
   {
     quote: 'The ability to think of a tech-solution from a use-case and general application POV comes easiest to Wenceslaus. At IndieFolio Network he was responsible for the product from day 1 and his valued ideas, suggestions and implementations have helped scale the product.',
@@ -23,6 +25,7 @@ export const testimonials: Testimonial[] = [
     company: 'IndieFolio',
     initials: 'CG',
     linkedinUrl: 'https://www.linkedin.com/in/carlgeorge',
+    imagePath: '/images/testimonials/carl-george.jpg',
   },
   {
     quote: 'As IndieFolio\'s CTO, he is responsible for all tech developments. I am always in awe of how Wency keeps himself updated with all things new in tech. You can expect Wency to be one of the most loved team members as he takes care of everyone\'s needs, personally and professionally.',
@@ -31,6 +34,7 @@ export const testimonials: Testimonial[] = [
     company: 'IndieFolio',
     initials: 'KA',
     linkedinUrl: 'https://www.linkedin.com/in/kavanantani/',
+    imagePath: '/images/testimonials/kavan-antani.jpg',
   },
   {
     quote: 'IT stands for Mr. Dsilva.',
@@ -39,6 +43,7 @@ export const testimonials: Testimonial[] = [
     company: 'Emirates National Schools',
     initials: 'MA',
     linkedinUrl: 'https://www.linkedin.com/in/mohammada3/',
+    imagePath: '/images/testimonials/mohammad-al-adwan.jpg',
   },
   {
     quote: 'Wenceslaus, a go getter. Always up for a task to work on. His excitement for work is compelling, patient and cool headed. A good team player.',
@@ -47,6 +52,7 @@ export const testimonials: Testimonial[] = [
     company: 'TCS',
     initials: 'DJ',
     linkedinUrl: 'https://www.linkedin.com/in/dineshtjethwa',
+    imagePath: '/images/testimonials/dinesh-jethwa.jpg',
   },
   {
     quote: 'Wency is a proactive contributor who would make a great addition to any team. He impressed all of us by his knowledge on the subject, and the way he used to tackle any problem. He is innovative, dedicated and a bright person.',
@@ -55,5 +61,6 @@ export const testimonials: Testimonial[] = [
     company: 'NielsenIQ',
     initials: 'HM',
     linkedinUrl: 'https://www.linkedin.com/in/harshidi-mudaliar-657b8850/',
+    imagePath: '/images/testimonials/harshidi-mudaliar.jpg',
   },
 ]
