@@ -27,7 +27,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [ ] **Track: Deploy Portfolio to Vercel**
 *Link: [./tracks/deploy_portfolio_to_vercel_20260219/](./tracks/deploy_portfolio_to_vercel_20260219/)*
 
----
 
-- [x] **Track: Optimize Portfolio Performance & Accessibility**
-*Link: [./tracks/seo_perf_optimization_20260222/](./tracks/seo_perf_optimization_20260222/)*
