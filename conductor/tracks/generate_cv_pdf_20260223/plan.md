@@ -6,7 +6,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Setup & Data Preparation' (Protocol in workflow.md) f2c3fec
 
 ## Phase 2: CV Component Design (React-PDF)
-- [ ] Task: Implement the `CVDocument` base component with professional Dark Mode styling and premium typography.
+- [x] Task: Implement the `CVDocument` base component with professional Dark Mode styling and premium typography. 03f97af
 - [ ] Task: Create modular sub-components for the Header (Name, Title, Contact), Summary, Core Metrics, and Experience.
 - [ ] Task: Implement the "Interactive Bridge" section with a generated QR code and portfolio link.
 - [ ] Task: Refine the layout to strictly adhere to the 1-page executive format.
