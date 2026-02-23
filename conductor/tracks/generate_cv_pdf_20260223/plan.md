@@ -7,7 +7,7 @@
 
 ## Phase 2: CV Component Design (React-PDF)
 - [x] Task: Implement the `CVDocument` base component with professional Dark Mode styling and premium typography. 03f97af
-- [ ] Task: Create modular sub-components for the Header (Name, Title, Contact), Summary, Core Metrics, and Experience.
+- [x] Task: Create modular sub-components for the Header (Name, Title, Contact), Summary, Core Metrics, and Experience. 4e7e7e9
 - [ ] Task: Implement the "Interactive Bridge" section with a generated QR code and portfolio link.
 - [ ] Task: Refine the layout to strictly adhere to the 1-page executive format.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: CV Component Design (React-PDF)' (Protocol in workflow.md)
