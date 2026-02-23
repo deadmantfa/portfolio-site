@@ -18,76 +18,93 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
   const glowRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLParagraphElement>(null)
   const authorRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<gsap.core.Timeline | null>(null)
   const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
+    // Kill any existing timeline
+    if (timelineRef.current) {
+      timelineRef.current.kill()
+      timelineRef.current = null
+    }
+
     if (!cardRef.current || !quoteRef.current || !authorRef.current || !glowRef.current) return
 
     if (isActive) {
       if (!prefersReducedMotion()) {
-        // Blur reveal animation - card entrance with blur clearing
-        gsap.timeline()
-          // Main card: blur fade + scale entrance
-          .to(
-            cardRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              backdropFilter: 'blur(0px)',
-              duration: 0.7,
-              ease: 'power2.out',
-            },
-            0
-          )
-          // Glow pulse effect
-          .to(
-            glowRef.current,
-            {
-              opacity: 0.8,
-              scale: 1.2,
-              duration: 0.5,
-              ease: 'power2.out',
-            },
-            0.1
-          )
-          .to(
-            glowRef.current,
-            {
-              opacity: 0.3,
-              scale: 0.8,
-              duration: 1.2,
-              ease: 'sine.inOut',
-              repeat: -1,
-            },
-            0.6
-          )
-          // Quote staggered entrance
-          .to(
-            quoteRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: 'power2.out',
-            },
-            0.15
-          )
-          // Author staggered entrance
-          .to(
-            authorRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: 'power2.out',
-            },
-            0.25
-          )
+        // Create new timeline for this card
+        timelineRef.current = gsap.timeline()
+
+        // Main card: blur fade + scale entrance
+        timelineRef.current.to(
+          cardRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            backdropFilter: 'blur(0px)',
+            duration: 0.7,
+            ease: 'power2.out',
+          },
+          0
+        )
+
+        // Subtle glow pulse - very minimal
+        timelineRef.current.to(
+          glowRef.current,
+          {
+            opacity: 0.5,
+            scale: 1.1,
+            duration: 0.4,
+            ease: 'power2.out',
+          },
+          0.1
+        )
+
+        // Very subtle breathing glow - low opacity, small scale range
+        timelineRef.current.to(
+          glowRef.current,
+          {
+            opacity: 0.15,
+            scale: 0.95,
+            duration: 2.5,
+            ease: 'sine.inOut',
+            repeat: -1,
+            repeatDelay: 0.2,
+          },
+          0.5
+        )
+
+        // Quote entrance
+        timelineRef.current.to(
+          quoteRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          0.15
+        )
+
+        // Author entrance
+        timelineRef.current.to(
+          authorRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          0.25
+        )
       } else {
-        cardRef.current.style.opacity = '1'
-        cardRef.current.style.transform = 'translateY(0) scale(1)'
-        cardRef.current.style.backdropFilter = 'blur(0px)'
+        // Reduced motion: instant states
+        if (cardRef.current) {
+          cardRef.current.style.opacity = '1'
+          cardRef.current.style.transform = 'translateY(0) scale(1)'
+          cardRef.current.style.backdropFilter = 'blur(0px)'
+        }
         if (quoteRef.current) {
           quoteRef.current.style.opacity = '1'
           quoteRef.current.style.transform = 'translateY(0)'
@@ -97,19 +114,22 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
           authorRef.current.style.transform = 'translateY(0)'
         }
         if (glowRef.current) {
-          glowRef.current.style.opacity = '0.3'
+          glowRef.current.style.opacity = '0.15'
+          glowRef.current.style.scale = '1'
         }
       }
     } else {
+      // Inactive card - reset to hidden state
       if (!prefersReducedMotion()) {
-        // Set initial state with blur
-        gsap.set([cardRef.current, quoteRef.current, authorRef.current], {
+        gsap.set(cardRef.current, {
           opacity: 0,
           y: 12,
           scale: 0.98,
-        })
-        gsap.set(cardRef.current, {
           backdropFilter: 'blur(12px)',
+        })
+        gsap.set([quoteRef.current, authorRef.current], {
+          opacity: 0,
+          y: 12,
         })
         gsap.set(glowRef.current, {
           opacity: 0,
@@ -119,17 +139,19 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
         cardRef.current.style.opacity = '0'
         cardRef.current.style.transform = 'translateY(12px) scale(0.98)'
         cardRef.current.style.backdropFilter = 'blur(12px)'
-        if (quoteRef.current) {
-          quoteRef.current.style.opacity = '0'
-          quoteRef.current.style.transform = 'translateY(12px)'
-        }
-        if (authorRef.current) {
-          authorRef.current.style.opacity = '0'
-          authorRef.current.style.transform = 'translateY(12px)'
-        }
-        if (glowRef.current) {
-          glowRef.current.style.opacity = '0'
-        }
+        quoteRef.current.style.opacity = '0'
+        quoteRef.current.style.transform = 'translateY(12px)'
+        authorRef.current.style.opacity = '0'
+        authorRef.current.style.transform = 'translateY(12px)'
+        glowRef.current.style.opacity = '0'
+      }
+    }
+
+    // Cleanup: kill timeline when component unmounts or card becomes inactive
+    return () => {
+      if (timelineRef.current) {
+        timelineRef.current.kill()
+        timelineRef.current = null
       }
     }
   }, [isActive])
@@ -137,27 +159,28 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
   return (
     <div
       ref={cardRef}
-      className={`absolute inset-0 rounded-3xl p-8 md:p-12 flex flex-col pointer-events-auto transition-all duration-300 ${
-        isActive ? 'pointer-events-auto' : 'pointer-events-none'
+      className={`absolute inset-0 rounded-3xl p-8 md:p-12 flex flex-col transition-all duration-300 ${
+        isActive ? 'pointer-events-auto z-10' : 'pointer-events-none z-0'
       }`}
       style={{
         opacity: isActive ? 1 : 0,
         transform: isActive ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.98)',
         backdropFilter: isActive ? 'blur(0px)' : 'blur(12px)',
         background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.8) 0%, rgba(39, 39, 42, 0.6) 100%)',
-        border: '1px solid rgb(99, 102, 241, 0.15)',
-        boxShadow:
-          '0 8px 32px -4px rgba(99, 102, 241, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.08)',
+        border: '1px solid rgba(99, 102, 241, 0.15)',
+        boxShadow: isActive
+          ? '0 8px 32px -4px rgba(99, 102, 241, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.08)'
+          : '0 0px 0px 0px transparent',
       }}
     >
-      {/* Glow effect - primary blue pulse */}
+      {/* Glow effect - VERY subtle now */}
       <div
         ref={glowRef}
         className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%)',
           filter: 'blur(40px)',
-          opacity: 0.3,
+          opacity: 0,
         }}
       />
 
@@ -244,11 +267,12 @@ function TestimonialsCarousel() {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
   }, [])
 
-  // Auto-play effect
+  // Auto-play effect with proper cleanup
   useEffect(() => {
     if (prefersReducedMotion()) return
 
     const startAutoPlay = () => {
+      // Clear any existing interval
       if (autoPlayIntervalRef.current) {
         clearInterval(autoPlayIntervalRef.current)
       }
@@ -257,7 +281,7 @@ function TestimonialsCarousel() {
         if (autoPlayRef.current && !isHovering) {
           setCurrentIndex((prev) => (prev + 1) % testimonials.length)
         }
-      }, 6000) // Change slide every 6 seconds
+      }, 6000)
     }
 
     startAutoPlay()
@@ -265,6 +289,7 @@ function TestimonialsCarousel() {
     return () => {
       if (autoPlayIntervalRef.current) {
         clearInterval(autoPlayIntervalRef.current)
+        autoPlayIntervalRef.current = null
       }
     }
   }, [isHovering])
@@ -304,14 +329,18 @@ function TestimonialsCarousel() {
         {/* Slides */}
         <div className="relative h-[480px] md:h-[400px] w-full">
           {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={index} testimonial={testimonial} isActive={index === currentIndex} />
+            <TestimonialCard
+              key={`testimonial-${index}`}
+              testimonial={testimonial}
+              isActive={index === currentIndex}
+            />
           ))}
         </div>
 
         {/* Navigation Buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
           aria-label="Previous testimonial"
         >
           <ChevronLeft className="size-6 group-hover/btn:scale-110 transition-transform" />
@@ -319,17 +348,17 @@ function TestimonialsCarousel() {
 
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
           aria-label="Next testimonial"
         >
           <ChevronRight className="size-6 group-hover/btn:scale-110 transition-transform" />
         </button>
 
         {/* Dot Indicators */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
           {testimonials.map((_, index) => (
             <button
-              key={index}
+              key={`dot-${index}`}
               onClick={() => goToSlide(index)}
               className={`rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer ${
                 index === currentIndex
