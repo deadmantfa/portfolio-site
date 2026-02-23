@@ -21,5 +21,5 @@
 ## Phase 4: Final Polish & Verification
 - [x] Task: Conduct a final visual audit of the generated PDF (spacing, typography, alignment). 68e2644
 - [x] Task: Verify PDF accessibility (screen reader tagging). faa817f
-- [ ] Task: Perform a cross-device check of the download functionality.
+- [x] Task: Perform a cross-device check of the download functionality. 3e45a0a
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Verification' (Protocol in workflow.md)
