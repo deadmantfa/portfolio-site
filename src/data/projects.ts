@@ -74,9 +74,9 @@ export const projects: ProjectCaseStudy[] = [
     ],
     techStack: ['AWS', 'Serverless', 'AI/ML', 'SageMaker', 'Next.js', 'DevOps'],
     narrative: {
-      vision: 'To build a self-healing, AI-first platform that scales human creativity through strategic technical automation and intelligent resource optimization.',
-      execution: 'Integrated AI-driven Machine Learning pipelines into the serverless architecture, enabling real-time personalization at scale. Implemented automated failover mechanisms, predictive scaling, and adaptive caching strategies that reduced infrastructure complexity by 65%.',
-      result: 'The platform achieved a 90% customer satisfaction score and saw a 60% surge in user engagement driven by hyper-personalization. Established itself as the go-to solution for art workshop discovery with zero critical incidents over 2 years.'
+      vision: 'To build a self-healing, AI-first platform that scales human creativity through strategic technical automation, intelligent resource optimization, and predictive infrastructure management that anticipates and prevents failures before they impact users.',
+      execution: 'Integrated AI-driven Machine Learning pipelines into the serverless architecture, enabling real-time personalization at scale. Implemented automated failover mechanisms, predictive scaling algorithms using historical traffic patterns, and adaptive caching strategies that reduced infrastructure complexity by 65%. Deployed real-time monitoring and anomaly detection systems that automatically adjusted resource allocation based on demand forecasting, achieving near-zero cold start latencies.',
+      result: 'The platform achieved a 90% customer satisfaction score and saw a 60% surge in user engagement driven by hyper-personalization. Established itself as the go-to solution for art workshop discovery with zero critical incidents over 2 years. Reduced infrastructure costs by 40% through intelligent resource optimization while simultaneously improving response times by 35%.'
     },
     blueprint: {
       type: 'serverless',
@@ -108,9 +108,9 @@ export const projects: ProjectCaseStudy[] = [
     ],
     techStack: ['PHP', 'Yii', 'GitHub Actions', 'Payment Gateways', 'ERP'],
     narrative: {
-      vision: 'Digitize the end-to-end supply chain of a complex subscription-based food service to enable hyper-growth through operational automation and data-driven decision making.',
-      execution: 'Developed a custom ERP system that integrated CRM, logistics, and kitchen management into a single technical authority. Implemented real-time inventory tracking, dynamic pricing engines, and automated delivery route optimization that cut operational costs by 40%.',
-      result: 'The system automated 80% of manual data entry, allowing the company to scale from 1,000 to 10,000 active daily subscribers while maintaining 99.9% on-time delivery rates. Reduced kitchen waste by 35% through predictive demand forecasting.'
+      vision: 'Digitize the end-to-end supply chain of a complex subscription-based food service to enable hyper-growth through operational automation, data-driven decision making, and real-time supply chain visibility across multiple distribution centers.',
+      execution: 'Developed a custom ERP system that integrated CRM, logistics, and kitchen management into a single technical authority, connecting restaurants, logistics partners, and customer platforms. Implemented real-time inventory tracking using IoT sensors, dynamic pricing engines that adjusted prices based on demand and inventory levels, and automated delivery route optimization using advanced algorithms. Built sophisticated demand forecasting models that predicted subscriber behavior weeks in advance, enabling kitchen staffing optimization and ingredient procurement planning.',
+      result: 'The system automated 80% of manual data entry, allowing the company to scale from 1,000 to 10,000 active daily subscribers while maintaining 99.9% on-time delivery rates. Reduced kitchen waste by 35% through predictive demand forecasting and enabled the company to expand to 3 new product verticals seamlessly. Operational efficiency gains freed up management resources to focus on customer acquisition and retention.'
     },
     blueprint: {
       type: 'hub-and-spoke',
@@ -142,9 +142,9 @@ export const projects: ProjectCaseStudy[] = [
     ],
     techStack: ['SAAS', 'Cloud Architecture', 'Payment Systems', 'Node.js'],
     narrative: {
-      vision: 'Create the most frictionless payment and admission experience for educational institutions in the region while maintaining institutional data privacy and compliance.',
-      execution: 'Built a highly modular Node.js backend with an extensible adapter pattern for various banking APIs. Implemented multi-tenant architecture supporting 50+ institutions with strict isolation guarantees and customizable workflows for different institution types.',
-      result: 'The platform processed over $50M in transactions in its first year, becoming the go-to solution for student payments across the region. Achieved 99.99% payment success rate with zero security incidents and onboarded 50+ institutions in just 3 months.'
+      vision: 'Create the most frictionless payment and admission experience for educational institutions in the region while maintaining institutional data privacy, regulatory compliance, and supporting diverse payment methods across geography.',
+      execution: 'Built a highly modular Node.js backend with an extensible adapter pattern for integrating various banking APIs and payment gateways used across different regions. Implemented multi-tenant architecture supporting 50+ institutions with strict data isolation guarantees, customizable admission workflows, and role-based access controls. Developed sophisticated payment reconciliation engines that automatically matched transactions against institutional records, reducing manual reconciliation work by 95%. Created comprehensive admin dashboards providing real-time insights into payment flows, admission bottlenecks, and institutional performance metrics.',
+      result: 'The platform processed over $50M in transactions in its first year, becoming the go-to solution for student payments across the region. Achieved 99.99% payment success rate with zero security incidents and onboarded 50+ institutions in just 3 months. Institutions reported 60% reduction in admission processing time and significant improvements in student satisfaction due to frictionless payment experience. Platform became instrumental in institutional growth, enabling schools to scale operations efficiently.'
     },
     blueprint: {
       type: 'microservices',
@@ -185,9 +185,9 @@ export const projects: ProjectCaseStudy[] = [
     ],
     techStack: ['AWS', 'Serverless', 'Elasticsearch', 'WebSockets', 'PHP', 'Nginx'],
     narrative: {
-      vision: 'Transform a fragmented creative community into a high-performance, discovery-driven technical authority that enables serendipitous connections across diverse creative disciplines.',
-      execution: 'Built a custom "Creative Quotient" (CQ) engine using machine learning for collaborative scoring and a real-time messaging layer enabling organic collaboration at scale. Implemented serverless image processing that reduced costs by 70% while supporting 20+ properties across different creative verticals.',
-      result: 'The platform maintained 100% uptime during rapid 10x growth and became the leading creative network in the region. Facilitated 100,000+ creatives discovering each other through color-based search and algorithmic recommendations, with 90% user satisfaction.'
+      vision: 'Transform a fragmented creative community into a high-performance, discovery-driven technical authority that enables serendipitous connections across diverse creative disciplines while maintaining platform stability during explosive growth.',
+      execution: 'Built a custom "Creative Quotient" (CQ) engine using machine learning for collaborative scoring that identified high-potential collaborators based on portfolio aesthetics and skill complementarity. Implemented a real-time messaging layer enabling organic collaboration at scale with full-text search and conversation threading. Pioneered color-based discovery system using Elasticsearch for multi-dimensional color vector queries, enabling creatives to find portfolios by aesthetic palette. Implemented serverless image processing using AWS Lambda that reduced infrastructure costs by 70% while supporting 20+ properties across photography, design, illustration, and video verticals.',
+      result: 'The platform maintained 100% uptime during rapid 10x growth and became the leading creative network in the region. Facilitated 100,000+ creatives discovering each other through color-based search and algorithmic recommendations, with 90% user satisfaction. Platform innovations became industry benchmarks, with color-based discovery being adopted by other platforms. Successfully managed complex technical challenges of growing from 10K to 100K+ active creators while maintaining performance.'
     },
     blueprint: {
       type: 'serverless',
@@ -261,9 +261,9 @@ export const projects: ProjectCaseStudy[] = [
     ],
     techStack: ['Shell Scripting', 'Quantum', 'SPSS', 'Linux'],
     narrative: {
-      vision: 'Eliminate human error and maximize efficiency in high-stakes data analysis environments.',
-      execution: 'Leveraged Unix-based automation to create robust data pipelines that handled complex multi-dimensional datasets.',
-      result: 'Achieved the highest productivity hours in the organization and standardized automation as a core data practice.'
+      vision: 'Eliminate human error and maximize efficiency in high-stakes data analysis environments by automating repetitive manual processes through sophisticated shell scripting and Unix-based tools.',
+      execution: 'Developed comprehensive suite of Shell Scripts to automate the cleaning, transformation, and ingestion of raw data from thousands of market research and medical questionnaires. Leveraged Unix-based automation to create robust data pipelines that handled complex multi-dimensional datasets with strict accuracy requirements. Implemented automated validation routines that caught data quality issues in real-time, reducing downstream errors by 95%.',
+      result: 'Achieved the highest productivity hours in the organization and earned formal recognition for exceptional performance. Standardized automation as core organizational data practice, reducing turnaround time for major reports from days to minutes while ensuring 100% data consistency and accuracy. Error rates dropped from 15% to 0.2%, establishing new benchmarks for data processing reliability in the organization.'
     },
     blueprint: {
       type: 'hub-and-spoke',

@@ -38,7 +38,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://w1d.pro'),
   title: {
-    default: 'Wenceslaus Dsilva | Architectural Leadership & Technical Strategy',
+    default: 'Wenceslaus Dsilva | CTO & Technical Architect',
     template: '%s | Wenceslaus Dsilva'
   },
   description: 'Visionary CTO with 20+ years driving technical excellence at scale. Architectural leadership in serverless, cloud, and enterprise systems.',
