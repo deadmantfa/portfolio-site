@@ -16,6 +16,7 @@ To create a high-end, "Architectural Authority" portfolio website that positions
 - **Dynamic Skill Cloud:** A reactive visualization of a diverse tech stack including Python, PHP, AWS, Angular, and Serverless frameworks.
 - **Architectural Deep-Dives:** A dynamic system of project case studies (including recovered legacy highlights like IndieFolio and ePaisa) featuring interactive "Blueprint" 3D visualizations and comprehensive Architectural Decision Records (ADRs) to prove strategic technical depth.
 - **Architectural Handshake:** A high-end contact interface integrated with a final "Connection" 3D scene, providing a professional and immersive conclusion to the user journey.
+- **Automated Executive CV:** A programmatically generated 1-page PDF CV that mirrors the portfolio's data and aesthetic, bridging the digital and physical experience via an integrated QR code.
 
 ## Unique Value Proposition (The Hook)
 **The Visionary Architect:** Wenceslaus is presented not just as a manager, but as a leader who understands the "how" of deep system design and the "why" of strategic business alignment.

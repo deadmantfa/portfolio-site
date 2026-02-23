@@ -28,3 +28,8 @@
 - **Next.js Metadata & SEO:** Dynamic sitemap generation, robots.txt, and automated professional JSON-LD structured data.
 - **Optimized Typography:** Zero-CLS font delivery using `next/font/google`.
 
+## Automated Deliverables
+- **@react-pdf/renderer:** For programmatic, data-driven generation of the professional executive CV.
+- **qrcode:** Library for generating high-resolution QR codes to bridge digital and physical artifacts.
+- **tsx:** For executing TypeScript generation scripts within the Node.js build pipeline.
+
