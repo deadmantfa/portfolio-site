@@ -4,11 +4,13 @@ import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import gsap from 'gsap'
 
-type Section = 'epochs' | 'skills' | 'contact'
+type Section = 'epochs' | 'skills' | 'lab' | 'signals' | 'contact'
 
 const sectionLabels: Record<Section, string> = {
   epochs: 'Epochs',
   skills: 'Ecosystem',
+  lab: 'Lab',
+  signals: 'Signals',
   contact: 'Contact',
 }
 
@@ -24,6 +26,8 @@ const Navigation = () => {
   const linkRefs = useRef<Record<Section, HTMLAnchorElement | null>>({
     epochs: null,
     skills: null,
+    lab: null,
+    signals: null,
     contact: null,
   })
 
@@ -41,7 +45,7 @@ const Navigation = () => {
 
   // IntersectionObserver for active section detection
   useEffect(() => {
-    const sections: Section[] = ['epochs', 'skills', 'contact']
+    const sections: Section[] = ['epochs', 'skills', 'lab', 'signals', 'contact']
     const observers = sections.map((section) => {
       const element = document.getElementById(section)
       if (!element) return null

@@ -12,6 +12,8 @@ import dynamic from 'next/dynamic'
 import { ProfileGlitch } from '@/components/ProfileGlitch'
 
 const SkillsGrid = dynamic(() => import('@/components/SkillsGrid').then(m => m.SkillsGrid), { ssr: false })
+const OpenSourceShowcase = dynamic(() => import('@/components/OpenSourceShowcase').then(m => m.OpenSourceShowcase), { ssr: false })
+const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection').then(m => m.TestimonialsSection), { ssr: false })
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false })
 const SocialLinks = dynamic(() => import('@/components/SocialLinks'), { ssr: false })
 
@@ -233,7 +235,16 @@ export default function Home() {
             </div>
           </div>
         </section>
-        
+
+        <section
+          id="lab"
+          className="relative py-24 px-8 flex flex-col items-center bg-transparent"
+        >
+          <div className="max-w-7xl w-full">
+            <OpenSourceShowcase />
+          </div>
+        </section>
+
         <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative bg-transparent">
           <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
             <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
@@ -294,7 +305,16 @@ export default function Home() {
             </div>
           </div>
         </section>
-        
+
+        <section
+          id="signals"
+          className="relative py-24 px-8 flex flex-col items-center bg-transparent"
+        >
+          <div className="max-w-7xl w-full">
+            <TestimonialsSection />
+          </div>
+        </section>
+
         <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-8 text-center bg-transparent relative pointer-events-auto py-12">  
           <EditorialReveal direction="up" className="mb-8">
             <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-tight">Let&apos;s <br/> <span className="text-primary pr-4">Connect.</span></h2>

@@ -129,5 +129,25 @@ export const skillModules: SkillModule[] = [
     name: 'SageMaker',
     category: 'infrastructure',
     importance: 'Deploying custom ML models to drive AI-first user personalization.'
+  },
+  {
+    name: 'Docker',
+    category: 'infrastructure',
+    importance: 'Containerizing applications for consistent, portable deployment environments.'
+  },
+  {
+    name: 'Kubernetes',
+    category: 'infrastructure',
+    importance: 'Orchestrating containerized workloads for resilient, auto-scaling production systems.'
+  },
+  {
+    name: 'Redis',
+    category: 'infrastructure',
+    importance: 'Powering sub-millisecond caching and real-time pub/sub for high-throughput systems.'
+  },
+  {
+    name: 'PostgreSQL',
+    category: 'infrastructure',
+    importance: 'Mastering advanced relational modeling, JSONB, and full-text search at scale.'
   }
 ]

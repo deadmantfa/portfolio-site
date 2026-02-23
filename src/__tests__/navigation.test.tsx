@@ -25,6 +25,8 @@ describe('Navigation Component', () => {
     render(<Navigation />)
     expect(screen.getByText(/Epochs/i)).toBeInTheDocument()
     expect(screen.getByText(/Ecosystem/i)).toBeInTheDocument()
+    expect(screen.getByText(/Lab/i)).toBeInTheDocument()
+    expect(screen.getByText(/Signals/i)).toBeInTheDocument()
     expect(screen.getByText(/Contact/i)).toBeInTheDocument()
   })
 
@@ -69,12 +71,12 @@ describe('Navigation Component', () => {
   it('inactive links have correct text color classes', () => {
     render(<Navigation />)
     const epochsLink = screen.getByText('Epochs').closest('a')
-    expect(epochsLink).toHaveClass('text-foreground/40')
+    expect(epochsLink).toHaveClass('text-foreground/60')
   })
 
   it('CV button has correct styling classes', () => {
     render(<Navigation />)
-    const cvLink = screen.getByLabelText('View Curriculum Vitae (PDF)')
+    const cvLink = screen.getByLabelText('CV - Curriculum Vitae')
     expect(cvLink).toHaveClass('bg-white/10')
     expect(cvLink).toHaveClass('hover:bg-primary')
     expect(cvLink).toHaveClass('active:scale-95')

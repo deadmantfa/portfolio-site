@@ -57,10 +57,10 @@ vi.mock('@/components/SkillModal', () => ({
 }))
 
 describe('SkillsGrid', () => {
-  it('renders all 25 skill cards when filter is "all"', () => {
+  it('renders all 29 skill cards when filter is "all"', () => {
     render(<SkillsGrid />)
     const cards = screen.getAllByTestId('skill-card')
-    expect(cards).toHaveLength(25)
+    expect(cards).toHaveLength(29)
   })
 
   it('renders 5 filter tabs with skill counts', () => {

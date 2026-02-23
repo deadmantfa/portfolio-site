@@ -47,6 +47,12 @@ vi.mock('@/components/ContactForm', () => ({
 vi.mock('@/components/SocialLinks', () => ({
   default: () => <div data-testid="mock-social-links" />
 }))
+vi.mock('@/components/OpenSourceShowcase', () => ({
+  OpenSourceShowcase: () => <div data-testid="mock-opensource-showcase" />
+}))
+vi.mock('@/components/TestimonialsSection', () => ({
+  TestimonialsSection: () => <div data-testid="mock-testimonials-section" />
+}))
 
 describe('Home Page', () => {
   it('renders the 3D canvas container and key components', () => {

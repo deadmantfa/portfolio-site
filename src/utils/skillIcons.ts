@@ -2,6 +2,7 @@ import {
   Cloud, Code2, Atom, Box, Globe, Zap, FileCode, FileCode2, GitBranch,
   Crown, Brain, Lightbulb, Users, Target, Search, Layers, Terminal,
   Flame, Triangle, Smartphone, Shield, Radio, Database, Server, Cpu,
+  Container, Network, DatabaseZap, HardDrive,
 } from 'lucide-react'
 import { type LucideIcon } from 'lucide-react'
 
@@ -31,6 +32,10 @@ export const SKILL_ICONS: Record<string, LucideIcon> = {
   'MySQL': Database,
   'Node.js': Server,
   'SageMaker': Cpu,
+  'Docker': Container,
+  'Kubernetes': Network,
+  'Redis': DatabaseZap,
+  'PostgreSQL': HardDrive,
 }
 
 export function getSkillIcon(name: string): LucideIcon {
