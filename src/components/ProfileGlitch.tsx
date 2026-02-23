@@ -222,7 +222,7 @@ function ProfileGlitch({
           >
             <Image
               src={src}
-              alt=""
+              alt={alt}
               fill
               sizes="(max-width: 768px) 128px, 192px"
               className="object-cover"

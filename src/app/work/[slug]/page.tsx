@@ -14,24 +14,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const project = projects.find((p) => p.slug === slug)
   if (!project) return {}
 
+  // Shorten description to max 160 chars for SEO
+  const shortDescription = project.narrative.vision.length > 160
+    ? project.narrative.vision.substring(0, 157) + '...'
+    : project.narrative.vision
+
   return {
-    title: `${project.company} | ${project.role}`,
-    description: `${project.narrative.vision} - ${project.challenge}`,
+    title: `${project.company} | CTO`,
+    description: shortDescription,
     keywords: [...project.techStack, project.role, project.company, 'Software Architecture', 'Case Study'],
     alternates: {
       canonical: `https://w1d.pro/work/${slug}`,
     },
     openGraph: {
-      title: `${project.company} - Architectural Case Study`,
-      description: project.narrative.vision,
+      title: `${project.company} - Case Study`,
+      description: shortDescription,
       type: 'article',
       section: 'Technology',
       tags: project.techStack,
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${project.company} | Wenceslaus Dsilva`,
-      description: project.impact,
+      title: `${project.company} | CTO`,
+      description: project.impact.length > 120 ? project.impact.substring(0, 117) + '...' : project.impact,
     }
   }
 }

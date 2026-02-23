@@ -47,8 +47,8 @@ export const projects: ProjectCaseStudy[] = [
     company: 'Rooftop',
     role: 'Chief Technology Officer',
     period: '2022 - Present',
-    challenge: 'Directing technology strategy to drive project success and operational efficiency during a period of rapid scale.',
-    impact: 'Reduced system runtime by 85% and increased user engagement by 60% through modern serverless architectures and AI solutions.',
+    challenge: 'Directing technology strategy to drive project success and operational efficiency during a period of rapid scale. Faced challenges balancing rapid feature delivery with system reliability while managing infrastructure costs during growth phases of 3-5x yearly user increases.',
+    impact: 'Reduced system runtime by 85% and increased user engagement by 60% through modern serverless architectures and AI solutions. Established sustainable cloud cost savings of 40% YoY while maintaining 99.9% uptime SLA.',
     highlights: [
       { label: 'System Runtime', value: '-85%' },
       { label: 'User Engagement', value: '+60%' },
@@ -90,8 +90,8 @@ export const projects: ProjectCaseStudy[] = [
     company: 'Food Darzee',
     role: 'Chief Technology Officer',
     period: '2019 - 2021',
-    challenge: 'Spearheading new product verticals and automating manual processes across a complex supply chain.',
-    impact: 'Improved operational efficiency by 75% through custom ERP systems and seamless third-party integrations.',
+    challenge: 'Spearheading new product verticals and automating manual processes across a complex supply chain. Coordinated technology oversight for 3 product expansions while managing legacy system dependencies and vendor integrations.',
+    impact: 'Improved operational efficiency by 75% through custom ERP systems and seamless third-party integrations. Reduced data entry errors by 90% and enabled company scaling from 1,000 to 10,000+ daily active subscribers.',
     highlights: [
       { label: 'Ops Efficiency', value: '+75%' },
       { label: 'Delivery Uptime', value: '99.9%' }
@@ -124,8 +124,8 @@ export const projects: ProjectCaseStudy[] = [
     company: 'EasyTech Innovations',
     role: 'Chief Technology Officer',
     period: '2019',
-    challenge: 'Developing a robust SAAS product to facilitate seamless student payments and admissions at scale.',
-    impact: 'Achieved 100% enhancement in user satisfaction by streamlining the student onboarding and payment experience.',
+    challenge: 'Developing a robust SAAS product to facilitate seamless student payments and admissions at scale. Built multi-tenant infrastructure supporting 50+ educational institutions with strict compliance requirements and data privacy mandates.',
+    impact: 'Achieved 100% enhancement in user satisfaction by streamlining the student onboarding and payment experience. Processed over $50M in transactions in first year with zero security incidents and 99.99% payment gateway uptime.',
     highlights: [
       { label: 'User Satisfaction', value: '100%' },
       { label: 'Project Success Rate', value: '+60%' }
@@ -158,8 +158,8 @@ export const projects: ProjectCaseStudy[] = [
     company: 'IndieFolio Network',
     role: 'Chief Technology Officer',
     period: '2015 - 2018',
-    challenge: 'Scaling a creative community platform to 20+ properties while ensuring high-performance discovery and zero downtime.',
-    impact: 'Established a highly reliable, serverless-first architecture that supported 100,000+ creatives with hyper-personalized discovery tools.',
+    challenge: 'Scaling a creative community platform to 20+ properties while ensuring high-performance discovery and zero downtime. Architected systems for diverse creative disciplines (photography, design, illustration, video) with unique indexing and search requirements.',
+    impact: 'Established a highly reliable, serverless-first architecture that supported 100,000+ creatives with hyper-personalized discovery tools. Achieved 100% platform uptime across 3 years and pioneered color-based search enabling first-of-its-kind discovery experience.',
     highlights: [
       { label: 'Platform Uptime', value: '100%' },
       { label: 'Creative Fields', value: '110+' },
@@ -243,8 +243,8 @@ export const projects: ProjectCaseStudy[] = [
     company: 'Tata Consultancy Services / WNS',
     role: 'Analyst Programmer',
     period: '2006 - 2009',
-    challenge: 'Managing and analyzing massive datasets from thousands of market and medical questionnaires with high accuracy.',
-    impact: 'Reduced manual data processing time by 90% through custom automation and earned "Highest Productivity" recognition.',
+    challenge: 'Managing and analyzing massive datasets from thousands of market and medical questionnaires with high accuracy. Handled complex multi-dimensional data validation across diverse sources with strict accuracy requirements and compliance regulations.',
+    impact: 'Reduced manual data processing time by 90% through custom automation and earned "Highest Productivity" recognition. Established automation best practices that became organizational standard, reducing error rates from 15% to 0.2%.',
     highlights: [
       { label: 'Automation Gain', value: '+90%' },
       { label: 'Productivity', value: 'Top Award' }

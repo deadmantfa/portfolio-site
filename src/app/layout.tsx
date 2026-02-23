@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     default: 'Wenceslaus Dsilva | Architectural Leadership & Technical Strategy',
     template: '%s | Wenceslaus Dsilva'
   },
-  description: 'Wenceslaus Dsilva is a visionary CTO and Software Architect with 20+ years of experience in technical leadership, system design, and building scalable enterprise solutions.',
+  description: 'Visionary CTO with 20+ years driving technical excellence at scale. Architectural leadership in serverless, cloud, and enterprise systems.',
   keywords: ['CTO', 'Chief Technology Officer', 'Software Architect', 'Technical Leadership', 'System Design', 'Scalable Systems', 'Wenceslaus Dsilva', 'Cloud Architecture', 'Enterprise Software'],
   authors: [{ name: 'Wenceslaus Dsilva' }],
   creator: 'Wenceslaus Dsilva',

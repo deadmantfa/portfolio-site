@@ -198,7 +198,7 @@ export default function Home() {
                           <Link
                             href={`/work/${project.slug}`}
                             className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1 cursor-pointer"
-                            aria-label={`View ${milestone.company} case study`}
+                            aria-label={`View ${project.company} case study`}
                           >
                             <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">View Case Study</span>
                             <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-400 group-hover/btn:text-primary">→</div>
