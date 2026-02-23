@@ -9,6 +9,7 @@ import BackgroundMarkers from '@/components/BackgroundMarkers'
 import { useScroll } from '@/components/ScrollProvider'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import { ProfileGlitch } from '@/components/ProfileGlitch'
 
 const SkillsGrid = dynamic(() => import('@/components/SkillsGrid').then(m => m.SkillsGrid), { ssr: false })
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false })
@@ -120,14 +121,12 @@ export default function Home() {
             <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary animate-reveal">
               Chief Technology Officer
             </div>
-            <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary/20 animate-reveal" style={{ animationDelay: '0.1s' }}>
-               <Image
+            <div className="mb-8 animate-reveal" style={{ animationDelay: '0.1s' }}>
+              <ProfileGlitch
                 src="/images/hero/profile.jpg"
                 alt="Wenceslaus Dsilva - CTO & Architect"
-                fill
-                priority
-                sizes="(max-width: 768px) 128px, 192px"
-                className="object-cover"
+                glitchIntensity={8}
+                glitchFrequency={0.15}
               />
             </div>
             <h1 className="text-[15vw] md:text-[12rem] leading-[0.8] tracking-tighter font-serif italic mb-12">
