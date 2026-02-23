@@ -143,77 +143,88 @@ const styles = StyleSheet.create({
   },
 });
 
+const CVHeader = ({ personalInfo }: { personalInfo: CVData['personalInfo'] }) => (
+  <View style={styles.header}>
+    <Text style={styles.name}>{personalInfo.name}</Text>
+    <Text style={styles.title}>{personalInfo.title}</Text>
+    <View style={styles.contact}>
+      <Text>{personalInfo.email}</Text>
+      <Text>•</Text>
+      <Text>{personalInfo.location}</Text>
+      <Text>•</Text>
+      <Text>{personalInfo.linkedin}</Text>
+      <Text>•</Text>
+      <Text>{personalInfo.portfolio}</Text>
+    </View>
+  </View>
+);
+
+const CVSummary = ({ summary }: { summary: string }) => (
+  <Text style={styles.summary}>{summary}</Text>
+);
+
+const CVMetrics = ({ metrics }: { metrics: CVData['metrics'] }) => (
+  <View style={styles.metricSection}>
+    {metrics.map((m, i) => (
+      <View key={i} style={styles.metricItem}>
+        <Text style={styles.metricValue}>{m.value}</Text>
+        <Text style={styles.metricLabel}>{m.label}</Text>
+      </View>
+    ))}
+  </View>
+);
+
+const CVExperience = ({ experience }: { experience: CVData['experience'] }) => (
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>Architectural Journey (2006 - 2026)</Text>
+    {experience.slice(0, 5).map((exp, i) => (
+      <View key={i} style={styles.experienceItem}>
+        <View style={styles.roleCompanyRow}>
+          <Text style={styles.role}>{exp.role}</Text>
+          <Text style={styles.company}>{exp.company}</Text>
+        </View>
+        <Text style={styles.year}>{exp.year}</Text>
+        <Text style={styles.description}>{exp.description}</Text>
+        {exp.highlights.slice(0, 3).map((h, j) => (
+          <Text key={j} style={styles.highlight}>› {h}</Text>
+        ))}
+      </View>
+    ))}
+  </View>
+);
+
+const CVSkills = ({ skills }: { skills: CVData['skills'] }) => (
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>Technical Expertise</Text>
+    <View style={styles.skillsGrid}>
+      <View style={styles.skillCategory}>
+        <Text style={styles.skillCategoryTitle}>Leadership & Strategy</Text>
+        <Text style={styles.skillList}>{skills.leadership.join(', ')}</Text>
+      </View>
+      <View style={styles.skillCategory}>
+        <Text style={styles.skillCategoryTitle}>Infrastructure & DevOps</Text>
+        <Text style={styles.skillList}>{skills.infrastructure.join(', ')}</Text>
+      </View>
+      <View style={styles.skillCategory}>
+        <Text style={styles.skillCategoryTitle}>Backend Architecture</Text>
+        <Text style={styles.skillList}>{skills.backend.join(', ')}</Text>
+      </View>
+      <View style={styles.skillCategory}>
+        <Text style={styles.skillCategoryTitle}>Frontend & Immersive</Text>
+        <Text style={styles.skillList}>{skills.frontend.join(', ')}</Text>
+      </View>
+    </View>
+  </View>
+);
+
 export const CVDocument = ({ data }: { data: CVData }) => (
   <Document author="Wenceslaus Dsilva" title="Wenceslaus Dsilva CV 2026">
     <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.name}>{data.personalInfo.name}</Text>
-        <Text style={styles.title}>{data.personalInfo.title}</Text>
-        <View style={styles.contact}>
-          <Text>{data.personalInfo.email}</Text>
-          <Text>•</Text>
-          <Text>{data.personalInfo.location}</Text>
-          <Text>•</Text>
-          <Text>{data.personalInfo.linkedin}</Text>
-          <Text>•</Text>
-          <Text>{data.personalInfo.portfolio}</Text>
-        </View>
-      </View>
-
-      {/* Summary */}
-      <Text style={styles.summary}>{data.summary}</Text>
-
-      {/* Core Metrics */}
-      <View style={styles.metricSection}>
-        {data.metrics.map((m, i) => (
-          <View key={i} style={styles.metricItem}>
-            <Text style={styles.metricValue}>{m.value}</Text>
-            <Text style={styles.metricLabel}>{m.label}</Text>
-          </View>
-        ))}
-      </View>
-
-      {/* Professional Experience */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Architectural Journey (2006 - 2026)</Text>
-        {data.experience.slice(0, 5).map((exp, i) => (
-          <View key={i} style={styles.experienceItem}>
-            <View style={styles.roleCompanyRow}>
-              <Text style={styles.role}>{exp.role}</Text>
-              <Text style={styles.company}>{exp.company}</Text>
-            </View>
-            <Text style={styles.year}>{exp.year}</Text>
-            <Text style={styles.description}>{exp.description}</Text>
-            {exp.highlights.slice(0, 3).map((h, j) => (
-              <Text key={j} style={styles.highlight}>› {h}</Text>
-            ))}
-          </View>
-        ))}
-      </View>
-
-      {/* Technical Expertise */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Technical Expertise</Text>
-        <View style={styles.skillsGrid}>
-          <View style={styles.skillCategory}>
-            <Text style={styles.skillCategoryTitle}>Leadership & Strategy</Text>
-            <Text style={styles.skillList}>{data.skills.leadership.join(', ')}</Text>
-          </View>
-          <View style={styles.skillCategory}>
-            <Text style={styles.skillCategoryTitle}>Infrastructure & DevOps</Text>
-            <Text style={styles.skillList}>{data.skills.infrastructure.join(', ')}</Text>
-          </View>
-          <View style={styles.skillCategory}>
-            <Text style={styles.skillCategoryTitle}>Backend Architecture</Text>
-            <Text style={styles.skillList}>{data.skills.backend.join(', ')}</Text>
-          </View>
-          <View style={styles.skillCategory}>
-            <Text style={styles.skillCategoryTitle}>Frontend & Immersive</Text>
-            <Text style={styles.skillList}>{data.skills.frontend.join(', ')}</Text>
-          </View>
-        </View>
-      </View>
+      <CVHeader personalInfo={data.personalInfo} />
+      <CVSummary summary={data.summary} />
+      <CVMetrics metrics={data.metrics} />
+      <CVExperience experience={data.experience} />
+      <CVSkills skills={data.skills} />
     </Page>
   </Document>
 );
