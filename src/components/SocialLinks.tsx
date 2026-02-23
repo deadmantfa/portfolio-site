@@ -1,6 +1,6 @@
 'use client'
 
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { Github, Linkedin, Mail, FileDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const SocialLinks = () => {
@@ -22,6 +22,12 @@ const SocialLinks = () => {
       url: 'mailto:wenceslausdsilva@gmail.com',
       icon: Mail,
       label: 'Direct Channel'
+    },
+    {
+      name: 'CV',
+      url: '/CV/Wenceslaus-Dsilva-2026.pdf',
+      icon: FileDown,
+      label: 'Executive Summary'
     }
   ]
 

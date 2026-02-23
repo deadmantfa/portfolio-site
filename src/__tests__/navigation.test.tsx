@@ -34,7 +34,7 @@ describe('Navigation Component', () => {
     render(<Navigation />)
     const cvLink = screen.getByLabelText(/Curriculum Vitae/i)
     expect(cvLink).toBeInTheDocument()
-    expect(cvLink).toHaveAttribute('href', '/CV/Wenceslaus-Dsilva-2025.pdf')
+    expect(cvLink).toHaveAttribute('href', '/CV/Wenceslaus-Dsilva-2026.pdf')
   })
 
   it('renders logo with home link', () => {
