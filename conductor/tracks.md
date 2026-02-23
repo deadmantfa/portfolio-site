@@ -29,5 +29,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Generate Professional 1-Page CV PDF**
+- [x] **Track: Generate Professional 1-Page CV PDF**
   *Link: [./tracks/generate_cv_pdf_20260223/](./tracks/generate_cv_pdf_20260223/)*
