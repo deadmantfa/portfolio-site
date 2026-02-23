@@ -35,7 +35,7 @@ export default function Home() {
 
   useEffect(() => {
     // Aggressively delay 3D scene initialization to ensure content is prioritized
-    const timer = setTimeout(() => setShowScene(true), 3000)
+    const timer = setTimeout(() => setShowScene(true), 5000)
 
     const handleScrollProgress = () => {
       if (skillsSectionRef.current) {

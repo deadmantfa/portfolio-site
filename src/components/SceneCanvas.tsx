@@ -17,7 +17,7 @@ const SceneCanvas = ({ children }: SceneCanvasProps) => {
         alpha: true,
         powerPreference: 'high-performance'
       }} 
-      dpr={[1, 1.5]} // Capped at 1.5 for performance
+      dpr={[1, 1]} // Capped at 1 for maximum performance
       performance={{ min: 0.5 }} // Allow downscaling if frame rate drops
       style={{ pointerEvents: 'auto' }}
     >
