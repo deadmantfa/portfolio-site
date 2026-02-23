@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { vi, expect } from 'vitest'
 import * as matchers from 'jest-axe'
 
-expect.extend(matchers)
+expect.extend(matchers as any)
 
 class IntersectionObserver {
 
