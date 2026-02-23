@@ -18,8 +18,8 @@
 - [x] Task: Ensure the PDF generation is integrated into the build process or accessible via a dedicated route. 314b94b
 - [x] Task: Conductor - User Manual Verification 'Phase 3: PDF Generation & Integration' (Protocol in workflow.md) 6476173
 
-## Phase 4: Final Polish & Verification
+## Phase 4: Final Polish & Verification [checkpoint: 34dfcb9]
 - [x] Task: Conduct a final visual audit of the generated PDF (spacing, typography, alignment). 68e2644
 - [x] Task: Verify PDF accessibility (screen reader tagging). faa817f
 - [x] Task: Perform a cross-device check of the download functionality. 3e45a0a
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & Verification' (Protocol in workflow.md) 913ac37
