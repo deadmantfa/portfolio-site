@@ -6,10 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev          # Start Next.js dev server at localhost:3000
-npm run build        # Production build
+npm run build        # Production build (includes CV PDF generation)
 npm run lint         # Run ESLint
 npm test             # Run all Vitest tests (single run)
 CI=true npm test     # Run tests without watch mode (use in CI or scripted workflows)
+npm run generate:cv  # Generate CV PDF from data
 ```
 
 **Run a single test file:**
@@ -91,3 +92,24 @@ git notes add -m "<summary>" <commit_hash>
 - Setup file: `vitest.setup.ts` (mocks IntersectionObserver and other browser APIs)
 - Co-locate tests in `src/__tests__/` matching component filenames
 - Mock external dependencies (Resend, Three.js geometries) rather than hitting real services
+
+## Project Overview
+
+This is a high-end portfolio website for Wenceslaus Dsilva, positioning him as a premier candidate for high-level technology leadership roles. The site blends 20+ years of strategic leadership (2006-2026) with a sophisticated, morphing 3D geometric interface and refined editorial storytelling.
+
+Key features include:
+- **Architectural Epochs:** A sophisticated 3D scroll experience that reveals career milestones from 2006 to 2026
+- **Dynamic Skill Cloud:** A reactive visualization of a diverse tech stack
+- **Architectural Deep-Dives:** Project case studies featuring interactive 3D visualizations and Architectural Decision Records (ADRs)
+- **Architectural Handshake:** A high-end contact interface integrated with a final 3D scene
+- **Automated Executive CV:** Programmatically generated PDF CV that mirrors the portfolio's data and aesthetic
+
+## Development Workflow
+
+1. All work must be tracked in conductor plan files
+2. Follow Test-Driven Development (write tests first)
+3. Maintain >80% code coverage for new code
+4. Document tech stack changes in `conductor/tech-stack.md` before implementation
+5. Use named exports only (no default exports)
+6. Follow the established code style guidelines
+7. Ensure all changes are well-tested and documented
