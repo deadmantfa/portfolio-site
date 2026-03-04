@@ -178,7 +178,6 @@ const ArchitecturalGrid = ({
 
   useEffect(() => {
     if (!materialRef.current) return
-    console.log(`[Quantum Binary] Stage: ${materializeStage}`);
 
     if (materializeStage === 'spark') {
       materialRef.current.uniforms.uOpacity.value = 0.8;

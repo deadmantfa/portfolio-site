@@ -90,7 +90,6 @@ export default function RootLayout({
       </head>
       <body className="antialiased bg-black">
         <ScrollProvider>
-          {/* <ArchitecturalLoader /> */}
           <Navigation />
           <ArchitecturalScroll />
           {children}

@@ -45,28 +45,23 @@ export default function Home() {
     sequenceStarted.current = true
     
     const sequence = async () => {
-      console.log("[Quantum System] Initializing sequence...");
       setMaterializeStage('idle')
       setShowScene(true)
       
       // Stage 1: Spark
       await new Promise(resolve => setTimeout(resolve, 500))
-      console.log("[Quantum System] Triggering Spark");
       setMaterializeStage('spark')
       
       // Stage 2: Cloud
       await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log("[Quantum System] Dispersing Cloud");
       setMaterializeStage('cloud')
       
       // Stage 3: Scan
       await new Promise(resolve => setTimeout(resolve, 2500))
-      console.log("[Quantum System] Initiating Scan");
       setMaterializeStage('scan')
       
       // Stage 4: Complete
       await new Promise(resolve => setTimeout(resolve, 2000))
-      console.log("[Quantum System] Materialization Complete");
       setMaterializeStage('complete')
     }
 
