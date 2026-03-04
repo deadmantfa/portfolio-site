@@ -38,24 +38,27 @@ export default function Home() {
   const [materializeStage, setMaterializeStage] = useState<'idle' | 'spark' | 'cloud' | 'scan' | 'complete'>('idle')
 
   useEffect(() => {
-    // Multi-stage "Quantum Reconstruction" sequence
-    // Start sequence immediately to make the wait feel intentional
+    // Force a clean start for the sequence
+    setMaterializeStage('idle')
+    
     const sequence = async () => {
+      // Small delay to ensure browser is ready to paint
+      await new Promise(resolve => setTimeout(resolve, 100))
       setShowScene(true)
       
-      // 1. Initial Spark (immediately)
+      // 1. Initial Spark
       setMaterializeStage('spark')
       
-      // 2. Point Cloud Expansion (after 1.5s)
+      // 2. Point Cloud Expansion (Chaos phase)
       await new Promise(resolve => setTimeout(resolve, 1500))
       setMaterializeStage('cloud')
       
-      // 3. Laser Scan Reveal (after 2s more)
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // 3. Laser Scan Reveal (Solidification phase)
+      await new Promise(resolve => setTimeout(resolve, 2500))
       setMaterializeStage('scan')
       
-      // 4. Sequence Complete (after 1.5s more - total 5s)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // 4. Sequence Complete
+      await new Promise(resolve => setTimeout(resolve, 2000))
       setMaterializeStage('complete')
     }
 
