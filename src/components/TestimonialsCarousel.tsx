@@ -2,10 +2,13 @@
 
 import { testimonials } from '@/data/testimonials'
 import EditorialReveal from './EditorialReveal'
-import { useRef, useEffect, useState, useCallback } from 'react'
-import gsap from 'gsap'
-import { Linkedin, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Linkedin, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import Image from 'next/image'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Float, Points, PointMaterial } from '@react-three/drei'
+import * as THREE from 'three'
 
 export { TestimonialsCarousel }
 
@@ -13,221 +16,132 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testimonials)[0]; isActive: boolean }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const glowRef = useRef<HTMLDivElement>(null)
-  const quoteRef = useRef<HTMLParagraphElement>(null)
-  const authorRef = useRef<HTMLDivElement>(null)
-  const timelineRef = useRef<gsap.core.Timeline | null>(null)
-  const [imageError, setImageError] = useState(false)
+const SWIPE_THRESHOLD = 50
 
-  useEffect(() => {
-    // Kill any existing timeline
-    if (timelineRef.current) {
-      timelineRef.current.kill()
-      timelineRef.current = null
+function ParticleField({ direction }: { direction: number }) {
+  const points = useMemo(() => {
+    const p = new Float32Array(300 * 3)
+    for (let i = 0; i < 300; i++) {
+      p[i * 3] = (Math.random() - 0.5) * 10
+      p[i * 3 + 1] = (Math.random() - 0.5) * 10
+      p[i * 3 + 2] = (Math.random() - 0.5) * 5
     }
+    return p
+  }, [])
 
-    if (!cardRef.current || !quoteRef.current || !authorRef.current || !glowRef.current) return
-
-    if (isActive) {
-      if (!prefersReducedMotion()) {
-        // Create new timeline for this card
-        timelineRef.current = gsap.timeline()
-
-        // Main card: long, smooth blur reveal entrance
-        timelineRef.current.to(
-          cardRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            backdropFilter: 'blur(0px)',
-            duration: 1.2,
-            ease: 'power1.out',
-          },
-          0
-        )
-
-        // Glow entrance - longer, gentler
-        timelineRef.current.to(
-          glowRef.current,
-          {
-            opacity: 0.5,
-            scale: 1.1,
-            duration: 0.8,
-            ease: 'power1.out',
-          },
-          0.2
-        )
-
-        // Very subtle breathing glow - low opacity, small scale range
-        timelineRef.current.to(
-          glowRef.current,
-          {
-            opacity: 0.15,
-            scale: 0.95,
-            duration: 2.5,
-            ease: 'sine.inOut',
-            repeat: -1,
-            repeatDelay: 0.2,
-          },
-          1.0
-        )
-
-        // Quote entrance - longer fade
-        timelineRef.current.to(
-          quoteRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: 'power1.out',
-          },
-          0.3
-        )
-
-        // Author entrance - longest fade
-        timelineRef.current.to(
-          authorRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: 'power1.out',
-          },
-          0.5
-        )
-      } else {
-        // Reduced motion: instant states
-        if (cardRef.current) {
-          cardRef.current.style.opacity = '1'
-          cardRef.current.style.transform = 'translateY(0) scale(1)'
-          cardRef.current.style.backdropFilter = 'blur(0px)'
-        }
-        if (quoteRef.current) {
-          quoteRef.current.style.opacity = '1'
-          quoteRef.current.style.transform = 'translateY(0)'
-        }
-        if (authorRef.current) {
-          authorRef.current.style.opacity = '1'
-          authorRef.current.style.transform = 'translateY(0)'
-        }
-        if (glowRef.current) {
-          glowRef.current.style.opacity = '0.15'
-          glowRef.current.style.scale = '1'
-        }
-      }
-    } else {
-      // Inactive card - very long, smooth exit for premium feel
-      if (!prefersReducedMotion()) {
-        timelineRef.current = gsap.timeline()
-
-        // Content fades out first
-        timelineRef.current.to(
-          [quoteRef.current, authorRef.current],
-          {
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power1.in',
-          },
-          0
-        )
-
-        // Card itself fades with blur - long, smooth exit
-        timelineRef.current.to(
-          cardRef.current,
-          {
-            opacity: 0,
-            backdropFilter: 'blur(16px)',
-            duration: 1.0,
-            ease: 'power1.in',
-          },
-          0.2
-        )
-
-        // Glow fades out
-        timelineRef.current.to(
-          glowRef.current,
-          {
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power1.in',
-          },
-          0
-        )
-      } else {
-        cardRef.current.style.opacity = '0'
-        cardRef.current.style.backdropFilter = 'blur(16px)'
-        quoteRef.current.style.opacity = '0'
-        authorRef.current.style.opacity = '0'
-        glowRef.current.style.opacity = '0'
-      }
-    }
-
-    // Cleanup: kill timeline when component unmounts or card becomes inactive
-    return () => {
-      if (timelineRef.current) {
-        timelineRef.current.kill()
-        timelineRef.current = null
-      }
-    }
-  }, [isActive])
+  const ref = useRef<THREE.Points>(null!)
+  
+  useFrame((state) => {
+    if (!ref.current) return
+    ref.current.rotation.y += 0.001
+    ref.current.rotation.x += 0.0005
+    
+    // React to direction
+    const targetX = direction * 0.2
+    ref.current.position.x += (targetX - ref.current.position.x) * 0.05
+  })
 
   return (
-    <div
-      ref={cardRef}
-      className={`absolute inset-0 rounded-3xl p-8 md:p-12 flex flex-col transition-all duration-300 ${
-        isActive ? 'pointer-events-auto z-10' : 'pointer-events-none z-0'
-      }`}
+    <Points ref={ref} positions={points} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color="#6366f1"
+        size={0.05}
+        sizeAttenuation={true}
+        depthWrite={false}
+        opacity={0.3}
+      />
+    </Points>
+  )
+}
+
+function TestimonialCard({ 
+  testimonial, 
+  direction 
+}: { 
+  testimonial: (typeof testimonials)[0]; 
+  direction: number;
+}) {
+  const [imageError, setImageError] = useState(false)
+  const isReduced = prefersReducedMotion()
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '50%' : '-50%',
+      opacity: 0,
+      scale: 0.85,
+      rotateY: direction > 0 ? 35 : -35,
+      z: -100,
+      filter: 'blur(10px)',
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      z: 0,
+      filter: 'blur(0px)',
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? '50%' : '-50%',
+      opacity: 0,
+      scale: 0.85,
+      rotateY: direction < 0 ? 35 : -35,
+      z: -100,
+      filter: 'blur(10px)',
+    }),
+  }
+
+  return (
+    <motion.div
+      custom={direction}
+      variants={isReduced ? {} : variants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{
+        x: { type: 'spring', stiffness: 260, damping: 25 },
+        opacity: { duration: 0.5 },
+        scale: { duration: 0.5 },
+        rotateY: { duration: 0.6 },
+        filter: { duration: 0.4 }
+      }}
+      className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
       style={{
-        opacity: isActive ? 1 : 0,
-        transform: isActive ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.98)',
-        backdropFilter: isActive ? 'blur(0px)' : 'blur(12px)',
-        background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.8) 0%, rgba(39, 39, 42, 0.6) 100%)',
-        border: '1px solid rgba(99, 102, 241, 0.15)',
-        boxShadow: isActive
-          ? '0 8px 32px -4px rgba(99, 102, 241, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.08)'
-          : '0 0px 0px 0px transparent',
+        background: 'rgba(24, 24, 27, 0.85)',
+        backdropFilter: 'blur(12px)',
+        border: '1px solid rgba(99, 102, 241, 0.25)',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
+        perspective: '1200px',
+        backfaceVisibility: 'hidden',
+        transformStyle: 'preserve-3d'
       }}
     >
-      {/* Glow effect - VERY subtle now */}
-      <div
-        ref={glowRef}
-        className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%)',
-          filter: 'blur(40px)',
-          opacity: 0,
-        }}
-      />
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+          <ParticleField direction={direction} />
+        </Canvas>
+      </div>
 
-      {/* Quote */}
-      <p
-        ref={quoteRef}
-        className="text-lg md:text-2xl font-light text-white mb-10 leading-relaxed flex-grow relative z-10"
-        style={{
-          opacity: isActive ? 1 : 0,
-          transform: isActive ? 'translateY(0)' : 'translateY(12px)',
-        }}
-      >
-        <span className="text-3xl md:text-4xl text-primary/40 mr-2">&#8220;</span>
-        {testimonial.quote}
-        <span className="text-3xl md:text-4xl text-primary/40 ml-2">&#8221;</span>
-      </p>
+      {/* Quote Icon */}
+      <div className="mb-4 md:mb-6 opacity-30 relative z-10">
+        <Quote className="size-8 md:size-12 text-primary" fill="currentColor" />
+      </div>
 
-      {/* Author Info */}
-      <div
-        ref={authorRef}
-        className="flex items-center justify-between gap-4 pt-8 border-t border-white/10 relative z-10"
-        style={{
-          opacity: isActive ? 1 : 0,
-          transform: isActive ? 'translateY(0)' : 'translateY(12px)',
-        }}
-      >
-        <div className="flex items-center gap-4 flex-grow min-w-0">
-          {/* Avatar with primary color ring */}
-          <div className="relative size-14 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-primary/30 transition-all duration-300 hover:ring-primary/60">
+      {/* Quote Content */}
+      <div className="flex-grow flex flex-col justify-center mb-6 relative z-10">
+        <blockquote className="text-[1.1rem] md:text-2xl font-serif italic text-zinc-100 leading-snug md:leading-relaxed">
+          <span className="relative z-10">{testimonial.quote}</span>
+        </blockquote>
+      </div>
+
+      {/* Author & Profile Section */}
+      <div className="flex items-center justify-between gap-4 pt-6 border-t border-white/10 relative z-10">
+        <div className="flex items-center gap-4 min-w-0">
+          <div className="relative size-12 md:size-16 rounded-xl overflow-hidden ring-1 ring-primary/30 flex-shrink-0 shadow-xl">
             {testimonial.imagePath && !imageError ? (
               <Image
                 src={testimonial.imagePath}
@@ -237,167 +151,161 @@ function TestimonialCard({ testimonial, isActive }: { testimonial: (typeof testi
                 onError={() => setImageError(true)}
               />
             ) : (
-              <div className="size-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                <span className="text-sm font-semibold text-primary">{testimonial.initials}</span>
+              <div className="size-full bg-zinc-800 flex items-center justify-center text-lg font-serif italic text-primary">
+                {testimonial.initials}
               </div>
             )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
           </div>
-          <div className="flex-grow min-w-0">
-            <p className="text-white font-medium truncate">{testimonial.name}</p>
-            <p className="text-xs md:text-sm text-foreground/60 truncate">{testimonial.title}</p>
+          
+          <div className="min-w-0">
+            <h4 className="text-white font-serif text-base md:text-xl truncate leading-tight">{testimonial.name}</h4>
+            <p className="text-primary/70 font-mono text-[9px] md:text-xs uppercase tracking-widest truncate mt-0.5">
+              {testimonial.title}
+            </p>
           </div>
         </div>
+
         {testimonial.linkedinUrl && (
-          <a
+          <motion.a
+            whileHover={{ scale: 1.1, backgroundColor: 'rgba(99, 102, 241, 0.25)', borderColor: 'rgba(99, 102, 241, 0.5)' }}
+            whileTap={{ scale: 0.95 }}
             href={testimonial.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 size-10 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer"
+            className="size-9 md:size-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary/50"
             aria-label={`${testimonial.name}'s LinkedIn profile`}
           >
-            <Linkedin className="size-5" />
-          </a>
+            <Linkedin className="size-4 md:size-5" />
+          </motion.a>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 function TestimonialsCarousel() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const carouselRef = useRef<HTMLDivElement>(null)
-  const autoPlayRef = useRef(true)
-  const autoPlayIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [[page, direction], setPage] = useState([0, 0])
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
+  const currentIndex = Math.abs(page % testimonials.length)
 
-  const goToSlide = useCallback((index: number) => {
-    const clampedIndex = Math.max(0, Math.min(index, testimonials.length - 1))
-    setCurrentIndex(clampedIndex)
-  }, [])
+  const paginate = useCallback((newDirection: number) => {
+    setPage([page + newDirection, newDirection])
+  }, [page])
 
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-  }, [])
-
-  const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }, [])
-
-  // Auto-play effect with proper cleanup
   useEffect(() => {
-    if (prefersReducedMotion()) return
-
-    const startAutoPlay = () => {
-      // Clear any existing interval
-      if (autoPlayIntervalRef.current) {
-        clearInterval(autoPlayIntervalRef.current)
-      }
-
-      autoPlayIntervalRef.current = setInterval(() => {
-        if (autoPlayRef.current && !isHovering) {
-          setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-        }
-      }, 6000)
+    if (isAutoPlaying && !prefersReducedMotion()) {
+      timerRef.current = setInterval(() => {
+        paginate(1)
+      }, 10000)
     }
-
-    startAutoPlay()
-
     return () => {
-      if (autoPlayIntervalRef.current) {
-        clearInterval(autoPlayIntervalRef.current)
-        autoPlayIntervalRef.current = null
-      }
+      if (timerRef.current) clearInterval(timerRef.current)
     }
-  }, [isHovering])
+  }, [isAutoPlaying, paginate])
 
-  // Handle pause on hover
-  const handleMouseEnter = () => {
-    setIsHovering(true)
-    autoPlayRef.current = false
-  }
+  const handleDragEnd = (event: any, info: any) => {
+    const offset = info.offset.x
+    const velocity = info.velocity.x
 
-  const handleMouseLeave = () => {
-    setIsHovering(false)
-    autoPlayRef.current = true
+    if (offset < -SWIPE_THRESHOLD || velocity < -500) {
+      paginate(1)
+    } else if (offset > SWIPE_THRESHOLD || velocity > 500) {
+      paginate(-1)
+    }
   }
 
   return (
-    <div ref={containerRef} className="w-full">
-      <EditorialReveal direction="down">
-        <div className="text-6xl md:text-[8rem] font-serif italic leading-none opacity-5 uppercase tracking-tighter pointer-events-none mb-2">
-          Signals.
+    <div className="w-full max-w-5xl mx-auto px-4 md:px-0">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
+        <div className="text-center md:text-left">
+          <EditorialReveal direction="down">
+            <h2 className="text-5xl md:text-8xl font-serif italic leading-none opacity-10 uppercase tracking-tighter pointer-events-none">
+              Signals.
+            </h2>
+          </EditorialReveal>
+          <EditorialReveal direction="down" delay={0.1}>
+            <p className="font-mono text-[9px] md:text-[11px] text-primary uppercase tracking-[0.4em] mt-3 md:mt-4 font-bold">
+              Trusted Architectural Consensus
+            </p>
+          </EditorialReveal>
         </div>
-      </EditorialReveal>
-
-      <EditorialReveal direction="down" delay={0.1}>
-        <p className="font-mono text-[11px] text-primary/60 uppercase tracking-[0.3em] mb-8 md:mb-12 font-semibold">
-          What Others Say
-        </p>
-      </EditorialReveal>
-
-      {/* Carousel Container */}
-      <div
-        ref={carouselRef}
-        className="relative bg-transparent rounded-3xl overflow-hidden group"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {/* Slides */}
-        <div className="relative h-[480px] md:h-[400px] w-full">
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard
-              key={`testimonial-${index}`}
-              testimonial={testimonial}
-              isActive={index === currentIndex}
-            />
-          ))}
-        </div>
-
-        {/* Navigation Buttons */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
-          aria-label="Previous testimonial"
-        >
-          <ChevronLeft className="size-6 group-hover/btn:scale-110 transition-transform" />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary/80 flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer group/btn"
-          aria-label="Next testimonial"
-        >
-          <ChevronRight className="size-6 group-hover/btn:scale-110 transition-transform" />
-        </button>
-
-        {/* Dot Indicators */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
-          {testimonials.map((_, index) => (
+        
+        <div className="flex items-center justify-center md:justify-end gap-6">
+          <div className="flex items-center gap-2 font-mono text-[10px] md:text-xs tracking-widest text-zinc-500">
+            <span className="text-primary font-bold">{currentIndex + 1}</span>
+            <span className="opacity-30">/</span>
+            <span>{testimonials.length}</span>
+          </div>
+          <div className="flex gap-2">
             <button
-              key={`dot-${index}`}
-              onClick={() => goToSlide(index)}
-              className={`rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary outline-none cursor-pointer ${
-                index === currentIndex
-                  ? 'bg-primary w-8 h-2.5 shadow-lg shadow-primary/50'
-                  : 'bg-white/20 hover:bg-white/40 size-2'
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-              aria-current={index === currentIndex ? 'true' : 'false'}
-            />
-          ))}
+              onClick={() => paginate(-1)}
+              className="size-10 md:size-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-primary/50 transition-all text-zinc-400 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="size-5 md:size-6" />
+            </button>
+            <button
+              onClick={() => paginate(1)}
+              className="size-10 md:size-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-primary/50 transition-all text-zinc-400 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="size-5 md:size-6" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Counter */}
-      <div className="mt-8 flex items-center justify-center gap-3 text-sm">
-        <div className="flex items-center gap-2 font-mono text-white">
-          <span className="text-lg font-semibold text-primary">{currentIndex + 1}</span>
-          <span className="text-border">/</span>
-          <span className="text-foreground/60">{testimonials.length}</span>
+      <div 
+        className="relative h-[480px] md:h-[500px] w-full perspective-1200"
+        onMouseEnter={() => setIsAutoPlaying(false)}
+        onMouseLeave={() => setIsAutoPlaying(true)}
+      >
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={page}
+            custom={direction}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={handleDragEnd}
+            className="absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y"
+          >
+            <TestimonialCard
+              testimonial={testimonials[currentIndex]}
+              direction={direction}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Visual Progress Line */}
+        <div className="absolute -bottom-10 md:-bottom-12 left-0 right-0 h-px bg-white/5 overflow-hidden rounded-full">
+          <motion.div
+            className="h-full bg-primary shadow-[0_0_15px_rgba(99,102,241,0.6)]"
+            initial={{ width: "0%" }}
+            animate={{ width: `${((currentIndex + 1) / testimonials.length) * 100}%` }}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          />
         </div>
-        <div className="w-16 h-0.5 bg-gradient-to-r from-primary to-primary/0 rounded-full" />
+      </div>
+
+      {/* Decorative Index Track */}
+      <div className="mt-16 md:mt-24 flex justify-center gap-2 md:gap-3">
+        {testimonials.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              const dir = idx > currentIndex ? 1 : -1
+              setPage([idx, dir])
+            }}
+            className={`h-0.5 transition-all duration-700 rounded-full cursor-pointer ${
+              idx === currentIndex ? 'w-12 md:w-16 bg-primary' : 'w-4 md:w-6 bg-white/10 hover:bg-white/30'
+            }`}
+            aria-label={`Go to testimonial ${idx + 1}`}
+          />
+        ))}
       </div>
     </div>
   )
