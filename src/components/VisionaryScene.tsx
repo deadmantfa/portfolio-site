@@ -95,31 +95,37 @@ const ArchitecturalGrid = ({
       }
     `,
     fragmentShader: `
-      uniform vec3 uColor;
-      uniform float uOpacity;
-      uniform float uScanProgress;
-      varying float vElevation;
-      varying float vWorldY;
-      
-      void main() {
-        float strength = (vElevation + 12.0) / 24.0;
-        vec3 baseColor = uColor * (0.5 + strength);
-        
-        // Laser Scan Reveal Effect
-        // The scan line moves from top to bottom (or along an axis)
-        float scanLine = smoothstep(uScanProgress - 0.1, uScanProgress, vWorldY / 40.0);
-        float scanGlow = exp(-pow(vWorldY / 40.0 - uScanProgress, 2.0) * 100.0);
-        
-        vec3 finalColor = mix(baseColor * 0.3, baseColor, scanLine);
-        finalColor += uColor * scanGlow * 2.0;
-        
-        float finalOpacity = mix(uOpacity * 0.2, uOpacity, scanLine);
-        if (uScanProgress < -0.9) finalOpacity = uOpacity; // Hide scan effect if not active
+    uniform vec3 uColor;
+    uniform float uOpacity;
+    uniform float uScanProgress;
+    varying float vElevation;
+    varying float vWorldY;
 
-        gl_FragColor = vec4(finalColor, finalOpacity);
-      }
-    `
-  }), [])
+    void main() {
+      float strength = (vElevation + 12.0) / 24.0;
+      vec3 baseColor = uColor * (0.5 + strength);
+
+      // Laser Scan Reveal Effect
+      // uScanProgress goes from -1.0 to 1.0
+      // We reveal parts where vWorldY/40.0 is LESS than uScanProgress
+      float normalizedY = vWorldY / 40.0;
+      float scanLine = 1.0 - smoothstep(uScanProgress - 0.05, uScanProgress + 0.05, normalizedY);
+
+      // Glowing edge at the scan line
+      float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 150.0);
+
+      vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
+      finalColor += uColor * scanGlow * 3.0;
+
+      float finalOpacity = mix(uOpacity * 0.1, uOpacity, scanLine);
+
+      // Override for stages
+      if (uScanProgress < -0.95) finalOpacity = uOpacity; // Full visibility during cloud stage
+      if (uScanProgress > 0.95) finalOpacity = uOpacity;  // Full visibility once scan finishes
+
+      gl_FragColor = vec4(finalColor, finalOpacity);
+    }
+    `  }), [])
 
   // Coordinate GSAP animations based on materializeStage
   useEffect(() => {
