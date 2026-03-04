@@ -148,15 +148,22 @@ const ArchitecturalGrid = ({
     console.log(`[Quantum] Entering Stage: ${materializeStage}`);
 
     if (materializeStage === 'spark') {
-      gsap.to(sparkRef.current.scale, { x: 2, y: 2, z: 2, duration: 0.4, ease: "expo.out" })
+      gsap.to(sparkRef.current.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 0.4, ease: "expo.out" })
+      gsap.to(sparkRef.current.material, { opacity: 1, duration: 0.2 })
     } else if (materializeStage === 'cloud') {
-      gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.3 })
+      // Fade out spark completely so it doesn't leave a 'blob'
+      gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.5, ease: "power2.in" })
+      
       // High-intensity light explosion
       const sparkLight = sparkRef.current.children[0] as THREE.PointLight;
       if (sparkLight) {
         gsap.to(sparkLight, { intensity: 100, distance: 100, duration: 0.4, ease: "power4.out" });
+        gsap.to(sparkLight, { intensity: 0, duration: 1.5, delay: 0.5 });
       }
-      gsap.to(sparkRef.current.scale, { x: 40, y: 40, z: 40, duration: 0.8, ease: "expo.out" })
+      
+      // Limit scale to avoid filling the screen with a blob
+      gsap.to(sparkRef.current.scale, { x: 15, y: 15, z: 15, duration: 0.8, ease: "expo.out" })
+      
       gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
         value: 1.0, 
         duration: 2.5, 
@@ -213,7 +220,7 @@ const ArchitecturalGrid = ({
           emissive="#6366f1" 
           emissiveIntensity={20} 
           transparent 
-          opacity={1} 
+          opacity={0} 
         />
         <pointLight intensity={10} distance={50} color="#6366f1" />
       </mesh>
