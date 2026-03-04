@@ -286,30 +286,62 @@ const Navigation = () => {
     }
   }
 
-  // Idle pulse animation on logo (hint to hover)
+  // Periodic Disclosure Hint (hint to user that it's interactive)
   useEffect(() => {
     if (prefersReducedMotion() || !dotRef.current) return
 
-    // Create a repeating pulse animation on the dot to hint interactivity
-    const pulseTimeline = gsap.timeline({ repeat: -1 })
-    pulseTimeline
-      .to(dotRef.current, {
-        scale: 1.2,
-        opacity: 0.7,
-        duration: 1.2,
-        ease: 'sine.inOut',
-      })
-      .to(dotRef.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 1.2,
-        ease: 'sine.inOut',
-      })
+    const timeline = gsap.timeline({ repeat: -1 })
+    
+    // 1. Long idle "breathe" state (6 seconds)
+    timeline.to(dotRef.current, {
+      scale: 1.2,
+      opacity: 0.8,
+      duration: 1.5,
+      ease: 'sine.inOut',
+    }).to(dotRef.current, {
+      scale: 1,
+      opacity: 1,
+      duration: 1.5,
+      ease: 'sine.inOut',
+    })
+
+    // 2. Add a pause
+    timeline.to({}, { duration: 5 })
+
+    // 3. The "Disclosure Hint" - quick glimpse
+    timeline.add(() => {
+      if (!isDecodingRef.current) {
+        // Subtle expansion
+        gsap.to([firstWrapRef.current, lastWrapRef.current], {
+          width: 8,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: 'power2.out',
+          onComplete: () => {
+            gsap.to([firstWrapRef.current, lastWrapRef.current], {
+              width: 0,
+              duration: 0.3,
+              delay: 0.5,
+              ease: 'power2.in',
+            })
+          }
+        })
+
+        // Primary color pulse on the dot
+        gsap.to(dotRef.current, {
+          scale: 1.5,
+          color: '#ffffff',
+          boxShadow: '0 0 20px var(--color-primary)',
+          duration: 0.2,
+          yoyo: true,
+          repeat: 1,
+          ease: 'power2.out'
+        })
+      }
+    })
 
     return () => {
-      if (pulseTimeline && typeof pulseTimeline.kill === 'function') {
-        pulseTimeline.kill()
-      }
+      timeline.kill()
     }
   }, [])
 
