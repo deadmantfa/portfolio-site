@@ -35,10 +35,31 @@ export default function Home() {
   const [vaultProgress, setVaultProgress] = useState(0)
   const [contactProgress, setContactProgress] = useState(0)
   const [showScene, setShowScene] = useState(false)
+  const [materializeStage, setMaterializeStage] = useState<'idle' | 'spark' | 'cloud' | 'scan' | 'complete'>('idle')
 
   useEffect(() => {
-    // Aggressively delay 3D scene initialization to ensure content is prioritized
-    const timer = setTimeout(() => setShowScene(true), 5000)
+    // Multi-stage "Quantum Reconstruction" sequence
+    // Start sequence immediately to make the wait feel intentional
+    const sequence = async () => {
+      setShowScene(true)
+      
+      // 1. Initial Spark (immediately)
+      setMaterializeStage('spark')
+      
+      // 2. Point Cloud Expansion (after 1.5s)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      setMaterializeStage('cloud')
+      
+      // 3. Laser Scan Reveal (after 2s more)
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      setMaterializeStage('scan')
+      
+      // 4. Sequence Complete (after 1.5s more - total 5s)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      setMaterializeStage('complete')
+    }
+
+    sequence()
 
     const handleScrollProgress = () => {
       if (skillsSectionRef.current) {
@@ -112,6 +133,7 @@ export default function Home() {
             exitProgress={skillsExitProgress}
             vaultProgress={vaultProgress}
             contactProgress={contactProgress}
+            materializeStage={materializeStage}
           />
         )}
       </div>
