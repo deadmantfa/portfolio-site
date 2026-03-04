@@ -292,23 +292,8 @@ const Navigation = () => {
 
     const timeline = gsap.timeline({ repeat: -1 })
     
-    // 1. Long idle "breathe" state (6 seconds)
-    timeline.to(dotRef.current, {
-      scale: 1.2,
-      opacity: 0.8,
-      duration: 1.5,
-      ease: 'sine.inOut',
-    }).to(dotRef.current, {
-      scale: 1,
-      opacity: 1,
-      duration: 1.5,
-      ease: 'sine.inOut',
-    })
-
-    // 2. Add a pause
-    timeline.to({}, { duration: 5 })
-
-    // 3. The "Disclosure Hint" - quick glimpse
+    // 1. The "Disclosure Hint" - quick glimpse
+    // Triggered at the START of the timeline for immediate feedback on load
     timeline.add(() => {
       if (!isDecodingRef.current) {
         // Subtle expansion
@@ -339,6 +324,22 @@ const Navigation = () => {
         })
       }
     })
+
+    // 2. Long idle "breathe" state
+    timeline.to(dotRef.current, {
+      scale: 1.2,
+      opacity: 0.8,
+      duration: 1.5,
+      ease: 'sine.inOut',
+    }).to(dotRef.current, {
+      scale: 1,
+      opacity: 1,
+      duration: 1.5,
+      ease: 'sine.inOut',
+    })
+
+    // 3. Add a pause (total timeline duration approx 8-9 seconds)
+    timeline.to({}, { duration: 5 })
 
     return () => {
       timeline.kill()
