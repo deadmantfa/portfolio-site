@@ -23,19 +23,28 @@ const ArchitecturalGrid = ({
   
   const count = 40 
   
-  const [positions, indices, binaryTypes] = useMemo(() => {
+  const [positions, indices, binaryTypes, chaosPositions] = useMemo(() => {
     const pos = new Float32Array(count * count * 3)
+    const chaosPos = new Float32Array(count * count * 3)
     const ind = []
     const types = new Float32Array(count * count)
     
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
+        // Final Grid Positions
         const x = (i / (count - 1) - 0.5) * 80
         const z = (j / (count - 1) - 0.5) * 80
         const idx = (i * count + j) * 3
         pos[idx] = x
         pos[idx + 1] = 0
         pos[idx + 2] = z
+        
+        // Initial Chaos Positions: Fixed random spots in 3D volume
+        // Distributed around the viewport center
+        chaosPos[idx] = (Math.random() - 0.5) * 300
+        chaosPos[idx + 1] = (Math.random() - 0.5) * 200
+        chaosPos[idx + 2] = (Math.random() - 0.5) * 200
+
         types[i * count + j] = Math.random() > 0.5 ? 1.0 : 0.0
 
         const k = i * count + j
@@ -43,7 +52,7 @@ const ArchitecturalGrid = ({
         if (j < count - 1) ind.push(k, k + 1)
       }
     }
-    return [pos, new Uint16Array(ind), types]
+    return [pos, new Uint16Array(ind), types, chaosPos]
   }, [count])
 
   const shaderArgs = useMemo(() => ({
@@ -60,38 +69,23 @@ const ArchitecturalGrid = ({
       uniform float uScroll;
       uniform float uReconstructProgress;
       attribute float aBinaryType;
+      attribute vec3 aChaosPosition;
       varying float vElevation;
       varying float vWorldY;
       varying float vProgress;
       varying float vBinaryType;
       
-      float hash(vec2 p) {
-        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-      }
-
       void main() {
-        vec3 pos = position;
-        // Improved 3D hash for better symmetry
-        float h1 = hash(position.xz + 100.0);
-        float h2 = hash(position.zx - 50.0);
-        
-        // Linear chaos factor
-        float chaos = 1.0 - uReconstructProgress;
-        
-        // Turbulence that is TRULY centered and symmetric
-        vec3 turbulence = vec3(
-          sin(uTime * 2.0 + h1 * 6.28) * 150.0 * h1,
-          cos(uTime * 1.5 + h2 * 6.28) * 100.0 * h2,
-          sin(uTime * 1.8 + (h1+h2) * 3.14) * 150.0 * h2
-        ) * chaos;
-        
-        pos += turbulence;
+        // EXPLICIT LINEAR LERP: No side bias possible
+        // Moves directly from aChaosPosition to position (grid)
+        vec3 pos = mix(aChaosPosition, position, uReconstructProgress);
 
         vec4 modelPosition = modelMatrix * vec4(pos, 1.0);
         
+        // Wave only starts appearing as grid solidifies
         float elevation = sin(modelPosition.x * 0.05 + uTime) * 
                          cos(modelPosition.z * 0.05 + uTime) * 
-                         min(3.0 + uScroll * 10.0, 12.0) * uReconstructProgress;
+                         min(3.0 + uScroll * 10.0, 12.0) * pow(uReconstructProgress, 2.0);
         
         modelPosition.y += elevation;
         vElevation = elevation;
@@ -103,7 +97,8 @@ const ArchitecturalGrid = ({
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
         
-        gl_PointSize = mix(50.0, 4.0, pow(uReconstructProgress, 0.5)); 
+        // Size morphing
+        gl_PointSize = mix(60.0, 4.0, pow(uReconstructProgress, 0.5)); 
       }
     `,
     fragmentShader: `
@@ -142,25 +137,23 @@ const ArchitecturalGrid = ({
         float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 200.0);
         
         vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
-        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 5.0;
+        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 4.0;
         
+        // Exact original visual for 'complete'
         if (vProgress > 0.99 && uScanProgress > 1.1) {
           gl_FragColor = vec4(settledColor, uOpacity);
           return;
         }
 
-        float alpha = finalShape * mix(0.9, uOpacity, vProgress);
-        if (uScanProgress < -1.1) alpha = finalShape * 0.8; 
-
+        float alpha = finalShape * mix(0.8, uOpacity, vProgress);
         gl_FragColor = vec4(finalColor, alpha);
       }
     `
   }), [count])
 
-  // Specialized line shader to handle turbulence and reveal
   const lineShaderArgs = useMemo(() => ({
     ...shaderArgs,
-    vertexShader: shaderArgs.vertexShader.replace('gl_PointSize =', '//'), // Remove point size for lines
+    vertexShader: shaderArgs.vertexShader.replace('gl_PointSize =', '//'),
     fragmentShader: `
       uniform vec3 uColor;
       uniform float uOpacity;
@@ -169,12 +162,11 @@ const ArchitecturalGrid = ({
       varying float vWorldY;
       
       void main() {
-        // Lines only appear as they are scanned or once reconstruction is far along
         float normalizedY = vWorldY / 50.0;
         float scanLine = 1.0 - smoothstep(uScanProgress - 0.1, uScanProgress + 0.1, normalizedY);
         
-        // Lines start invisible and fade in
-        float lineOpacity = uOpacity * 0.2 * uReconstructProgress;
+        // Lines fade in with reconstruction
+        float lineOpacity = uOpacity * 0.2 * pow(uReconstructProgress, 2.0);
         lineOpacity = mix(lineOpacity, uOpacity * 0.2, scanLine);
         
         if (uScanProgress > 1.1) lineOpacity = uOpacity * 0.2;
@@ -236,6 +228,10 @@ const ArchitecturalGrid = ({
             args={[positions, 3]}
           />
           <bufferAttribute
+            attach="attributes-aChaosPosition"
+            args={[chaosPositions, 3]}
+          />
+          <bufferAttribute
             attach="attributes-aBinaryType"
             args={[binaryTypes, 1]}
           />
@@ -254,6 +250,10 @@ const ArchitecturalGrid = ({
           <bufferAttribute
             attach="attributes-position"
             args={[positions, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-aChaosPosition"
+            args={[chaosPositions, 3]}
           />
           <bufferAttribute
             attach="index"
