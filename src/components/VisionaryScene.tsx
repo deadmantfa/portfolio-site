@@ -49,8 +49,8 @@ const ArchitecturalGrid = ({
       uScroll: { value: 0 },
       uColor: { value: new THREE.Color("#6366f1") },
       uOpacity: { value: 0.4 },
-      uScanProgress: { value: -1.0 }, // -1 to 1 for laser sweep
-      uReconstructProgress: { value: 0.0 } // 0 to 1 for cloud settling
+      uScanProgress: { value: -1.2 },
+      uReconstructProgress: { value: 0.0 }
     },
     vertexShader: `
       uniform float uTime;
@@ -58,89 +58,105 @@ const ArchitecturalGrid = ({
       uniform float uReconstructProgress;
       varying float vElevation;
       varying float vWorldY;
+      varying float vProgress;
       
-      // Pseudo-random for particle dispersion
-      float random(vec2 st) {
-          return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+      float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
       }
 
       void main() {
-        // Initial position dispersion for 'cloud' stage
         vec3 pos = position;
-        float rnd = random(position.xz);
+        float h = hash(position.xz);
         
-        // Explode particles outward if not fully reconstructed
-        vec3 dispersion = vec3(
-          (rnd - 0.5) * 50.0,
-          (rnd - 0.5) * 50.0,
-          (rnd - 0.5) * 50.0
+        // Vortex turbulence that settles
+        float angle = uTime * 3.0 * h;
+        float radius = 40.0 * (1.0 - uReconstructProgress);
+        
+        vec3 turbulence = vec3(
+          cos(angle) * radius,
+          sin(uTime * 2.0 * h) * radius * 0.5,
+          sin(angle) * radius
         ) * (1.0 - uReconstructProgress);
         
-        pos += dispersion;
+        pos += turbulence;
 
         vec4 modelPosition = modelMatrix * vec4(pos, 1.0);
         
         float elevation = sin(modelPosition.x * 0.05 + uTime) * 
                          cos(modelPosition.z * 0.05 + uTime) * 
-                         min(3.0 + uScroll * 10.0, 12.0);
+                         min(3.0 + uScroll * 10.0, 12.0) * uReconstructProgress;
         
         modelPosition.y += elevation;
         vElevation = elevation;
         vWorldY = modelPosition.y;
+        vProgress = uReconstructProgress;
         
         vec4 viewPosition = viewMatrix * modelPosition;
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
-        gl_PointSize = mix(8.0, 4.0, uReconstructProgress); 
+        
+        // Particles start large and glowing, shrink as they settle
+        gl_PointSize = mix(25.0, 4.0, pow(uReconstructProgress, 0.3)); 
       }
     `,
     fragmentShader: `
-    uniform vec3 uColor;
-    uniform float uOpacity;
-    uniform float uScanProgress;
-    varying float vElevation;
-    varying float vWorldY;
+      uniform vec3 uColor;
+      uniform float uOpacity;
+      uniform float uScanProgress;
+      varying float vElevation;
+      varying float vWorldY;
+      varying float vProgress;
+      
+      void main() {
+        float strength = (vElevation + 12.0) / 24.0;
+        
+        // Points are hot white/gold during chaos, settle to primary
+        vec3 hotColor = vec3(1.0, 0.9, 0.6);
+        vec3 settledColor = uColor * (0.5 + strength);
+        vec3 baseColor = mix(hotColor, settledColor, vProgress);
+        
+        // Laser Scan Logic
+        float normalizedY = vWorldY / 40.0;
+        float scanLine = 1.0 - smoothstep(uScanProgress - 0.1, uScanProgress + 0.1, normalizedY);
+        
+        // Intense Energy Pulse at the scan line
+        float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 200.0);
+        
+        vec3 finalColor = mix(baseColor * 0.1, baseColor, scanLine);
+        finalColor += vec3(0.8, 0.9, 1.0) * scanGlow * 4.0; // Bright white energy sweep
+        
+        float finalOpacity = mix(uOpacity * 0.05, uOpacity, scanLine);
+        
+        // Handle stages for smooth transition
+        if (uScanProgress < -1.1) finalOpacity = uOpacity * vProgress;
+        if (uScanProgress > 1.1) finalOpacity = uOpacity;
 
-    void main() {
-      float strength = (vElevation + 12.0) / 24.0;
-      vec3 baseColor = uColor * (0.5 + strength);
+        gl_FragColor = vec4(finalColor, finalOpacity);
+      }
+    `
+  }), [])
 
-      // Laser Scan Reveal Effect
-      // uScanProgress goes from -1.0 to 1.0
-      // We reveal parts where vWorldY/40.0 is LESS than uScanProgress
-      float normalizedY = vWorldY / 40.0;
-      float scanLine = 1.0 - smoothstep(uScanProgress - 0.05, uScanProgress + 0.05, normalizedY);
-
-      // Glowing edge at the scan line
-      float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 150.0);
-
-      vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
-      finalColor += uColor * scanGlow * 3.0;
-
-      float finalOpacity = mix(uOpacity * 0.1, uOpacity, scanLine);
-
-      // Override for stages
-      if (uScanProgress < -0.95) finalOpacity = uOpacity; // Full visibility during cloud stage
-      if (uScanProgress > 0.95) finalOpacity = uOpacity;  // Full visibility once scan finishes
-
-      gl_FragColor = vec4(finalColor, finalOpacity);
-    }
-    `  }), [])
-
-  // Coordinate GSAP animations based on materializeStage
   useEffect(() => {
     if (!materialRef.current) return
 
     if (materializeStage === 'spark') {
-      gsap.to(sparkRef.current.scale, { x: 1, y: 1, z: 1, duration: 0.5, ease: "back.out(2)" })
+      gsap.to(sparkRef.current.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 0.4, ease: "expo.out" })
     } else if (materializeStage === 'cloud') {
-      // Fade out spark, fade in cloud
-      gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.5 })
-      gsap.to(materialRef.current.uniforms.uReconstructProgress, { value: 1.0, duration: 2.5, ease: "power2.inOut" })
+      gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.3 })
+      gsap.to(sparkRef.current.scale, { x: 10, y: 10, z: 10, duration: 0.5, ease: "expo.in" })
+      gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
+        value: 1.0, 
+        duration: 2.2, 
+        ease: "power4.inOut" 
+      })
     } else if (materializeStage === 'scan') {
-      gsap.to(materialRef.current.uniforms.uScanProgress, { value: 1.0, duration: 2.0, ease: "none" })
+      gsap.to(materialRef.current.uniforms.uScanProgress, { 
+        value: 1.2, 
+        duration: 1.8, 
+        ease: "power1.inOut" 
+      })
     } else if (materializeStage === 'complete') {
-      materialRef.current.uniforms.uScanProgress.value = 2.0 // Off-screen
+      materialRef.current.uniforms.uScanProgress.value = 1.5
       materialRef.current.uniforms.uReconstructProgress.value = 1.0
     }
   }, [materializeStage])
@@ -152,7 +168,6 @@ const ArchitecturalGrid = ({
     materialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress
     
-    // Fade out as we scroll deep into the content
     const fadeOut = Math.max(0, 1 - (scrollProgress - 0.4) * 2)
     const targetOpacity = (isBlueprint ? 0.8 : 0.2) * fadeOut
     
@@ -169,25 +184,25 @@ const ArchitecturalGrid = ({
       meshRef.current.rotation.y = time * 0.01
     }
 
-    if (sparkRef.current && materializeStage === 'spark') {
-      sparkRef.current.rotation.z += 0.05
-      sparkRef.current.rotation.x += 0.02
+    if (sparkRef.current && (materializeStage === 'spark' || materializeStage === 'cloud')) {
+      sparkRef.current.rotation.z += 0.1
+      sparkRef.current.rotation.x += 0.05
     }
   })
 
   return (
     <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]} position={[0, 0, -20]}>
-      {/* Initial Spark */}
+      {/* Initial High-Intensity Spark */}
       <mesh ref={sparkRef} scale={[0, 0, 0]}>
-        <icosahedronGeometry args={[1, 0]} />
+        <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial 
-          color="#6366f1" 
+          color="#ffffff" 
           emissive="#6366f1" 
-          emissiveIntensity={10} 
+          emissiveIntensity={20} 
           transparent 
           opacity={1} 
         />
-        <pointLight intensity={5} color="#6366f1" />
+        <pointLight intensity={10} distance={50} color="#6366f1" />
       </mesh>
 
       <points>
