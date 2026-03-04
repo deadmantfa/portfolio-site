@@ -17,10 +17,10 @@ const ArchitecturalGrid = ({
 }) => {
   const meshRef = useRef<THREE.Group>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
+  const lineMaterialRef = useRef<THREE.ShaderMaterial>(null!)
   const lightRef = useRef<THREE.PointLight>(null!)
   const { scrollProgress } = useScroll()
   
-  // RESTORE: Original density (40x40 = 1600 points)
   const count = 40 
   
   const [positions, indices, binaryTypes] = useMemo(() => {
@@ -30,7 +30,6 @@ const ArchitecturalGrid = ({
     
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
-        // RESTORE: Original spread (80 units)
         const x = (i / (count - 1) - 0.5) * 80
         const z = (j / (count - 1) - 0.5) * 80
         const idx = (i * count + j) * 3
@@ -72,17 +71,19 @@ const ArchitecturalGrid = ({
 
       void main() {
         vec3 pos = position;
-        float h = hash(position.xz + 100.0);
+        // Improved 3D hash for better symmetry
+        float h1 = hash(position.xz + 100.0);
+        float h2 = hash(position.zx - 50.0);
         
-        // MASSIVE Chaos: Huge radius and depth
-        float angle = uTime * 4.0 * h;
-        float radius = 300.0 * (1.0 - uReconstructProgress);
+        // Linear chaos factor
+        float chaos = 1.0 - uReconstructProgress;
         
+        // Turbulence that is TRULY centered and symmetric
         vec3 turbulence = vec3(
-          cos(angle) * radius * (h * 3.0),
-          sin(uTime * 2.0 * h) * radius * 2.0,
-          sin(angle) * radius * 2.0
-        ) * (1.0 - uReconstructProgress);
+          sin(uTime * 2.0 + h1 * 6.28) * 150.0 * h1,
+          cos(uTime * 1.5 + h2 * 6.28) * 100.0 * h2,
+          sin(uTime * 1.8 + (h1+h2) * 3.14) * 150.0 * h2
+        ) * chaos;
         
         pos += turbulence;
 
@@ -102,8 +103,7 @@ const ArchitecturalGrid = ({
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
         
-        // Binary needs to be HUGE initially to be seen across the screen
-        gl_PointSize = mix(60.0, 4.0, pow(uReconstructProgress, 0.4)); 
+        gl_PointSize = mix(50.0, 4.0, pow(uReconstructProgress, 0.5)); 
       }
     `,
     fragmentShader: `
@@ -133,8 +133,6 @@ const ArchitecturalGrid = ({
         if (finalShape < 0.1) discard;
 
         float strength = (vElevation + 12.0) / 24.0;
-        
-        // PURE WHITE during chaos for maximum visibility
         vec3 hotColor = vec3(1.0, 1.0, 1.0);
         vec3 settledColor = uColor * (0.5 + strength);
         vec3 baseColor = mix(hotColor, settledColor, vProgress);
@@ -146,20 +144,45 @@ const ArchitecturalGrid = ({
         vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
         finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 5.0;
         
-        // For the 'complete' state, we want EXACTLY the original visual
         if (vProgress > 0.99 && uScanProgress > 1.1) {
           gl_FragColor = vec4(settledColor, uOpacity);
           return;
         }
 
-        // Keep them bright during chaos
         float alpha = finalShape * mix(0.9, uOpacity, vProgress);
         if (uScanProgress < -1.1) alpha = finalShape * 0.8; 
 
         gl_FragColor = vec4(finalColor, alpha);
       }
     `
-  }), [])
+  }), [count])
+
+  // Specialized line shader to handle turbulence and reveal
+  const lineShaderArgs = useMemo(() => ({
+    ...shaderArgs,
+    vertexShader: shaderArgs.vertexShader.replace('gl_PointSize =', '//'), // Remove point size for lines
+    fragmentShader: `
+      uniform vec3 uColor;
+      uniform float uOpacity;
+      uniform float uScanProgress;
+      uniform float uReconstructProgress;
+      varying float vWorldY;
+      
+      void main() {
+        // Lines only appear as they are scanned or once reconstruction is far along
+        float normalizedY = vWorldY / 50.0;
+        float scanLine = 1.0 - smoothstep(uScanProgress - 0.1, uScanProgress + 0.1, normalizedY);
+        
+        // Lines start invisible and fade in
+        float lineOpacity = uOpacity * 0.2 * uReconstructProgress;
+        lineOpacity = mix(lineOpacity, uOpacity * 0.2, scanLine);
+        
+        if (uScanProgress > 1.1) lineOpacity = uOpacity * 0.2;
+
+        gl_FragColor = vec4(uColor, lineOpacity);
+      }
+    `
+  }), [shaderArgs])
 
   useEffect(() => {
     if (!materialRef.current) return
@@ -170,13 +193,13 @@ const ArchitecturalGrid = ({
       gsap.to(lightRef.current, { intensity: 800, distance: 300, duration: 0.4 });
     } else if (materializeStage === 'cloud') {
       gsap.to(lightRef.current, { intensity: 0, duration: 2.0, delay: 0.5 });
-      gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
+      gsap.to([materialRef.current.uniforms.uReconstructProgress, lineMaterialRef.current.uniforms.uReconstructProgress], { 
         value: 1.0, 
         duration: 3.5, 
-        ease: "power3.inOut" 
+        ease: "power2.inOut" 
       })
     } else if (materializeStage === 'scan') {
-      gsap.to(materialRef.current.uniforms.uScanProgress, { 
+      gsap.to([materialRef.current.uniforms.uScanProgress, lineMaterialRef.current.uniforms.uScanProgress], { 
         value: 1.2, 
         duration: 2.0, 
         ease: "power2.inOut" 
@@ -184,7 +207,8 @@ const ArchitecturalGrid = ({
     } else if (materializeStage === 'complete') {
       materialRef.current.uniforms.uScanProgress.value = 1.5
       materialRef.current.uniforms.uReconstructProgress.value = 1.0
-      materialRef.current.uniforms.uOpacity.value = 0.4 // BACK TO ORIGINAL OPACITY
+      materialRef.current.uniforms.uOpacity.value = 0.4 
+      lineMaterialRef.current.uniforms.uOpacity.value = 0.4
     }
   }, [materializeStage])
 
@@ -192,7 +216,9 @@ const ArchitecturalGrid = ({
     if (!materialRef.current) return
     const time = state.clock.getElapsedTime()
     materialRef.current.uniforms.uTime.value = time
+    lineMaterialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress
+    lineMaterialRef.current.uniforms.uScroll.value = scrollProgress
     
     if (meshRef.current) {
       meshRef.current.rotation.y = time * 0.01
@@ -223,28 +249,26 @@ const ArchitecturalGrid = ({
         />
       </points>
       
-      {(materializeStage === 'complete' || materializeStage === 'scan') && (
-        <lineSegments frustumCulled={false}>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              args={[positions, 3]}
-            />
-            <bufferAttribute
-              attach="index"
-              args={[indices, 1]}
-            />
-          </bufferGeometry>
-          <shaderMaterial 
-            args={[shaderArgs]}
-            transparent
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-            wireframe
-            opacity={0.1}
+      <lineSegments frustumCulled={false}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[positions, 3]}
           />
-        </lineSegments>
-      )}
+          <bufferAttribute
+            attach="index"
+            args={[indices, 1]}
+          />
+        </bufferGeometry>
+        <shaderMaterial 
+          ref={lineMaterialRef}
+          args={[lineShaderArgs]}
+          transparent
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          wireframe
+        />
+      </lineSegments>
     </group>
   )
 }
