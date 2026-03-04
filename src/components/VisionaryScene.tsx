@@ -20,11 +20,12 @@ const ArchitecturalGrid = ({
   const lightRef = useRef<THREE.PointLight>(null!)
   const { scrollProgress } = useScroll()
   
-  const count = 60 // 3600 particles
+  const count = 60 
   
-  const [positions, binaryTypes] = useMemo(() => {
+  const [positions, indices, binaryTypes] = useMemo(() => {
     const pos = new Float32Array(count * count * 3)
-    const types = new Float32Array(count * count) // 0 for '0', 1 for '1'
+    const ind = []
+    const types = new Float32Array(count * count)
     
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
@@ -35,9 +36,13 @@ const ArchitecturalGrid = ({
         pos[idx + 1] = 0
         pos[idx + 2] = z
         types[i * count + j] = Math.random() > 0.5 ? 1.0 : 0.0
+
+        const k = i * count + j
+        if (i < count - 1) ind.push(k, k + count)
+        if (j < count - 1) ind.push(k, k + 1)
       }
     }
-    return [pos, types]
+    return [pos, new Uint16Array(ind), types]
   }, [count])
 
   const shaderArgs = useMemo(() => ({
@@ -65,9 +70,8 @@ const ArchitecturalGrid = ({
 
       void main() {
         vec3 pos = position;
-        float h = hash(position.xz + 100.0); // Symmetrical offset
+        float h = hash(position.xz + 100.0);
         
-        // Chaos Vortex: Centered and Explosive
         float angle = uTime * 4.0 * h;
         float radius = 100.0 * (1.0 - uReconstructProgress);
         
@@ -95,35 +99,37 @@ const ArchitecturalGrid = ({
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
         
-        // Binary digits need slightly larger size to be readable
-        gl_PointSize = mix(30.0, 12.0, pow(uReconstructProgress, 0.3)); 
+        // Larger size for binary digits, standard size for grid points
+        gl_PointSize = mix(30.0, 4.0, pow(uReconstructProgress, 0.5)); 
       }
     `,
     fragmentShader: `
       uniform vec3 uColor;
       uniform float uOpacity;
       uniform float uScanProgress;
-      uniform float uTime;
       varying float vElevation;
       varying float vWorldY;
       varying float vProgress;
       varying float vBinaryType;
       
-      // Procedural drawing of 0 and 1
       float drawBinary(vec2 uv, float type) {
-        uv = uv * 2.0 - 1.0; // center it
-        if (type > 0.5) { // Draw '1'
-          float line = smoothstep(0.1, 0.0, abs(uv.x) - 0.05) * smoothstep(0.8, 0.7, abs(uv.y));
-          return line;
-        } else { // Draw '0'
+        uv = uv * 2.0 - 1.0;
+        if (type > 0.5) {
+          return smoothstep(0.1, 0.0, abs(uv.x) - 0.05) * smoothstep(0.8, 0.7, abs(uv.y));
+        } else {
           float circle = abs(length(uv) - 0.6);
           return smoothstep(0.1, 0.0, circle) * smoothstep(0.8, 0.7, length(uv));
         }
       }
 
       void main() {
+        // Only draw as binary during reconstruction, then fade to circular points
         float binary = drawBinary(gl_PointCoord, vBinaryType);
-        if (binary < 0.1) discard; // Shape the point into a digit
+        float circle = 1.0 - smoothstep(0.4, 0.5, length(gl_PointCoord - 0.5));
+        
+        // Morph from binary shape to standard point
+        float finalShape = mix(binary, circle, pow(vProgress, 2.0));
+        if (finalShape < 0.1) discard;
 
         float strength = (vElevation + 12.0) / 24.0;
         vec3 hotColor = vec3(1.0, 1.0, 1.0);
@@ -137,7 +143,7 @@ const ArchitecturalGrid = ({
         vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
         finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 4.0;
         
-        float alpha = binary * uOpacity;
+        float alpha = finalShape * uOpacity;
         if (uScanProgress < -1.1) alpha *= mix(0.1, 1.0, vProgress);
 
         gl_FragColor = vec4(finalColor, alpha);
@@ -179,7 +185,6 @@ const ArchitecturalGrid = ({
     materialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress
     
-    // Rotation logic
     if (meshRef.current) {
       meshRef.current.rotation.y = time * 0.01
     }
@@ -187,7 +192,6 @@ const ArchitecturalGrid = ({
 
   return (
     <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]} position={[0, 0, -20]}>
-      {/* Pure Light Spark (No geometry blob) */}
       <pointLight ref={lightRef} intensity={0} color="#ffffff" position={[0, 0, 0]} />
 
       <points>
@@ -210,7 +214,7 @@ const ArchitecturalGrid = ({
         />
       </points>
       
-      {materializeStage === 'complete' && (
+      {(materializeStage === 'complete' || materializeStage === 'scan') && (
         <lineSegments>
           <bufferGeometry>
             <bufferAttribute

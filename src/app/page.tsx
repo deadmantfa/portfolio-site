@@ -129,7 +129,6 @@ export default function Home() {
     handleScrollProgress()
     return () => {
       window.removeEventListener('scroll', handleScrollProgress)
-      clearTimeout(timer)
     }
   }, [])
 
