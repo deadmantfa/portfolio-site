@@ -6,127 +6,58 @@ import { useRef, useState, useCallback, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Linkedin, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import Image from 'next/image'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Points, PointMaterial } from '@react-three/drei'
-import * as THREE from 'three'
 
 export { TestimonialsCarousel }
 
 const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+...
+      <motion.div
+        custom={direction}
+        variants={isReduced ? {} : variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{
+          x: { type: 'spring', stiffness: 260, damping: 25 },
+          opacity: { duration: 0.5 },
+          scale: { duration: 0.5 },
+          rotateY: { duration: 0.6 },
+          filter: { duration: 0.4 }
+        }}
+        className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
+        style={{
+          background: 'rgba(24, 24, 27, 0.85)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(99, 102, 241, 0.25)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
+          perspective: '1200px',
+          backfaceVisibility: 'hidden',
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        {/* Dynamic Background - CSS Optimized */}
+        <div className="absolute inset-0 z-0 opacity-30">
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.3, 0.1],
+              x: direction * 50
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/20 rounded-full blur-[120px]" 
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1.2, 1, 1.2],
+              opacity: [0.1, 0.2, 0.1],
+              x: -direction * 30
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-primary/10 rounded-full blur-[100px]" 
+          />
+        </div>
 
-const SWIPE_THRESHOLD = 50
-
-function ParticleField({ direction }: { direction: number }) {
-  const points = useMemo(() => {
-    const p = new Float32Array(300 * 3)
-    for (let i = 0; i < 300; i++) {
-      p[i * 3] = (Math.random() - 0.5) * 10
-      p[i * 3 + 1] = (Math.random() - 0.5) * 10
-      p[i * 3 + 2] = (Math.random() - 0.5) * 5
-    }
-    return p
-  }, [])
-
-  const ref = useRef<THREE.Points>(null!)
-  
-  useFrame((state) => {
-    if (!ref.current) return
-    ref.current.rotation.y += 0.001
-    ref.current.rotation.x += 0.0005
-    
-    // React to direction
-    const targetX = direction * 0.2
-    ref.current.position.x += (targetX - ref.current.position.x) * 0.05
-  })
-
-  return (
-    <Points ref={ref} positions={points} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        color="#6366f1"
-        size={0.05}
-        sizeAttenuation={true}
-        depthWrite={false}
-        opacity={0.3}
-      />
-    </Points>
-  )
-}
-
-function TestimonialCard({ 
-  testimonial, 
-  direction 
-}: { 
-  testimonial: (typeof testimonials)[0]; 
-  direction: number;
-}) {
-  const [imageError, setImageError] = useState(false)
-  const isReduced = prefersReducedMotion()
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '50%' : '-50%',
-      opacity: 0,
-      scale: 0.85,
-      rotateY: direction > 0 ? 35 : -35,
-      z: -100,
-      filter: 'blur(10px)',
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-      z: 0,
-      filter: 'blur(0px)',
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '50%' : '-50%',
-      opacity: 0,
-      scale: 0.85,
-      rotateY: direction < 0 ? 35 : -35,
-      z: -100,
-      filter: 'blur(10px)',
-    }),
-  }
-
-  return (
-    <motion.div
-      custom={direction}
-      variants={isReduced ? {} : variants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={{
-        x: { type: 'spring', stiffness: 260, damping: 25 },
-        opacity: { duration: 0.5 },
-        scale: { duration: 0.5 },
-        rotateY: { duration: 0.6 },
-        filter: { duration: 0.4 }
-      }}
-      className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
-      style={{
-        background: 'rgba(24, 24, 27, 0.85)',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(99, 102, 241, 0.25)',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
-        perspective: '1200px',
-        backfaceVisibility: 'hidden',
-        transformStyle: 'preserve-3d'
-      }}
-    >
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <ParticleField direction={direction} />
-        </Canvas>
-      </div>
-
-      {/* Quote Icon */}
+        {/* Quote Icon */}
       <div className="mb-4 md:mb-6 opacity-30 relative z-10">
         <Quote className="size-8 md:size-12 text-primary" fill="currentColor" />
       </div>

@@ -197,7 +197,7 @@ const ArchitecturalGrid = ({
           transparent
           blending={THREE.AdditiveBlending}
           depthWrite={false}
-          opacity={0}
+          opacity={1}
         />
       </points>
       
