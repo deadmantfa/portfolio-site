@@ -43,7 +43,10 @@ export default function HomeScene({
             color="#6366f1" 
           />
           
-          <ArchitecturalGrid isBlueprint={materializeStage !== 'complete'} />
+          <ArchitecturalGrid 
+            isBlueprint={materializeStage !== 'complete'} 
+            materializeStage={materializeStage}
+          />
           
           {materializeStage === 'complete' && (
             <>

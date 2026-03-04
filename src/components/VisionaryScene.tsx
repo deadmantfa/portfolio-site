@@ -10,7 +10,7 @@ type MaterializeStage = 'idle' | 'spark' | 'cloud' | 'scan' | 'complete'
 
 const ArchitecturalGrid = ({ 
   isBlueprint = false,
-  materializeStage = 'complete' 
+  materializeStage = 'idle' 
 }: { 
   isBlueprint?: boolean
   materializeStage?: MaterializeStage
@@ -70,7 +70,7 @@ const ArchitecturalGrid = ({
         
         // Vortex turbulence that settles
         float angle = uTime * 3.0 * h;
-        float radius = 40.0 * (1.0 - uReconstructProgress);
+        float radius = 80.0 * (1.0 - uReconstructProgress);
         
         vec3 turbulence = vec3(
           cos(angle) * radius,
@@ -151,7 +151,12 @@ const ArchitecturalGrid = ({
       gsap.to(sparkRef.current.scale, { x: 2, y: 2, z: 2, duration: 0.4, ease: "expo.out" })
     } else if (materializeStage === 'cloud') {
       gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.3 })
-      gsap.to(sparkRef.current.scale, { x: 20, y: 20, z: 20, duration: 0.6, ease: "expo.in" })
+      // High-intensity light explosion
+      const sparkLight = sparkRef.current.children[0] as THREE.PointLight;
+      if (sparkLight) {
+        gsap.to(sparkLight, { intensity: 100, distance: 100, duration: 0.4, ease: "power4.out" });
+      }
+      gsap.to(sparkRef.current.scale, { x: 40, y: 40, z: 40, duration: 0.8, ease: "expo.out" })
       gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
         value: 1.0, 
         duration: 2.5, 

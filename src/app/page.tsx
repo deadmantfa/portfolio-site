@@ -37,28 +37,36 @@ export default function Home() {
   const [showScene, setShowScene] = useState(false)
   const [materializeStage, setMaterializeStage] = useState<'idle' | 'spark' | 'cloud' | 'scan' | 'complete'>('idle')
 
+  const sequenceStarted = useRef(false)
+
   useEffect(() => {
-    // Force a clean start for the sequence
-    setMaterializeStage('idle')
+    // Strict guard to prevent multiple triggers or skips
+    if (sequenceStarted.current) return
+    sequenceStarted.current = true
     
     const sequence = async () => {
-      // Small delay to ensure browser is ready to paint
-      await new Promise(resolve => setTimeout(resolve, 100))
+      console.log("[Quantum System] Initializing sequence...");
+      setMaterializeStage('idle')
       setShowScene(true)
       
-      // 1. Initial Spark
+      // Stage 1: Spark
+      await new Promise(resolve => setTimeout(resolve, 500))
+      console.log("[Quantum System] Triggering Spark");
       setMaterializeStage('spark')
       
-      // 2. Point Cloud Expansion (Chaos phase)
+      // Stage 2: Cloud
       await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log("[Quantum System] Dispersing Cloud");
       setMaterializeStage('cloud')
       
-      // 3. Laser Scan Reveal (Solidification phase)
+      // Stage 3: Scan
       await new Promise(resolve => setTimeout(resolve, 2500))
+      console.log("[Quantum System] Initiating Scan");
       setMaterializeStage('scan')
       
-      // 4. Sequence Complete
+      // Stage 4: Complete
       await new Promise(resolve => setTimeout(resolve, 2000))
+      console.log("[Quantum System] Materialization Complete");
       setMaterializeStage('complete')
     }
 
