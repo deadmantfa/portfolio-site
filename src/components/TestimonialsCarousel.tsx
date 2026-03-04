@@ -10,54 +10,98 @@ import Image from 'next/image'
 export { TestimonialsCarousel }
 
 const prefersReducedMotion = () =>
-...
-      <motion.div
-        custom={direction}
-        variants={isReduced ? {} : variants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        transition={{
-          x: { type: 'spring', stiffness: 260, damping: 25 },
-          opacity: { duration: 0.5 },
-          scale: { duration: 0.5 },
-          rotateY: { duration: 0.6 },
-          filter: { duration: 0.4 }
-        }}
-        className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
-        style={{
-          background: 'rgba(24, 24, 27, 0.85)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(99, 102, 241, 0.25)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
-          perspective: '1200px',
-          backfaceVisibility: 'hidden',
-          transformStyle: 'preserve-3d'
-        }}
-      >
-        {/* Dynamic Background - CSS Optimized */}
-        <div className="absolute inset-0 z-0 opacity-30">
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.2, 1],
-              opacity: [0.1, 0.3, 0.1],
-              x: direction * 50
-            }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/20 rounded-full blur-[120px]" 
-          />
-          <motion.div 
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              opacity: [0.1, 0.2, 0.1],
-              x: -direction * 30
-            }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-primary/10 rounded-full blur-[100px]" 
-          />
-        </div>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-        {/* Quote Icon */}
+const SWIPE_THRESHOLD = 50
+
+function TestimonialCard({ 
+  testimonial, 
+  direction 
+}: { 
+  testimonial: (typeof testimonials)[0]; 
+  direction: number;
+}) {
+  const [imageError, setImageError] = useState(false)
+  const isReduced = prefersReducedMotion()
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '50%' : '-50%',
+      opacity: 0,
+      scale: 0.85,
+      rotateY: direction > 0 ? 35 : -35,
+      z: -100,
+      filter: 'blur(10px)',
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      z: 0,
+      filter: 'blur(0px)',
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? '50%' : '-50%',
+      opacity: 0,
+      scale: 0.85,
+      rotateY: direction < 0 ? 35 : -35,
+      z: -100,
+      filter: 'blur(10px)',
+    }),
+  }
+
+  return (
+    <motion.div
+      custom={direction}
+      variants={isReduced ? {} : variants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{
+        x: { type: 'spring', stiffness: 260, damping: 25 },
+        opacity: { duration: 0.5 },
+        scale: { duration: 0.5 },
+        rotateY: { duration: 0.6 },
+        filter: { duration: 0.4 }
+      }}
+      className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
+      style={{
+        background: 'rgba(24, 24, 27, 0.85)',
+        backdropFilter: 'blur(12px)',
+        border: '1px solid rgba(99, 102, 241, 0.25)',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
+        perspective: '1200px',
+        backfaceVisibility: 'hidden',
+        transformStyle: 'preserve-3d'
+      }}
+    >
+      {/* Dynamic Background - CSS Optimized */}
+      <div className="absolute inset-0 z-0 opacity-30">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.3, 0.1],
+            x: direction * 50
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/20 rounded-full blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.1, 0.2, 0.1],
+            x: -direction * 30
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-primary/10 rounded-full blur-[100px]" 
+        />
+      </div>
+
+      {/* Quote Icon */}
       <div className="mb-4 md:mb-6 opacity-30 relative z-10">
         <Quote className="size-8 md:size-12 text-primary" fill="currentColor" />
       </div>
