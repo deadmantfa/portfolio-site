@@ -20,7 +20,7 @@ const ArchitecturalGrid = ({
   const sparkRef = useRef<THREE.Mesh>(null!)
   const { scrollProgress } = useScroll()
   
-  const count = 40
+  const count = 60
   
   const [positions, indices] = useMemo(() => {
     const pos = new Float32Array(count * count * 3)
@@ -110,25 +110,32 @@ const ArchitecturalGrid = ({
       void main() {
         float strength = (vElevation + 12.0) / 24.0;
         
-        // Points are hot white/gold during chaos, settle to primary
-        vec3 hotColor = vec3(1.0, 0.9, 0.6);
+        // High-contrast colors: Hot white during chaos, cooling to primary
+        vec3 hotColor = vec4(1.0, 1.0, 1.0, 1.0).rgb;
+        vec3 accentColor = vec3(1.0, 0.8, 0.4); // Gold spark
         vec3 settledColor = uColor * (0.5 + strength);
-        vec3 baseColor = mix(hotColor, settledColor, vProgress);
         
-        // Laser Scan Logic
+        // Color transition: Hot -> Accent -> Settled
+        vec3 baseColor = mix(mix(hotColor, accentColor, vProgress), settledColor, vProgress);
+        
+        // Laser Scan Reveal Logic
         float normalizedY = vWorldY / 40.0;
-        float scanLine = 1.0 - smoothstep(uScanProgress - 0.1, uScanProgress + 0.1, normalizedY);
+        float scanLine = 1.0 - smoothstep(uScanProgress - 0.15, uScanProgress + 0.15, normalizedY);
         
-        // Intense Energy Pulse at the scan line
-        float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 200.0);
+        // Intense White Energy Pulse
+        float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 250.0);
         
         vec3 finalColor = mix(baseColor * 0.1, baseColor, scanLine);
-        finalColor += vec3(0.8, 0.9, 1.0) * scanGlow * 4.0; // Bright white energy sweep
+        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 5.0; // Violent white energy
         
-        float finalOpacity = mix(uOpacity * 0.05, uOpacity, scanLine);
+        float finalOpacity = mix(uOpacity * 0.1, uOpacity, scanLine);
         
-        // Handle stages for smooth transition
-        if (uScanProgress < -1.1) finalOpacity = uOpacity * vProgress;
+        // Ensure visibility during initial stages
+        if (uScanProgress < -1.1) {
+          finalOpacity = uOpacity * mix(0.2, 1.0, vProgress);
+          finalColor = mix(hotColor, baseColor, vProgress);
+        }
+        
         if (uScanProgress > 1.1) finalOpacity = uOpacity;
 
         gl_FragColor = vec4(finalColor, finalOpacity);
@@ -138,22 +145,23 @@ const ArchitecturalGrid = ({
 
   useEffect(() => {
     if (!materialRef.current) return
+    console.log(`[Quantum] Entering Stage: ${materializeStage}`);
 
     if (materializeStage === 'spark') {
-      gsap.to(sparkRef.current.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 0.4, ease: "expo.out" })
+      gsap.to(sparkRef.current.scale, { x: 2, y: 2, z: 2, duration: 0.4, ease: "expo.out" })
     } else if (materializeStage === 'cloud') {
       gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.3 })
-      gsap.to(sparkRef.current.scale, { x: 10, y: 10, z: 10, duration: 0.5, ease: "expo.in" })
+      gsap.to(sparkRef.current.scale, { x: 20, y: 20, z: 20, duration: 0.6, ease: "expo.in" })
       gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
         value: 1.0, 
-        duration: 2.2, 
-        ease: "power4.inOut" 
+        duration: 2.5, 
+        ease: "power3.inOut" 
       })
     } else if (materializeStage === 'scan') {
       gsap.to(materialRef.current.uniforms.uScanProgress, { 
         value: 1.2, 
-        duration: 1.8, 
-        ease: "power1.inOut" 
+        duration: 2.0, 
+        ease: "power2.inOut" 
       })
     } else if (materializeStage === 'complete') {
       materialRef.current.uniforms.uScanProgress.value = 1.5
