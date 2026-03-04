@@ -20,7 +20,8 @@ const ArchitecturalGrid = ({
   const lightRef = useRef<THREE.PointLight>(null!)
   const { scrollProgress } = useScroll()
   
-  const count = 60 
+  // RESTORE: Original density (40x40 = 1600 points)
+  const count = 40 
   
   const [positions, indices, binaryTypes] = useMemo(() => {
     const pos = new Float32Array(count * count * 3)
@@ -29,8 +30,9 @@ const ArchitecturalGrid = ({
     
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
-        const x = (i / (count - 1) - 0.5) * 100
-        const z = (j / (count - 1) - 0.5) * 100
+        // RESTORE: Original spread (80 units)
+        const x = (i / (count - 1) - 0.5) * 80
+        const z = (j / (count - 1) - 0.5) * 80
         const idx = (i * count + j) * 3
         pos[idx] = x
         pos[idx + 1] = 0
@@ -72,14 +74,14 @@ const ArchitecturalGrid = ({
         vec3 pos = position;
         float h = hash(position.xz + 100.0);
         
-        // MASSIVE Turbulence: Fill entire screen
-        float angle = uTime * 5.0 * h;
-        float radius = 250.0 * (1.0 - uReconstructProgress);
+        // MASSIVE Chaos: Huge radius and depth
+        float angle = uTime * 4.0 * h;
+        float radius = 300.0 * (1.0 - uReconstructProgress);
         
         vec3 turbulence = vec3(
-          cos(angle) * radius * (h * 2.5),
-          sin(uTime * 3.0 * h) * radius * 1.5,
-          sin(angle) * radius * (h * 2.5)
+          cos(angle) * radius * (h * 3.0),
+          sin(uTime * 2.0 * h) * radius * 2.0,
+          sin(angle) * radius * 2.0
         ) * (1.0 - uReconstructProgress);
         
         pos += turbulence;
@@ -100,8 +102,8 @@ const ArchitecturalGrid = ({
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
         
-        // Larger size for visibility
-        gl_PointSize = mix(45.0, 4.0, pow(uReconstructProgress, 0.5)); 
+        // Binary needs to be HUGE initially to be seen across the screen
+        gl_PointSize = mix(60.0, 4.0, pow(uReconstructProgress, 0.4)); 
       }
     `,
     fragmentShader: `
@@ -132,8 +134,8 @@ const ArchitecturalGrid = ({
 
         float strength = (vElevation + 12.0) / 24.0;
         
-        // HIGH CONTRAST: Electric Cyan -> Original Indigo
-        vec3 hotColor = vec3(0.0, 0.95, 1.0); 
+        // PURE WHITE during chaos for maximum visibility
+        vec3 hotColor = vec3(1.0, 1.0, 1.0);
         vec3 settledColor = uColor * (0.5 + strength);
         vec3 baseColor = mix(hotColor, settledColor, vProgress);
         
@@ -144,13 +146,15 @@ const ArchitecturalGrid = ({
         vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
         finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 5.0;
         
+        // For the 'complete' state, we want EXACTLY the original visual
         if (vProgress > 0.99 && uScanProgress > 1.1) {
           gl_FragColor = vec4(settledColor, uOpacity);
           return;
         }
 
-        float alpha = finalShape * uOpacity;
-        if (uScanProgress < -1.1) alpha *= mix(0.8, 1.0, vProgress); 
+        // Keep them bright during chaos
+        float alpha = finalShape * mix(0.9, uOpacity, vProgress);
+        if (uScanProgress < -1.1) alpha = finalShape * 0.8; 
 
         gl_FragColor = vec4(finalColor, alpha);
       }
@@ -162,15 +166,14 @@ const ArchitecturalGrid = ({
     console.log(`[Quantum Binary] Stage: ${materializeStage}`);
 
     if (materializeStage === 'spark') {
-      // Immediate opacity for visibility
       materialRef.current.uniforms.uOpacity.value = 0.8;
-      gsap.to(lightRef.current, { intensity: 500, distance: 200, duration: 0.4 });
+      gsap.to(lightRef.current, { intensity: 800, distance: 300, duration: 0.4 });
     } else if (materializeStage === 'cloud') {
       gsap.to(lightRef.current, { intensity: 0, duration: 2.0, delay: 0.5 });
       gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
         value: 1.0, 
-        duration: 3.0, 
-        ease: "power4.inOut" 
+        duration: 3.5, 
+        ease: "power3.inOut" 
       })
     } else if (materializeStage === 'scan') {
       gsap.to(materialRef.current.uniforms.uScanProgress, { 
@@ -181,7 +184,7 @@ const ArchitecturalGrid = ({
     } else if (materializeStage === 'complete') {
       materialRef.current.uniforms.uScanProgress.value = 1.5
       materialRef.current.uniforms.uReconstructProgress.value = 1.0
-      materialRef.current.uniforms.uOpacity.value = 0.2 // Original grid opacity
+      materialRef.current.uniforms.uOpacity.value = 0.4 // BACK TO ORIGINAL OPACITY
     }
   }, [materializeStage])
 
@@ -200,7 +203,7 @@ const ArchitecturalGrid = ({
     <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]} position={[0, 0, -20]}>
       <pointLight ref={lightRef} intensity={0} color="#ffffff" position={[0, 0, 0]} />
 
-      <points>
+      <points frustumCulled={false}>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
@@ -221,7 +224,7 @@ const ArchitecturalGrid = ({
       </points>
       
       {(materializeStage === 'complete' || materializeStage === 'scan') && (
-        <lineSegments>
+        <lineSegments frustumCulled={false}>
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
