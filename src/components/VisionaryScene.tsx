@@ -134,6 +134,8 @@ const ArchitecturalGrid = ({
         float strength = (vElevation + 12.0) / 24.0;
         vec3 hotColor = vec3(1.0, 1.0, 1.0);
         vec3 settledColor = uColor * (0.5 + strength);
+        
+        // Ensure final color is EXACTLY as it was before overhaul when complete
         vec3 baseColor = mix(hotColor, settledColor, vProgress);
         
         float normalizedY = vWorldY / 50.0;
@@ -143,8 +145,14 @@ const ArchitecturalGrid = ({
         vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
         finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 4.0;
         
+        // For the 'complete' state, we want exactly the old visual
+        if (vProgress > 0.99 && uScanProgress > 1.1) {
+          gl_FragColor = vec4(settledColor, uOpacity);
+          return;
+        }
+
         float alpha = finalShape * uOpacity;
-        if (uScanProgress < -1.1) alpha *= mix(0.1, 1.0, vProgress);
+        if (uScanProgress < -1.1) alpha *= mix(0.5, 1.0, vProgress); // Better initial visibility
 
         gl_FragColor = vec4(finalColor, alpha);
       }
@@ -156,10 +164,10 @@ const ArchitecturalGrid = ({
     console.log(`[Quantum Binary] Stage: ${materializeStage}`);
 
     if (materializeStage === 'spark') {
-      gsap.to(materialRef.current.uniforms.uOpacity, { value: 1.0, duration: 0.5 });
-      gsap.to(lightRef.current, { intensity: 50, duration: 0.4 });
+      // Immediate opacity for visibility
+      materialRef.current.uniforms.uOpacity.value = 0.8;
+      gsap.to(lightRef.current, { intensity: 500, distance: 200, duration: 0.4 });
     } else if (materializeStage === 'cloud') {
-      gsap.to(lightRef.current, { intensity: 150, distance: 150, duration: 0.6, ease: "power4.out" });
       gsap.to(lightRef.current, { intensity: 0, duration: 2.0, delay: 0.5 });
       gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
         value: 1.0, 
@@ -175,7 +183,7 @@ const ArchitecturalGrid = ({
     } else if (materializeStage === 'complete') {
       materialRef.current.uniforms.uScanProgress.value = 1.5
       materialRef.current.uniforms.uReconstructProgress.value = 1.0
-      materialRef.current.uniforms.uOpacity.value = 1.0
+      materialRef.current.uniforms.uOpacity.value = 0.2 // Original grid opacity
     }
   }, [materializeStage])
 
