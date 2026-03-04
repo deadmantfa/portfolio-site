@@ -217,10 +217,10 @@ export default function Home() {
         <section
           id="skills"
           ref={skillsSectionRef}
-          className="min-h-[150vh] flex flex-col items-center px-8 relative bg-transparent"
+          className="md:min-h-[150vh] min-h-screen flex flex-col items-center px-8 relative bg-transparent"
           style={{ isolation: 'isolate' }}
         >
-          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none z-40">
+          <div className="md:sticky md:top-0 md:h-screen w-full flex flex-col items-center justify-center pointer-events-none z-40 relative">
             <div className="absolute inset-0 tech-grid opacity-15 pointer-events-none"></div>
             {/* Nebula Background Glow */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_70%)] pointer-events-none"></div>
@@ -246,8 +246,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="vault" ref={vaultSectionRef} className="min-h-[200vh] flex flex-col items-center px-8 relative bg-transparent">
-          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+        <section id="vault" ref={vaultSectionRef} className="md:min-h-[200vh] min-h-screen flex flex-col items-center px-8 relative bg-transparent">
+          <div className="md:sticky md:top-0 md:h-screen w-full flex flex-col items-center justify-center pointer-events-none relative">
             <div className="max-w-7xl w-full text-center z-10 pointer-events-none">
               <EditorialReveal direction="down">
                 <span className="font-mono text-[11px] text-primary uppercase tracking-[0.5em] mb-4 block">The Vault</span>
