@@ -118,7 +118,7 @@ export default function Home() {
 
       {/* Content Layer (on top) */}
       <div className="relative z-10">
-        <section id="epochs" className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
+        <section id="hero" className="relative flex min-h-screen w-full flex-col items-center justify-center px-8 text-center bg-transparent">
           <div className="max-w-6xl">
             <div className="inline-block px-4 py-1.5 rounded-full glass mb-8 font-mono text-[11px] tracking-[0.4em] uppercase text-primary animate-reveal">
               Chief Technology Officer
@@ -152,6 +152,7 @@ export default function Home() {
         </section>
 
         <div
+          id="epochs"
           className="relative pb-[20vh]"
         >
           {/* Continuous Journey Line */}

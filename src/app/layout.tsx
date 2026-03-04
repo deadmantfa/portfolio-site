@@ -5,6 +5,7 @@ import { Navigation } from '@/components/Navigation'
 import StructuredData from '@/components/StructuredData'
 import ArchitecturalLoader from '@/components/ArchitecturalLoader'
 import { ScrollProvider } from '@/components/ScrollProvider'
+import { ArchitecturalScroll } from '@/components/ArchitecturalScroll'
 
 const archivo = Archivo({
   subsets: ['latin'],
@@ -91,6 +92,7 @@ export default function RootLayout({
         <ScrollProvider>
           <ArchitecturalLoader />
           <Navigation />
+          <ArchitecturalScroll />
           {children}
         </ScrollProvider>
       </body>

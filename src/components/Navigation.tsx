@@ -4,9 +4,9 @@ import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import gsap from 'gsap'
 
-type Section = 'epochs' | 'skills' | 'lab' | 'signals' | 'contact'
+type Section = 'hero' | 'epochs' | 'skills' | 'lab' | 'signals' | 'contact'
 
-const sectionLabels: Record<Section, string> = {
+const sectionLabels: Record<string, string> = {
   epochs: 'Epochs',
   skills: 'Ecosystem',
   lab: 'Lab',
@@ -21,9 +21,10 @@ const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const Navigation = () => {
-  const [activeSection, setActiveSection] = useState<Section | null>(null)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
   const indicatorRef = useRef<HTMLSpanElement>(null)
-  const linkRefs = useRef<Record<Section, HTMLAnchorElement | null>>({
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({
+    hero: null,
     epochs: null,
     skills: null,
     lab: null,
@@ -45,7 +46,7 @@ const Navigation = () => {
 
   // IntersectionObserver for active section detection
   useEffect(() => {
-    const sections: Section[] = ['epochs', 'skills', 'lab', 'signals', 'contact']
+    const sections: Section[] = ['hero', 'epochs', 'skills', 'lab', 'signals', 'contact']
     const observers = sections.map((section) => {
       const element = document.getElementById(section)
       if (!element) return null
@@ -53,10 +54,12 @@ const Navigation = () => {
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setActiveSection(section)
+            // Mapping hero to epochs for navigation highlight
+            const activeId = section === 'hero' ? 'epochs' : section
+            setActiveSection(activeId)
           }
         },
-        { threshold: 0.3 }
+        { threshold: 0.2 }
       )
 
       observer.observe(element)

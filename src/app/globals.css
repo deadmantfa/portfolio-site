@@ -34,6 +34,30 @@
     color: #ffffff;
     @apply antialiased overflow-x-hidden font-sans;
   }
+
+  /* Custom Architecture Scrollbar for non-touch devices */
+  @media (min-width: 1024px) {
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.2);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.4);
+    }
+    
+    /* For Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(99, 102, 241, 0.2) transparent;
+    }
+  }
+
   h1, h2, h3 { @apply font-serif italic; }
 
   /* Respect user motion preferences - WCAG accessibility */
