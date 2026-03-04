@@ -17,30 +17,27 @@ const ArchitecturalGrid = ({
 }) => {
   const meshRef = useRef<THREE.Group>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
-  const sparkRef = useRef<THREE.Mesh>(null!)
+  const lightRef = useRef<THREE.PointLight>(null!)
   const { scrollProgress } = useScroll()
   
-  const count = 60
+  const count = 60 // 3600 particles
   
-  const [positions, indices] = useMemo(() => {
+  const [positions, binaryTypes] = useMemo(() => {
     const pos = new Float32Array(count * count * 3)
-    const ind = []
+    const types = new Float32Array(count * count) // 0 for '0', 1 for '1'
     
     for (let i = 0; i < count; i++) {
       for (let j = 0; j < count; j++) {
-        const x = (i / (count - 1) - 0.5) * 80
-        const z = (j / (count - 1) - 0.5) * 80
+        const x = (i / (count - 1) - 0.5) * 100
+        const z = (j / (count - 1) - 0.5) * 100
         const idx = (i * count + j) * 3
         pos[idx] = x
         pos[idx + 1] = 0
         pos[idx + 2] = z
-        
-        const k = i * count + j
-        if (i < count - 1) ind.push(k, k + count)
-        if (j < count - 1) ind.push(k, k + 1)
+        types[i * count + j] = Math.random() > 0.5 ? 1.0 : 0.0
       }
     }
-    return [pos, new Uint16Array(ind)]
+    return [pos, types]
   }, [count])
 
   const shaderArgs = useMemo(() => ({
@@ -48,7 +45,7 @@ const ArchitecturalGrid = ({
       uTime: { value: 0 },
       uScroll: { value: 0 },
       uColor: { value: new THREE.Color("#6366f1") },
-      uOpacity: { value: 0.4 },
+      uOpacity: { value: 0.0 },
       uScanProgress: { value: -1.2 },
       uReconstructProgress: { value: 0.0 }
     },
@@ -56,9 +53,11 @@ const ArchitecturalGrid = ({
       uniform float uTime;
       uniform float uScroll;
       uniform float uReconstructProgress;
+      attribute float aBinaryType;
       varying float vElevation;
       varying float vWorldY;
       varying float vProgress;
+      varying float vBinaryType;
       
       float hash(vec2 p) {
         return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -66,16 +65,16 @@ const ArchitecturalGrid = ({
 
       void main() {
         vec3 pos = position;
-        float h = hash(position.xz);
+        float h = hash(position.xz + 100.0); // Symmetrical offset
         
-        // Vortex turbulence that settles
-        float angle = uTime * 3.0 * h;
-        float radius = 80.0 * (1.0 - uReconstructProgress);
+        // Chaos Vortex: Centered and Explosive
+        float angle = uTime * 4.0 * h;
+        float radius = 100.0 * (1.0 - uReconstructProgress);
         
         vec3 turbulence = vec3(
-          cos(angle) * radius,
-          sin(uTime * 2.0 * h) * radius * 0.5,
-          sin(angle) * radius
+          cos(angle) * radius * (h * 1.5),
+          sin(uTime * 2.0 * h) * radius * 0.8,
+          sin(angle) * radius * (h * 1.5)
         ) * (1.0 - uReconstructProgress);
         
         pos += turbulence;
@@ -90,84 +89,76 @@ const ArchitecturalGrid = ({
         vElevation = elevation;
         vWorldY = modelPosition.y;
         vProgress = uReconstructProgress;
+        vBinaryType = aBinaryType;
         
         vec4 viewPosition = viewMatrix * modelPosition;
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
         
-        // Particles start large and glowing, shrink as they settle
-        gl_PointSize = mix(25.0, 4.0, pow(uReconstructProgress, 0.3)); 
+        // Binary digits need slightly larger size to be readable
+        gl_PointSize = mix(30.0, 12.0, pow(uReconstructProgress, 0.3)); 
       }
     `,
     fragmentShader: `
       uniform vec3 uColor;
       uniform float uOpacity;
       uniform float uScanProgress;
+      uniform float uTime;
       varying float vElevation;
       varying float vWorldY;
       varying float vProgress;
+      varying float vBinaryType;
       
-      void main() {
-        float strength = (vElevation + 12.0) / 24.0;
-        
-        // High-contrast colors: Hot white during chaos, cooling to primary
-        vec3 hotColor = vec4(1.0, 1.0, 1.0, 1.0).rgb;
-        vec3 accentColor = vec3(1.0, 0.8, 0.4); // Gold spark
-        vec3 settledColor = uColor * (0.5 + strength);
-        
-        // Color transition: Hot -> Accent -> Settled
-        vec3 baseColor = mix(mix(hotColor, accentColor, vProgress), settledColor, vProgress);
-        
-        // Laser Scan Reveal Logic
-        float normalizedY = vWorldY / 40.0;
-        float scanLine = 1.0 - smoothstep(uScanProgress - 0.15, uScanProgress + 0.15, normalizedY);
-        
-        // Intense White Energy Pulse
-        float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 250.0);
-        
-        vec3 finalColor = mix(baseColor * 0.1, baseColor, scanLine);
-        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 5.0; // Violent white energy
-        
-        float finalOpacity = mix(uOpacity * 0.1, uOpacity, scanLine);
-        
-        // Ensure visibility during initial stages
-        if (uScanProgress < -1.1) {
-          finalOpacity = uOpacity * mix(0.2, 1.0, vProgress);
-          finalColor = mix(hotColor, baseColor, vProgress);
+      // Procedural drawing of 0 and 1
+      float drawBinary(vec2 uv, float type) {
+        uv = uv * 2.0 - 1.0; // center it
+        if (type > 0.5) { // Draw '1'
+          float line = smoothstep(0.1, 0.0, abs(uv.x) - 0.05) * smoothstep(0.8, 0.7, abs(uv.y));
+          return line;
+        } else { // Draw '0'
+          float circle = abs(length(uv) - 0.6);
+          return smoothstep(0.1, 0.0, circle) * smoothstep(0.8, 0.7, length(uv));
         }
-        
-        if (uScanProgress > 1.1) finalOpacity = uOpacity;
+      }
 
-        gl_FragColor = vec4(finalColor, finalOpacity);
+      void main() {
+        float binary = drawBinary(gl_PointCoord, vBinaryType);
+        if (binary < 0.1) discard; // Shape the point into a digit
+
+        float strength = (vElevation + 12.0) / 24.0;
+        vec3 hotColor = vec3(1.0, 1.0, 1.0);
+        vec3 settledColor = uColor * (0.5 + strength);
+        vec3 baseColor = mix(hotColor, settledColor, vProgress);
+        
+        float normalizedY = vWorldY / 50.0;
+        float scanLine = 1.0 - smoothstep(uScanProgress - 0.1, uScanProgress + 0.1, normalizedY);
+        float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 200.0);
+        
+        vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
+        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 4.0;
+        
+        float alpha = binary * uOpacity;
+        if (uScanProgress < -1.1) alpha *= mix(0.1, 1.0, vProgress);
+
+        gl_FragColor = vec4(finalColor, alpha);
       }
     `
   }), [])
 
   useEffect(() => {
     if (!materialRef.current) return
-    console.log(`[Quantum] Entering Stage: ${materializeStage}`);
+    console.log(`[Quantum Binary] Stage: ${materializeStage}`);
 
     if (materializeStage === 'spark') {
-      gsap.to(sparkRef.current.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 0.4, ease: "expo.out" })
-      gsap.to(sparkRef.current.material, { opacity: 1, duration: 0.2 })
+      gsap.to(materialRef.current.uniforms.uOpacity, { value: 1.0, duration: 0.5 });
+      gsap.to(lightRef.current, { intensity: 50, duration: 0.4 });
     } else if (materializeStage === 'cloud') {
-      // Fade out spark completely so it doesn't leave a 'blob'
-      gsap.to(sparkRef.current.material, { opacity: 0, duration: 0.5, ease: "power2.in" })
-      
-      // High-intensity light explosion
-      const sparkLight = sparkRef.current.children[0] as THREE.PointLight;
-      if (sparkLight) {
-        gsap.to(sparkLight, { intensity: 100, distance: 100, duration: 0.4, ease: "power4.out" });
-        gsap.to(sparkLight, { intensity: 0, duration: 1.5, delay: 0.5 });
-      }
-      
-      // Limit scale to avoid filling the screen with a blob
-      gsap.to(sparkRef.current.scale, { x: 15, y: 15, z: 15, duration: 0.8, ease: "expo.out" })
-      
+      gsap.to(lightRef.current, { intensity: 150, distance: 150, duration: 0.6, ease: "power4.out" });
+      gsap.to(lightRef.current, { intensity: 0, duration: 2.0, delay: 0.5 });
       gsap.to(materialRef.current.uniforms.uReconstructProgress, { 
         value: 1.0, 
-        duration: 2.5, 
-        ease: "power3.inOut" 
+        duration: 3.0, 
+        ease: "power4.inOut" 
       })
     } else if (materializeStage === 'scan') {
       gsap.to(materialRef.current.uniforms.uScanProgress, { 
@@ -178,58 +169,36 @@ const ArchitecturalGrid = ({
     } else if (materializeStage === 'complete') {
       materialRef.current.uniforms.uScanProgress.value = 1.5
       materialRef.current.uniforms.uReconstructProgress.value = 1.0
+      materialRef.current.uniforms.uOpacity.value = 1.0
     }
   }, [materializeStage])
 
   useFrame((state) => {
     if (!materialRef.current) return
     const time = state.clock.getElapsedTime()
-    
     materialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress
     
-    const fadeOut = Math.max(0, 1 - (scrollProgress - 0.4) * 2)
-    const targetOpacity = (isBlueprint ? 0.8 : 0.2) * fadeOut
-    
-    materialRef.current.uniforms.uOpacity.value = THREE.MathUtils.lerp(
-      materialRef.current.uniforms.uOpacity.value, 
-      targetOpacity, 
-      0.1
-    )
-    
-    const targetColor = new THREE.Color(isBlueprint ? "#14b8a6" : "#6366f1")
-    materialRef.current.uniforms.uColor.value.lerp(targetColor, 0.1)
-    
+    // Rotation logic
     if (meshRef.current) {
       meshRef.current.rotation.y = time * 0.01
-    }
-
-    if (sparkRef.current && (materializeStage === 'spark' || materializeStage === 'cloud')) {
-      sparkRef.current.rotation.z += 0.1
-      sparkRef.current.rotation.x += 0.05
     }
   })
 
   return (
     <group ref={meshRef} rotation={[Math.PI / 8, 0, 0]} position={[0, 0, -20]}>
-      {/* Initial High-Intensity Spark */}
-      <mesh ref={sparkRef} scale={[0, 0, 0]}>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshStandardMaterial 
-          color="#ffffff" 
-          emissive="#6366f1" 
-          emissiveIntensity={20} 
-          transparent 
-          opacity={0} 
-        />
-        <pointLight intensity={10} distance={50} color="#6366f1" />
-      </mesh>
+      {/* Pure Light Spark (No geometry blob) */}
+      <pointLight ref={lightRef} intensity={0} color="#ffffff" position={[0, 0, 0]} />
 
       <points>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
             args={[positions, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-aBinaryType"
+            args={[binaryTypes, 1]}
           />
         </bufferGeometry>
         <shaderMaterial
@@ -238,11 +207,10 @@ const ArchitecturalGrid = ({
           transparent
           blending={THREE.AdditiveBlending}
           depthWrite={false}
-          opacity={1}
         />
       </points>
       
-      {(materializeStage === 'complete' || materializeStage === 'scan') && (
+      {materializeStage === 'complete' && (
         <lineSegments>
           <bufferGeometry>
             <bufferAttribute
