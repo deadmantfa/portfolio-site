@@ -72,13 +72,14 @@ const ArchitecturalGrid = ({
         vec3 pos = position;
         float h = hash(position.xz + 100.0);
         
-        float angle = uTime * 4.0 * h;
-        float radius = 100.0 * (1.0 - uReconstructProgress);
+        // MASSIVE Turbulence: Fill entire screen
+        float angle = uTime * 5.0 * h;
+        float radius = 250.0 * (1.0 - uReconstructProgress);
         
         vec3 turbulence = vec3(
-          cos(angle) * radius * (h * 1.5),
-          sin(uTime * 2.0 * h) * radius * 0.8,
-          sin(angle) * radius * (h * 1.5)
+          cos(angle) * radius * (h * 2.5),
+          sin(uTime * 3.0 * h) * radius * 1.5,
+          sin(angle) * radius * (h * 2.5)
         ) * (1.0 - uReconstructProgress);
         
         pos += turbulence;
@@ -99,8 +100,8 @@ const ArchitecturalGrid = ({
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
         
-        // Larger size for binary digits, standard size for grid points
-        gl_PointSize = mix(30.0, 4.0, pow(uReconstructProgress, 0.5)); 
+        // Larger size for visibility
+        gl_PointSize = mix(45.0, 4.0, pow(uReconstructProgress, 0.5)); 
       }
     `,
     fragmentShader: `
@@ -123,19 +124,17 @@ const ArchitecturalGrid = ({
       }
 
       void main() {
-        // Only draw as binary during reconstruction, then fade to circular points
         float binary = drawBinary(gl_PointCoord, vBinaryType);
         float circle = 1.0 - smoothstep(0.4, 0.5, length(gl_PointCoord - 0.5));
         
-        // Morph from binary shape to standard point
         float finalShape = mix(binary, circle, pow(vProgress, 2.0));
         if (finalShape < 0.1) discard;
 
         float strength = (vElevation + 12.0) / 24.0;
-        vec3 hotColor = vec3(1.0, 1.0, 1.0);
-        vec3 settledColor = uColor * (0.5 + strength);
         
-        // Ensure final color is EXACTLY as it was before overhaul when complete
+        // HIGH CONTRAST: Electric Cyan -> Original Indigo
+        vec3 hotColor = vec3(0.0, 0.95, 1.0); 
+        vec3 settledColor = uColor * (0.5 + strength);
         vec3 baseColor = mix(hotColor, settledColor, vProgress);
         
         float normalizedY = vWorldY / 50.0;
@@ -143,16 +142,15 @@ const ArchitecturalGrid = ({
         float scanGlow = exp(-pow(normalizedY - uScanProgress, 2.0) * 200.0);
         
         vec3 finalColor = mix(baseColor * 0.2, baseColor, scanLine);
-        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 4.0;
+        finalColor += vec3(1.0, 1.0, 1.0) * scanGlow * 5.0;
         
-        // For the 'complete' state, we want exactly the old visual
         if (vProgress > 0.99 && uScanProgress > 1.1) {
           gl_FragColor = vec4(settledColor, uOpacity);
           return;
         }
 
         float alpha = finalShape * uOpacity;
-        if (uScanProgress < -1.1) alpha *= mix(0.5, 1.0, vProgress); // Better initial visibility
+        if (uScanProgress < -1.1) alpha *= mix(0.8, 1.0, vProgress); 
 
         gl_FragColor = vec4(finalColor, alpha);
       }
