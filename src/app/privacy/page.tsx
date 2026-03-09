@@ -125,16 +125,16 @@ export default function PrivacyPage() {
               <li className="flex items-start gap-3">
                 <span className="text-zinc-600 font-mono text-[11px] mt-1">—</span>
                 <span>
-                  <span className="text-zinc-100">Firebase Hosting</span> — the site is hosted on
-                  Firebase. Firebase may log standard server request metadata (IP address, user
-                  agent, request path) as part of normal hosting infrastructure operation. See{' '}
+                  <span className="text-zinc-100">Vercel</span> — the site is hosted on Vercel.
+                  Vercel may log standard server request metadata (IP address, user agent, request
+                  path) as part of normal hosting infrastructure operation. See{' '}
                   <a
-                    href="https://firebase.google.com/support/privacy"
+                    href="https://vercel.com/legal/privacy-policy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-400 underline underline-offset-4 hover:text-zinc-200 transition-colors"
                   >
-                    Firebase&apos;s Privacy Information
+                    Vercel&apos;s Privacy Policy
                   </a>
                   .
                 </span>
