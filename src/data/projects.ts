@@ -47,11 +47,12 @@ export const projects: ProjectCaseStudy[] = [
     company: 'Rooftop',
     role: 'Chief Technology Officer',
     period: '2022 - Present',
-    challenge: 'Directing technology strategy to drive project success and operational efficiency during a period of rapid scale. Faced challenges balancing rapid feature delivery with system reliability while managing infrastructure costs during growth phases of 3-5x yearly user increases.',
-    impact: 'Reduced system runtime by 85% and increased user engagement by 60% through modern serverless architectures and AI solutions. Established sustainable cloud cost savings of 40% YoY while maintaining 99.9% uptime SLA.',
+    challenge: 'Directing technology strategy to drive project success and operational efficiency during a period of rapid scale. Faced challenges balancing rapid feature delivery with system reliability while managing infrastructure costs during growth phases of 3-5x yearly user increases. A key creative challenge was bridging the gap between static artwork listings and emotionally resonant storytelling — enabling Rooftop\'s artist catalogue to speak to buyers across language and cultural boundaries.',
+    impact: 'Reduced system runtime by 85% and increased user engagement by 60% through modern serverless architectures and AI solutions. Established sustainable cloud cost savings of 40% YoY while maintaining 99.9% uptime SLA. Shipped Lift — an AI-powered multimedia storytelling platform — bringing 300+ artworks to life with animated presentations and multilingual audio narration across 10+ languages, generating 10,000+ views.',
     highlights: [
       { label: 'System Runtime', value: '-85%' },
       { label: 'User Engagement', value: '+60%' },
+      { label: 'Artworks on Lift', value: '300+' },
       { label: 'Customer Satisfaction', value: '90%' }
     ],
     adrs: [
@@ -70,18 +71,42 @@ export const projects: ProjectCaseStudy[] = [
         impact: 'Boosted conversion rates by 35% and increased average session duration by 4 minutes through targeted discovery.',
         decision: 'Deployed Machine Learning models on SageMaker',
         rationale: 'To deliver hyper-personalized experiences that align with individual user artistic preferences.'
+      },
+      {
+        title: 'Lift — Multilingual AI Storytelling for Art',
+        problem: 'Static artwork listings failed to communicate the emotional and cultural narrative behind each piece, limiting buyer connection and cross-market reach. Art Inspiration, the original proof-of-concept, validated the format but lacked the editorial tooling and audio infrastructure to scale.',
+        solution: 'Architected Lift — a full-stack multimedia platform evolved from Art Inspiration. Built a web-based custom editor allowing curators to compose animated presentations combining video and image sequences, with GSAP and Canvas powering frame-accurate animation on the frontend. A Python and PHP backend processed media through asynchronous queues, invoking Azure Cognitive Services for text-to-speech synthesis and Google Translate for dynamic multilingual narration across 10+ languages.',
+        impact: 'Delivered 300+ artist artworks as immersive, narrated reels with 10,000+ views. Unlocked international buyer segments through on-demand language switching, extending each artwork\'s reach without additional editorial cost.',
+        decision: 'Custom editor + async queue pipeline over off-the-shelf video tools',
+        rationale: 'Off-the-shelf video platforms could not support the artwork-specific animation requirements, queue-driven media processing, or the deep integration with Azure TTS and Google Translate needed for scalable multilingual narration at the per-artwork level.'
+      },
+      {
+        title: 'Gallery Kiosk — Flutter on Raspberry Pi',
+        problem: 'Physical gallery visitors had no structured way to explore the context and story behind each art form on display, and no tangible takeaway to reinforce their connection to the artwork after leaving the space.',
+        solution: 'Delivered a self-contained gallery kiosk in 4 weeks using Flutter for a fluid, touch-first UI running on a Raspberry Pi that also drove the display and acted as the hardware bridge to a colour postcard printer. Visitors browsed art forms, surfaced rich contextual content from a custom internal Art Wiki API, then selected and printed a branded, full-colour postcard of their chosen artwork — all without staff intervention.',
+        impact: 'Deployed across 2 gallery locations with no architectural ceiling on further rollout. Transformed passive gallery visits into interactive, personalised experiences with a physical branded keepsake — extending Rooftop\'s presence beyond the screen and into visitors\' hands.',
+        decision: 'Flutter on Raspberry Pi over web kiosk or tablet-only solution',
+        rationale: 'Flutter provided a single codebase with native-quality rendering and reliable hardware peripheral access, while Raspberry Pi gave full control over display output and printer integration without the vendor lock-in or management overhead of commercial kiosk hardware.'
+      },
+      {
+        title: 'Seller Liveness Verification — TensorFlow Computer Vision',
+        problem: 'Onboarding fraud and impersonation risk among sellers and service providers required a trust layer beyond static document uploads. A purely passive photo check could be spoofed; a manual video review process would not scale.',
+        solution: 'Built a real-time liveness verification system in Angular using TensorFlow.js and computer vision. The system randomly selects 3 challenges from a set — blink, smile, turn head left, turn head right, look up, look down — and instructs the user via synthesised voice in both English and Hindi, with simultaneous on-screen text as a fallback. TensorFlow models evaluated facial landmark responses live in the browser, capturing a verified image and video recording on successful completion.',
+        impact: 'Delivered in 8 days. Established a robust, scalable anti-spoofing layer for seller onboarding — reducing impersonation risk without adding manual review overhead. Bilingual voice guidance removed the literacy barrier for Hindi-speaking providers, widening the verified seller base.',
+        decision: 'In-browser TensorFlow.js over server-side vision API',
+        rationale: 'Running inference client-side eliminated round-trip latency that would have made real-time facial challenge detection feel unresponsive, reduced server costs at scale, and kept the live camera feed local — avoiding the privacy and compliance complexity of streaming biometric video to a backend.'
       }
     ],
-    techStack: ['AWS', 'Serverless', 'AI/ML', 'SageMaker', 'Next.js', 'DevOps'],
+    techStack: ['AWS', 'Serverless', 'AI/ML', 'SageMaker', 'Next.js', 'Angular', 'Python', 'PHP', 'TensorFlow.js', 'Computer Vision', 'Azure Voice AI', 'Google Translate', 'GSAP', 'Canvas', 'Flutter', 'Raspberry Pi', 'DevOps'],
     narrative: {
-      vision: 'To build a self-healing, AI-first platform that scales human creativity through strategic technical automation, intelligent resource optimization, and predictive infrastructure management that anticipates and prevents failures before they impact users or business operations.',
-      execution: 'Integrated AI-driven Machine Learning pipelines into the serverless architecture using AWS SageMaker, enabling real-time personalization at scale for individual user preferences and artistic interests. Implemented automated failover mechanisms with multi-region deployment, predictive scaling algorithms leveraging historical traffic patterns and seasonal trends, and adaptive caching strategies that reduced infrastructure complexity by 65%. Deployed comprehensive real-time monitoring and anomaly detection systems that automatically adjusted resource allocation based on demand forecasting. Established sophisticated recommendation engines using collaborative filtering and content-based approaches, achieving near-zero cold start latencies for new users.',
-      result: 'The platform achieved a 90% customer satisfaction score and saw a 60% surge in user engagement driven by hyper-personalization and seamless discovery experiences. Established itself as the go-to solution for art workshop discovery with zero critical incidents over 2 years of operation. Reduced infrastructure costs by 40% through intelligent resource optimization while simultaneously improving response times by 35% and enabling 10x growth without service degradation.'
+      vision: 'To build a self-healing, AI-first platform that scales human creativity through strategic technical automation, intelligent resource optimization, and predictive infrastructure management — and to transform how art is discovered and experienced, making every artwork speak to every buyer regardless of language or geography.',
+      execution: 'Integrated AI-driven Machine Learning pipelines into the serverless architecture using AWS SageMaker, enabling real-time personalization at scale for individual user preferences and artistic interests. Implemented automated failover mechanisms with multi-region deployment, predictive scaling algorithms leveraging historical traffic patterns and seasonal trends, and adaptive caching strategies that reduced infrastructure complexity by 65%. In parallel, architected Lift — an evolution of the Art Inspiration prototype — to solve the storytelling gap in the artist marketplace. Designed and built a web-based custom editor where curators compose animated presentations from video and image assets, with GSAP and Canvas delivering frame-accurate visual sequences in the browser. The backend — built in Python and PHP — processed each artwork through an asynchronous queue pipeline: media was ingested, narration scripts were translated via Google Translate into 10+ languages, and Azure Cognitive Services synthesised natural-sounding audio for each locale. The queue-driven architecture decoupled the editor experience from heavy processing, ensuring curators could publish without waiting on render jobs. Extending the platform into physical spaces, delivered a gallery kiosk in 4 weeks — a self-contained Flutter application running on Raspberry Pi, driving both the display and a colour postcard printer. Visitors explored art forms through a custom internal Art Wiki API, then selected and printed a branded physical postcard as a keepsake, closing the loop between the digital marketplace and the real-world gallery experience. To harden seller trust at the point of onboarding, engineered a real-time liveness verification system in Angular using TensorFlow.js in 8 days: the system randomly assigns 3 of 6 facial challenges — blink, smile, head turns and tilts — instructing users via bilingual voice synthesis in English and Hindi with on-screen text as fallback, capturing a verified image and video on successful completion entirely within the browser.',
+      result: 'The platform achieved a 90% customer satisfaction score and saw a 60% surge in user engagement driven by hyper-personalization and seamless discovery. Lift brought 300+ artworks to life as immersive, narrated reels — accumulating 10,000+ views and opening international buyer segments that static listings could never reach. The gallery kiosk extended Rooftop\'s brand into the physical world, turning gallery visits into interactive experiences and putting a branded postcard in every interested visitor\'s hand — a tangible marketing touchpoint delivered within a 4-week build cycle. The liveness verification system established a scalable anti-spoofing layer for seller onboarding in just 8 days, with bilingual voice-guided challenges removing barriers for Hindi-speaking providers and eliminating manual review overhead entirely. Established itself as the go-to solution for art workshop and artwork discovery with zero critical incidents over 2 years of operation. Reduced infrastructure costs by 40% through intelligent resource optimization while simultaneously improving response times by 35% and enabling 10x growth without service degradation.'
     },
     blueprint: {
       type: 'serverless',
-      nodes: 12,
-      connections: 24
+      nodes: 20,
+      connections: 38
     }
   },
   {
