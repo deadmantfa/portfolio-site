@@ -1,3 +1,5 @@
+import { skillModules } from '@/data/skills'
+
 const safeJsonLd = (data: Record<string, unknown>) =>
   JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
 
@@ -33,16 +35,7 @@ const personSchema = {
       name: 'Google Cloud Professional Architect',
     },
   ],
-  knowsAbout: [
-    'Software Architecture',
-    'Cloud Computing',
-    'Technical Leadership',
-    'Scalable Systems',
-    'Serverless Architecture',
-    'AI/ML Systems',
-    'Next.js',
-    'Three.js',
-  ],
+  knowsAbout: skillModules.map((s) => s.name),
 }
 
 const websiteSchema = {
@@ -64,8 +57,8 @@ const profilePageSchema = {
   name: 'Wenceslaus Dsilva | CTO & Technical Architect',
   description:
     'Wenceslaus Dsilva is a CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
-  dateCreated: '2024-01-01',
-  dateModified: '2026-03-09',
+  dateCreated: '2024-01-01T00:00:00Z',
+  dateModified: '2026-03-10T00:00:00Z',
   inLanguage: 'en-US',
   isPartOf: { '@id': 'https://w1d.pro/#website' },
   mainEntity: { '@id': 'https://w1d.pro/#person' },
