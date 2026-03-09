@@ -372,11 +372,11 @@ export default function Home() {
             <SocialLinks />
           </div>
           <p className="mt-12 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700">
-            <a href="/about" className="hover:text-zinc-500 transition-colors">About</a>
+            <a href="/about" className="hover:text-zinc-300 transition-colors">About</a>
             <span className="mx-3">·</span>
-            <a href="/contact" className="hover:text-zinc-500 transition-colors">Contact</a>
+            <a href="/contact" className="hover:text-zinc-300 transition-colors">Contact</a>
             <span className="mx-3">·</span>
-            <a href="/privacy" className="hover:text-zinc-500 transition-colors">Privacy Policy</a>
+            <a href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy Policy</a>
             <span className="mx-3">·</span>
             <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>
           </p>

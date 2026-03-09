@@ -11,7 +11,7 @@ const ADRCard = ({ adr, index }: ADRCardProps) => {
       <span className="text-[10px] font-mono text-zinc-500 block mb-6 uppercase tracking-widest group-hover:text-primary transition-colors">
         Architectural Decision Record #0{index + 1}
       </span>
-      <h4 className="text-3xl md:text-4xl font-serif italic text-white mb-8">{adr.title}</h4>
+      <h3 className="text-3xl md:text-4xl font-serif italic text-white mb-8">{adr.title}</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>

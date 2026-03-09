@@ -125,7 +125,7 @@ function TestimonialCard({
           </div>
           
           <div className="min-w-0">
-            <h4 className="text-white font-serif text-base md:text-xl truncate leading-tight">{testimonial.name}</h4>
+            <p className="text-white font-serif text-base md:text-xl truncate leading-tight">{testimonial.name}</p>
             <p className="text-primary/70 font-mono text-[9px] md:text-xs uppercase tracking-widest truncate mt-0.5">
               {testimonial.title}
             </p>

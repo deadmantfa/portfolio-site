@@ -185,11 +185,11 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
 
         {/* Footer */}
         <p className="mt-12 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700 text-center">
-          <Link href="/about" className="hover:text-zinc-500 transition-colors">About</Link>
+          <Link href="/about" className="hover:text-zinc-300 transition-colors">About</Link>
           <span className="mx-3">·</span>
-          <Link href="/contact" className="hover:text-zinc-500 transition-colors">Contact</Link>
+          <Link href="/contact" className="hover:text-zinc-300 transition-colors">Contact</Link>
           <span className="mx-3">·</span>
-          <Link href="/privacy" className="hover:text-zinc-500 transition-colors">Privacy Policy</Link>
+          <Link href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy Policy</Link>
           <span className="mx-3">·</span>
           <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>
         </p>

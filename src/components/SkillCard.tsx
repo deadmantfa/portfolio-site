@@ -61,7 +61,8 @@ function SkillCard({ skill, color, onActivate, onDeactivate, onOpenModal }: Skil
     <div
       ref={cardRef}
       role="button"
-      aria-label={`${skill.name} skill - Click to view details`}
+      aria-label={skill.name}
+      title={`Click to view details about ${skill.name}`}
       tabIndex={0}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

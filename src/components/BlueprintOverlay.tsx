@@ -45,7 +45,7 @@ const BlueprintOverlay = ({ project }: BlueprintOverlayProps) => {
             className="p-4 border border-primary/10 bg-teal-950/40 backdrop-blur-md rounded-lg pointer-events-auto"
           >
             <span className="font-mono text-[8px] text-primary/50 uppercase block mb-1">DATA-NODE-0{i+1}</span>
-            <h4 className="text-[11px] text-zinc-300 font-serif italic mb-1">{adr.title}</h4>
+            <p className="text-[11px] text-zinc-300 font-serif italic mb-1">{adr.title}</p>
           </motion.div>
         ))}
       </div>

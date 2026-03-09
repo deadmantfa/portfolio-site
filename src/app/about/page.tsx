@@ -161,7 +161,7 @@ export default function AboutPage() {
         </div>
 
         <p className="mt-16 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700">
-          <Link href="/privacy" className="hover:text-zinc-500 transition-colors">Privacy Policy</Link>
+          <Link href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy Policy</Link>
           <span className="mx-3">·</span>
           <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>
         </p>
