@@ -1,37 +1,71 @@
 'use client'
 
-import { useRef, useMemo } from 'react'
+import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Float, Icosahedron, Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
 interface ConnectionSceneProps {
   progress: number
 }
 
+const CYCLE = 4.5
+const RING_COUNT = 4
+
+function PulseRing({ phaseOffset }: { phaseOffset: number }) {
+  const meshRef = useRef<THREE.Mesh>(null!)
+
+  useFrame((state) => {
+    if (!meshRef.current) return
+    const t = ((state.clock.getElapsedTime() + phaseOffset) % CYCLE) / CYCLE
+    meshRef.current.scale.setScalar(t * 8)
+    const mat = meshRef.current.material as THREE.MeshBasicMaterial
+    mat.opacity = Math.max(0, 1 - t) * 0.55
+  })
+
+  return (
+    <mesh ref={meshRef}>
+      <ringGeometry args={[0.93, 1.0, 80]} />
+      <meshBasicMaterial
+        color="#818cf8"
+        transparent
+        opacity={0}
+        side={THREE.DoubleSide}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  )
+}
+
+function CentralNode() {
+  const meshRef = useRef<THREE.Mesh>(null!)
+
+  useFrame((state) => {
+    if (!meshRef.current) return
+    const pulse = 1 + Math.sin(state.clock.getElapsedTime() * 2.2) * 0.1
+    meshRef.current.scale.setScalar(pulse)
+  })
+
+  return (
+    <mesh ref={meshRef}>
+      <circleGeometry args={[0.28, 48]} />
+      <meshBasicMaterial
+        color="#818cf8"
+        transparent
+        opacity={0.85}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  )
+}
+
 const ConnectionScene = ({ progress }: ConnectionSceneProps) => {
   'use no memo'
   const groupRef = useRef<THREE.Group>(null!)
-  const coreRef = useRef<THREE.Mesh>(null!)
 
-  const particles = useMemo(() => {
-    const pts = new Float32Array(1500)
-    for (let i = 0; i < 500; i++) {
-      const r = 5 + Math.random() * 8
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos(2 * Math.random() - 1)
-      pts[i * 3] = r * Math.sin(phi) * Math.cos(theta)
-      pts[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
-      pts[i * 3 + 2] = r * Math.cos(phi)
-    }
-    return pts
-  }, [])
-
-  useFrame((state) => {
+  useFrame(() => {
     if (!groupRef.current) return
-    const time = state.clock.getElapsedTime()
-
-    groupRef.current.position.z = 0
 
     const targetY = THREE.MathUtils.lerp(-30, 0, Math.min(progress * 12, 1))
     groupRef.current.position.y = THREE.MathUtils.lerp(
@@ -39,56 +73,15 @@ const ConnectionScene = ({ progress }: ConnectionSceneProps) => {
       targetY,
       0.1,
     )
-
-    const pulse = 1 + Math.sin(time * 3) * 0.1
-    groupRef.current.scale.setScalar(pulse)
-
-    if (coreRef.current) {
-      coreRef.current.rotation.y = time * 0.6
-      coreRef.current.rotation.z = time * 0.4
-      // meshStandardMaterial is guaranteed by the JSX element below
-      const material = coreRef.current.material as THREE.MeshStandardMaterial
-      material.emissiveIntensity = THREE.MathUtils.lerp(20, 100, progress)
-    }
-
     groupRef.current.visible = progress > 0.001
   })
 
   return (
     <group ref={groupRef} position={[0, -30, 0]}>
-      <Float speed={4} rotationIntensity={2} floatIntensity={5}>
-        <Icosahedron ref={coreRef} args={[4, 1]}>
-          <meshStandardMaterial
-            color="#818cf8"
-            wireframe
-            transparent
-            opacity={0.95}
-            emissive="#818cf8"
-            emissiveIntensity={20}
-          />
-        </Icosahedron>
-
-        <Icosahedron args={[2, 0]}>
-          <meshStandardMaterial
-            color="#ffffff"
-            transparent
-            opacity={0.8}
-            emissive="#818cf8"
-            emissiveIntensity={50}
-          />
-        </Icosahedron>
-      </Float>
-
-      <Points positions={particles}>
-        <PointMaterial
-          transparent
-          color="#818cf8"
-          size={0.4}
-          sizeAttenuation={true}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </Points>
+      {Array.from({ length: RING_COUNT }, (_, i) => (
+        <PulseRing key={i} phaseOffset={(CYCLE / RING_COUNT) * i} />
+      ))}
+      <CentralNode />
     </group>
   )
 }

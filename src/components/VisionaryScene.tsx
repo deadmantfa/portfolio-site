@@ -8,12 +8,16 @@ import gsap from 'gsap'
 
 type MaterializeStage = 'idle' | 'spark' | 'cloud' | 'scan' | 'complete'
 
-const ArchitecturalGrid = ({ 
+const ArchitecturalGrid = ({
   isBlueprint = false,
-  materializeStage = 'idle' 
-}: { 
+  materializeStage = 'idle',
+  skillsProgress = 0,
+  labProgress = 0
+}: {
   isBlueprint?: boolean
   materializeStage?: MaterializeStage
+  skillsProgress?: number
+  labProgress?: number
 }) => {
   const meshRef = useRef<THREE.Group>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
@@ -210,7 +214,14 @@ const ArchitecturalGrid = ({
     lineMaterialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress
     lineMaterialRef.current.uniforms.uScroll.value = scrollProgress
-    
+
+    if (materializeStage === 'complete') {
+      const combinedProgress = Math.max(skillsProgress, labProgress)
+      const fade = Math.max(0, 1 - combinedProgress * 3)
+      materialRef.current.uniforms.uOpacity.value = 0.4 * fade
+      lineMaterialRef.current.uniforms.uOpacity.value = 0.4 * fade
+    }
+
     if (meshRef.current) {
       meshRef.current.rotation.y = time * 0.01
     }

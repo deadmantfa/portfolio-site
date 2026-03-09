@@ -79,27 +79,18 @@ function TestimonialCard({
         transformStyle: 'preserve-3d'
       }}
     >
-      {/* Dynamic Background - CSS Optimized */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.3, 0.1],
-            x: direction * 50
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/20 rounded-full blur-[120px]" 
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.1, 0.2, 0.1],
-            x: -direction * 30
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-primary/10 rounded-full blur-[100px]" 
-        />
-      </div>
+      {/* Ink bloom — fades in once per card, no infinite animation */}
+      <motion.div
+        key={`bloom-${direction}`}
+        className="absolute inset-0 z-0 pointer-events-none"
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, ease: 'easeOut' }}
+        style={{
+          background:
+            'radial-gradient(ellipse at 22% 18%, rgba(99,102,241,0.11) 0%, transparent 58%)',
+        }}
+      />
 
       {/* Quote Icon */}
       <div className="mb-4 md:mb-6 opacity-30 relative z-10">

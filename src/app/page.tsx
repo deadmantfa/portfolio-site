@@ -28,10 +28,12 @@ export default function Home() {
   const { setActiveCredential } = useScroll()
   
   const skillsSectionRef = useRef<HTMLDivElement>(null!)
+  const labSectionRef = useRef<HTMLDivElement>(null!)
   const vaultSectionRef = useRef<HTMLDivElement>(null!)
   const contactSectionRef = useRef<HTMLDivElement>(null!)
   const [skillsProgress, setSkillsProgress] = useState(0)
   const [skillsExitProgress, setSkillsExitProgress] = useState(0)
+  const [labProgress, setLabProgress] = useState(0)
   const [vaultProgress, setVaultProgress] = useState(0)
   const [contactProgress, setContactProgress] = useState(0)
   const [showScene, setShowScene] = useState(false)
@@ -92,6 +94,17 @@ export default function Home() {
         }
       }
 
+      if (labSectionRef.current) {
+        const rect = labSectionRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        if (rect.top < windowHeight) {
+          const p = Math.min(Math.max((windowHeight - rect.top) / windowHeight, 0), 1)
+          setLabProgress(p)
+        } else {
+          setLabProgress(0)
+        }
+      }
+
       if (vaultSectionRef.current) {
         const rect = vaultSectionRef.current.getBoundingClientRect()
         const sectionHeight = rect.height
@@ -139,6 +152,8 @@ export default function Home() {
             vaultProgress={vaultProgress}
             contactProgress={contactProgress}
             materializeStage={materializeStage}
+            skillsProgress={skillsProgress}
+            labProgress={labProgress}
           />
         )}
       </div>
@@ -266,6 +281,7 @@ export default function Home() {
 
         <section
           id="lab"
+          ref={labSectionRef}
           className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent"
         >
           <div className="max-w-7xl w-full">

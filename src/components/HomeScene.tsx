@@ -15,14 +15,18 @@ interface HomeSceneProps {
   vaultProgress: number
   contactProgress: number
   materializeStage: 'idle' | 'spark' | 'cloud' | 'scan' | 'complete'
+  skillsProgress?: number
+  labProgress?: number
 }
 
-export default function HomeScene({ 
-  progress, 
-  exitProgress, 
-  vaultProgress, 
+export default function HomeScene({
+  progress,
+  exitProgress,
+  vaultProgress,
   contactProgress,
-  materializeStage
+  materializeStage,
+  skillsProgress = 0,
+  labProgress = 0
 }: HomeSceneProps) {
   const ContextBridge = useContextBridge(ScrollContext)
 
@@ -43,9 +47,11 @@ export default function HomeScene({
             color="#6366f1" 
           />
           
-          <ArchitecturalGrid 
-            isBlueprint={materializeStage !== 'complete'} 
+          <ArchitecturalGrid
+            isBlueprint={materializeStage !== 'complete'}
             materializeStage={materializeStage}
+            skillsProgress={skillsProgress}
+            labProgress={labProgress}
           />
           
           {materializeStage === 'complete' && (
