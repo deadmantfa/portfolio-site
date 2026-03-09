@@ -247,7 +247,7 @@ export default function Home() {
                             title={`View ${project.company} case study`}
                           >
                             <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">Read Case Study</span>
-                            <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-400 group-hover/btn:text-primary">→</div>
+                            <div aria-hidden="true" className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-400 group-hover/btn:text-primary">→</div>
                           </Link>
                         )
                       })()}

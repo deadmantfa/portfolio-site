@@ -176,11 +176,18 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
                   <p className="font-mono text-[11px] uppercase tracking-widest text-primary mb-1">{nextProject.company}</p>
                   <p className="text-xl font-serif italic text-zinc-300 group-hover:text-white transition-colors">{nextProject.title}</p>
                 </div>
-                <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-400 group-hover:text-primary flex-shrink-0">→</div>
+                <div aria-hidden="true" className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-400 group-hover:text-primary flex-shrink-0">→</div>
               </Link>
             </div>
           )
         })()}
+
+        {/* Footer */}
+        <p className="mt-12 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700 text-center">
+          <Link href="/privacy" className="hover:text-zinc-500 transition-colors">Privacy Policy</Link>
+          <span className="mx-3">·</span>
+          <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>
+        </p>
       </div>
     </main>
   )

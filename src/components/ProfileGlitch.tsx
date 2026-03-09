@@ -206,13 +206,14 @@ function ProfileGlitch({
           />
         </div>
 
-        {/* Glitch Layers - RGB Offset */}
+        {/* Glitch Layers - RGB Offset (decorative duplicates) */}
         {[0, 1, 2].map((index) => (
           <div
             key={index}
             ref={(el) => {
               if (el) glitchLayers.current[index] = el
             }}
+            aria-hidden="true"
             className="absolute inset-0 rounded-full overflow-hidden pointer-events-none will-change-transform"
             style={{
               opacity: 0.6,
@@ -222,11 +223,11 @@ function ProfileGlitch({
           >
             <Image
               src={src}
-              alt={alt}
-              fill
+              alt=""
+              width={192}
+              height={192}
               loading="eager"
-              sizes="(max-width: 768px) 128px, 192px"
-              className="object-cover"
+              className="object-cover w-full h-full"
             />
           </div>
         ))}

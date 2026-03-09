@@ -4,9 +4,13 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: { absolute: 'Privacy Policy | Wenceslaus Dsilva' },
   description:
-    'Privacy policy for w1d.pro — the professional portfolio of Wenceslaus Dsilva. This site collects only contact form submissions and stores no tracking cookies or personal data beyond what you voluntarily provide.',
+    'Privacy policy for w1d.pro — no tracking, no analytics, no ad cookies. Only contact form submissions are collected, delivered by email, and never sold.',
   alternates: {
     canonical: 'https://w1d.pro/privacy',
+  },
+  openGraph: {
+    url: 'https://w1d.pro/privacy',
+    type: 'website',
   },
   robots: {
     index: true,
