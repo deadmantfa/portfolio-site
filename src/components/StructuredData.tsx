@@ -1,5 +1,3 @@
-import { projects } from '@/data/projects'
-
 const safeJsonLd = (data: Record<string, unknown>) =>
   JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
 
@@ -58,6 +56,21 @@ const websiteSchema = {
   publisher: { '@id': 'https://w1d.pro/#person' },
 }
 
+const profilePageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': 'https://w1d.pro/#profilepage',
+  url: 'https://w1d.pro',
+  name: 'Wenceslaus Dsilva | CTO & Technical Architect',
+  description:
+    'Wenceslaus Dsilva is a CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
+  dateCreated: '2024-01-01',
+  dateModified: '2026-03-09',
+  inLanguage: 'en-US',
+  isPartOf: { '@id': 'https://w1d.pro/#website' },
+  mainEntity: { '@id': 'https://w1d.pro/#person' },
+}
+
 export { StructuredData }
 
 function StructuredData() {
@@ -70,6 +83,10 @@ function StructuredData() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteSchema as Record<string, unknown>) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(profilePageSchema as Record<string, unknown>) }}
       />
     </>
   )

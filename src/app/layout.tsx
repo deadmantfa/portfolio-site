@@ -82,10 +82,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${archivo.variable} ${jetbrains.variable}`}>
-      <head>
-        <StructuredData />
-      </head>
+      <head />
       <body className="antialiased bg-black">
+        <StructuredData />
         <ScrollProvider>
           <Navigation />
           <ArchitecturalScroll />
