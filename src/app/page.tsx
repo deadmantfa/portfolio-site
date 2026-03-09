@@ -308,10 +308,10 @@ export default function Home() {
                   onFocus={() => setActiveCredential('edu')}
                   onBlur={() => setActiveCredential(null)}
                   className="glass p-8 rounded-3xl opacity-80 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
-                  aria-label="Education: B.Sc Information Technology from St. Andrews College, Mumbai University"
+                  aria-label="B.Sc Information Technology — St. Andrews College, Mumbai University"
                   role="button"
                 >
-                  <p className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
+                  <p aria-hidden="true" className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
                   <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
                   <p className="text-zinc-400 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
@@ -324,10 +324,10 @@ export default function Home() {
                   onFocus={() => setActiveCredential('cert1')}
                   onBlur={() => setActiveCredential(null)}
                   className="glass p-8 rounded-3xl opacity-80 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
-                  aria-label="Certification: Elasticsearch Certified Engineer"
+                  aria-label="Elasticsearch Engineer — Elasticsearch Certified Engineer"
                   role="button"
                 >
-                  <p className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                  <p aria-hidden="true" className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
                   <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
                   <p className="text-zinc-400 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
@@ -340,10 +340,10 @@ export default function Home() {
                   onFocus={() => setActiveCredential('cert2')}
                   onBlur={() => setActiveCredential(null)}
                   className="glass p-8 rounded-3xl opacity-80 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-primary outline-none transition-all pointer-events-auto group cursor-pointer"
-                  aria-label="Certification: Google Cloud Professional Architect"
+                  aria-label="Google Cloud Professional — GCP Professional Architect"
                   role="button"
                 >
-                  <p className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
+                  <p aria-hidden="true" className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
                   <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
                   <p className="text-zinc-400 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>

@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: { absolute: 'About | Wenceslaus Dsilva — CTO & Technical Architect' },
   description:
-    'Wenceslaus Dsilva is a CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering. Currently at Rooftop.',
+    'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud, and high-scale product engineering. Currently at Rooftop. Open to senior leadership roles.',
   alternates: {
     canonical: 'https://w1d.pro/about',
   },
@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     title: 'About Wenceslaus Dsilva — CTO & Technical Architect',
     description:
       'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
+    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 800, height: 800 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Wenceslaus Dsilva — CTO & Technical Architect',
+    description: 'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
+    images: ['https://w1d.pro/images/hero/profile.jpg'],
   },
 }
 
@@ -51,16 +58,38 @@ export default function AboutPage() {
           </p>
 
           <p>
+            At Rooftop I shipped{' '}
+            <span className="text-zinc-100">Lift</span> — an AI-powered multilingual storytelling
+            platform that brought 300+ artworks to life with animated narration across 10+
+            languages, accumulating 10,000+ views. I also designed and built a gallery kiosk in
+            Flutter on Raspberry Pi, connecting physical gallery visitors to the digital catalogue
+            with a postcard printer — delivered in 4 weeks. A liveness verification system for
+            seller onboarding, built in Angular with TensorFlow.js, shipped in 8 days and
+            eliminated manual review overhead entirely.
+          </p>
+
+          <p>
+            At IndieFolio I built a colour-based search engine using Elasticsearch — the first of
+            its kind in the creative community space — and maintained 100% platform uptime for
+            three years during 10x user growth. At Food Darzee I automated 80% of supply chain
+            operations and scaled from 1,000 to 10,000+ daily active subscribers. At EasyTech I
+            designed multi-gateway payment failover architecture that maintained 99.99% uptime
+            across $50M+ in transactions in the first year.
+          </p>
+
+          <p>
             I hold an{' '}
             <span className="text-zinc-100">Elasticsearch Certified Engineer</span> certification
             and a{' '}
             <span className="text-zinc-100">Google Cloud Professional Architect</span> certification,
-            and graduated from St. Andrews College, Mumbai University.
+            and graduated with a B.Sc in Information Technology from St. Andrews College, Mumbai
+            University.
           </p>
 
           <p>
             I am open to senior technology leadership roles — CTO, VP Engineering, and Principal
-            Architect positions at organisations where technology is a strategic differentiator.
+            Architect positions at organisations where technology is a primary strategic
+            differentiator and where leadership means building things that matter at scale.
           </p>
 
           <div className="pt-6 flex flex-col gap-3">
@@ -83,6 +112,14 @@ export default function AboutPage() {
               className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 hover:text-zinc-300 transition-colors"
             >
               LinkedIn →
+            </a>
+            <a
+              href="https://github.com/deadmantfa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              GitHub →
             </a>
           </div>
         </div>

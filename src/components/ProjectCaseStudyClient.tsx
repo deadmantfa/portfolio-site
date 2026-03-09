@@ -40,14 +40,15 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
       <button 
         onClick={() => setIsBlueprintMode(!isBlueprintMode)}
         className="fixed bottom-12 right-12 z-[100] flex flex-col items-end group focus-visible:outline-none"
-        aria-label={isBlueprintMode ? "Close Architectural Schema" : "View Architectural Blueprint"}
+        aria-label={isBlueprintMode ? "Close Schema — Hide Architectural Blueprint" : "View Blueprint — Show Architectural Schema"}
       >
         <span className="font-mono text-[9px] uppercase tracking-[0.4em] mb-4 text-zinc-500 group-hover:text-primary transition-colors">
           {isBlueprintMode ? 'Close Schema' : 'View Blueprint'}
         </span>
         <div className={`size-12 rounded-full border flex items-center justify-center transition-all duration-500 group-focus-visible:ring-2 group-focus-visible:ring-primary ${isBlueprintMode ? 'border-primary bg-primary text-black' : 'border-white/10 text-white hover:border-primary/50'}`}>
           <div className="relative size-6">
-            <motion.div 
+            <motion.div
+              aria-hidden="true"
               animate={{ rotate: isBlueprintMode ? 45 : 0 }}
               className="absolute inset-0 flex items-center justify-center"
             >
@@ -63,9 +64,9 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
           <Link 
             href="/" 
             className="inline-flex items-center gap-4 group focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-1"
-            aria-label="Return to career milestones"
+            aria-label="Return to Epochs — Back to career timeline"
           >
-            <div className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-500 group-hover:text-primary">
+            <div aria-hidden="true" className="size-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-500 group-hover:text-primary">
               ←
             </div>
             <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500 group-hover:text-zinc-300 transition-colors">Return to Epochs</span>

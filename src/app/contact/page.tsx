@@ -6,7 +6,7 @@ import SocialLinks from '@/components/SocialLinks'
 export const metadata: Metadata = {
   title: { absolute: 'Contact | Wenceslaus Dsilva — CTO & Technical Architect' },
   description:
-    'Get in touch with Wenceslaus Dsilva — CTO with 20+ years of architectural leadership. Open to senior technology leadership roles, consulting, and strategic advisory.',
+    'Contact Wenceslaus Dsilva — CTO open to senior leadership roles, consulting, and strategic advisory. Reach out to discuss technology leadership opportunities.',
   alternates: {
     canonical: 'https://w1d.pro/contact',
   },
@@ -16,6 +16,13 @@ export const metadata: Metadata = {
     title: 'Contact Wenceslaus Dsilva — CTO & Technical Architect',
     description:
       'Open to senior technology leadership roles, consulting, and strategic advisory. Reach out directly.',
+    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 800, height: 800 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Wenceslaus Dsilva — CTO & Technical Architect',
+    description: 'Open to senior technology leadership roles, consulting, and strategic advisory. Reach out directly.',
+    images: ['https://w1d.pro/images/hero/profile.jpg'],
   },
 }
 
@@ -36,8 +43,15 @@ export default function ContactPage() {
         <h2 className="text-4xl font-serif italic font-light text-white mb-3">
           Let&apos;s <span className="text-primary">Connect.</span>
         </h2>
-        <p className="text-zinc-500 text-sm mb-10 max-w-md">
-          Open to senior technology leadership roles, strategic advisory, and consulting engagements.
+        <p className="text-zinc-500 text-sm mb-4 max-w-lg">
+          Open to senior technology leadership roles — CTO, VP Engineering, and Principal Architect
+          positions — as well as strategic consulting and advisory engagements.
+        </p>
+        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+          I bring 20+ years of architectural depth across serverless, AI/ML, cloud infrastructure,
+          and high-scale product engineering. If you are building something ambitious and need a
+          technology leader who has done it before — at Rooftop, IndieFolio, Food Darzee, and
+          beyond — use the form below or connect directly on LinkedIn or GitHub.
         </p>
 
         <ContactForm />
