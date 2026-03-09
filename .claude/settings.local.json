@@ -24,7 +24,9 @@
       "Bash(cd \"C:\\\\Users\\\\deadmantfa\\\\portfolio\" && CI=true npm test -- src/__tests__/Navigation.test.tsx 2>&1)",
       "Bash(cd C:/Users/deadmantfa/portfolio && CI=true npm test -- src/__tests__/Navigation.test.tsx 2>&1)",
       "Bash(cd C:\\\\Users\\\\deadmantfa\\\\portfolio:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(npm run:*)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"
     ]
   }
 }

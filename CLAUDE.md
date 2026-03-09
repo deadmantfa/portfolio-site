@@ -51,6 +51,29 @@ Tailwind CSS v4 with a **CSS-first** configuration in `globals.css`. Theme color
 ### Path Alias
 `@/` resolves to `src/`. Use it everywhere instead of relative paths.
 
+## Code Exploration with jcodemunch MCP
+
+**Always index and query the codebase via jcodemunch MCP before making changes.**
+
+1. **Index the repo** (first time or after large changes):
+   ```
+   mcp__jcodemunch__index_folder path=/Users/deadmantfa/Projects/Personal/portfolio-site
+   ```
+2. **Search symbols** before reading files:
+   ```
+   mcp__jcodemunch__search_symbols repo=local/portfolio-site query=<name>
+   ```
+3. **Search text** for strings, comments, config values:
+   ```
+   mcp__jcodemunch__search_text repo=local/portfolio-site query=<text>
+   ```
+4. **Get file tree** to understand structure:
+   ```
+   mcp__jcodemunch__get_file_tree repo=local/portfolio-site
+   ```
+
+Use these tools to locate existing implementations before proposing new code. Only fall back to `Read`/`Grep`/`Glob` for targeted single-file reads after discovery.
+
 ## Conductor Workflow
 
 Tasks are tracked in **`conductor/plan.md`** — the source of truth. Status markers:
