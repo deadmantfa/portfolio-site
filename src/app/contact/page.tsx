@@ -76,7 +76,9 @@ export default function ContactPage() {
         </p>
         <p className="text-zinc-600 text-sm mb-10 max-w-lg">
           I write clearly, communicate priorities to non-technical stakeholders without dumbing
-          things down, and build engineering cultures grounded in ownership and craft. If any of
+          things down, and build engineering cultures grounded in ownership and craft. Every
+          successful technology engagement starts with a candid conversation about what you are
+          actually trying to achieve — not just the technical requirements on paper. If any of
           that sounds like what your organisation needs — reach out below.
         </p>
 
