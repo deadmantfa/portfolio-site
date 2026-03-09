@@ -160,6 +160,27 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
 
           </div>
         </div>
+
+        {/* Next Project Cross-link */}
+        {(() => {
+          const currentIndex = projects.indexOf(project)
+          const nextProject = projects[(currentIndex + 1) % projects.length]
+          return (
+            <div className="mt-32 pt-16 border-t border-white/5 flex items-center justify-between">
+              <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-600">Next Case Study</span>
+              <Link
+                href={`/work/${nextProject.slug}`}
+                className="group inline-flex items-center gap-4 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-1"
+              >
+                <div className="text-right">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-primary mb-1">{nextProject.company}</p>
+                  <p className="text-xl font-serif italic text-zinc-300 group-hover:text-white transition-colors">{nextProject.title}</p>
+                </div>
+                <div className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors text-zinc-400 group-hover:text-primary flex-shrink-0">→</div>
+              </Link>
+            </div>
+          )
+        })()}
       </div>
     </main>
   )

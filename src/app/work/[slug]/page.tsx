@@ -14,15 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const project = projects.find((p) => p.slug === slug)
   if (!project) return {}
 
-  // Optimize description to 120-160 chars for SEO
-  const shortDescription = project.narrative.vision.length > 160
-    ? project.narrative.vision.substring(0, 157) + '...'
-    : project.narrative.vision.length < 120
-    ? project.narrative.vision + ' ' + project.challenge.substring(0, 30)
-    : project.narrative.vision
+  const shortDescription = project.impact.length > 160
+    ? project.impact.substring(0, 157) + '...'
+    : project.impact
 
   return {
-    title: `${project.company} | CTO`,
+    title: `${project.title} | ${project.company} | Wenceslaus Dsilva`,
     description: shortDescription,
     keywords: [...project.techStack, project.role, project.company, 'Software Architecture', 'Case Study'],
     alternates: {
@@ -51,5 +48,23 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     notFound()
   }
 
-  return <ProjectCaseStudyClient project={project} />
+  const breadcrumbJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://w1d.pro' },
+      { '@type': 'ListItem', position: 2, name: 'Work', item: 'https://w1d.pro/#epochs' },
+      { '@type': 'ListItem', position: 3, name: project.company, item: `https://w1d.pro/work/${slug}` },
+    ],
+  }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
+      <ProjectCaseStudyClient project={project} />
+    </>
+  )
 }

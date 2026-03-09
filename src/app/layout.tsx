@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Archivo, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Navigation } from '@/components/Navigation'
-import StructuredData from '@/components/StructuredData'
+import { StructuredData } from '@/components/StructuredData'
 import ArchitecturalLoader from '@/components/ArchitecturalLoader'
 import { ScrollProvider } from '@/components/ScrollProvider'
 import { ArchitecturalScroll } from '@/components/ArchitecturalScroll'
@@ -27,7 +27,6 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 })
 
-import { Suspense } from 'react'
 
 export const viewport: Viewport = {
   themeColor: '#000000',
@@ -54,13 +53,13 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://w1d.pro',
     siteName: 'Wenceslaus Dsilva Portfolio',
-    title: 'Wenceslaus Dsilva | Architectural Leadership',
-    description: 'Bridging the gap between deep system design and strategic business alignment.',
+    title: 'Wenceslaus Dsilva | CTO & Technical Architect',
+    description: 'Wenceslaus Dsilva is a CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering. Open to senior technology leadership roles.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Wenceslaus Dsilva | Architectural Leadership',
-    description: '20+ years of technical excellence and strategic technical leadership.',
+    title: 'Wenceslaus Dsilva | CTO & Technical Architect',
+    description: 'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
     creator: '@deadmantfa',
   },
   robots: {
@@ -84,9 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${archivo.variable} ${jetbrains.variable}`}>
       <head>
-        <Suspense fallback={null}>
-          <StructuredData />
-        </Suspense>
+        <StructuredData />
       </head>
       <body className="antialiased bg-black">
         <ScrollProvider>
