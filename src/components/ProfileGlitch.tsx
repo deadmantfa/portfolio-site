@@ -223,7 +223,7 @@ function ProfileGlitch({
           >
             <Image
               src={src}
-              alt=""
+              alt={alt}
               width={192}
               height={192}
               loading="eager"
