@@ -61,11 +61,23 @@ export default function ContactPage() {
           pipeline delivery, mobile-first product launches, payment infrastructure hardening, and
           zero-downtime platform rebuilds.
         </p>
-        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+        <p className="text-zinc-600 text-sm mb-4 max-w-lg">
           Whether you are a startup preparing to scale, an established company modernising its
           stack, or an organisation that needs a fractional CTO to drive a specific technical
           transformation — I am happy to have that conversation. Response time is typically within
           one business day.
+        </p>
+        <p className="text-zinc-600 text-sm mb-4 max-w-lg">
+          Technical depth and strategic clarity are not mutually exclusive. I have spent 20 years
+          proving that the best technology decisions are also the best business decisions — whether
+          that means choosing a serverless-first architecture to reduce operational overhead,
+          building a colour-based search engine to open a new acquisition channel, or designing
+          a multi-gateway payment failover system to protect revenue at scale.
+        </p>
+        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+          I write clearly, communicate priorities to non-technical stakeholders without dumbing
+          things down, and build engineering cultures grounded in ownership and craft. If any of
+          that sounds like what your organisation needs — reach out below.
         </p>
 
         <ContactForm />

@@ -92,6 +92,42 @@ export default function AboutPage() {
             differentiator and where leadership means building things that matter at scale.
           </p>
 
+          <div className="pt-8 pb-2">
+            <h3 className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 mb-6">
+              Selected Work
+            </h3>
+            <div className="space-y-3">
+              <Link href="/work/rooftop" className="flex items-baseline justify-between group border-b border-white/5 pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">Rooftop — AI Art Marketplace</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2022–2026 →</span>
+              </Link>
+              <Link href="/work/food-darzee" className="flex items-baseline justify-between group border-b border-white/5 pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">Food Darzee — Supply Chain Platform</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2021–2022 →</span>
+              </Link>
+              <Link href="/work/onfees" className="flex items-baseline justify-between group border-b border-white/5 pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">OnFees — EdTech Payment Infrastructure</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2019–2021 →</span>
+              </Link>
+              <Link href="/work/indiefolio" className="flex items-baseline justify-between group border-b border-white/5 pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">IndieFolio — Creative Talent Marketplace</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2018–2019 →</span>
+              </Link>
+              <Link href="/work/epaisa" className="flex items-baseline justify-between group border-b border-white/5 pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">ePaisa — Payment Platform</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2016–2018 →</span>
+              </Link>
+              <Link href="/work/coupon-dunia" className="flex items-baseline justify-between group border-b border-white/5 pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">CouponDunia — Affiliate & Attribution</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2014–2016 →</span>
+              </Link>
+              <Link href="/work/tcs-wns" className="flex items-baseline justify-between group pb-3 hover:border-primary/30 transition-colors">
+                <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">TCS / WNS — Enterprise Data Automation</span>
+                <span className="font-mono text-[10px] text-zinc-600 group-hover:text-primary transition-colors ml-4 shrink-0">2006–2014 →</span>
+              </Link>
+            </div>
+          </div>
+
           <div className="pt-6 flex flex-col gap-3">
             <Link
               href="/"
