@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     : project.impact
 
   return {
-    title: `${project.title} | ${project.company} | Wenceslaus Dsilva`,
+    title: { absolute: `${project.company} | Wenceslaus Dsilva` },
     description: shortDescription,
     keywords: [...project.techStack, project.role, project.company, 'Software Architecture', 'Case Study'],
     alternates: {

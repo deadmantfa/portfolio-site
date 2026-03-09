@@ -224,6 +224,7 @@ function ProfileGlitch({
               src={src}
               alt={alt}
               fill
+              loading="eager"
               sizes="(max-width: 768px) 128px, 192px"
               className="object-cover"
             />

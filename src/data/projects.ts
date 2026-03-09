@@ -149,32 +149,58 @@ export const projects: ProjectCaseStudy[] = [
     company: 'EasyTech Innovations',
     role: 'Chief Technology Officer',
     period: '2019',
-    challenge: 'Developing a robust SAAS product to facilitate seamless student payments and admissions at scale. Built multi-tenant infrastructure supporting 50+ educational institutions with strict compliance requirements and data privacy mandates.',
-    impact: 'Achieved 100% enhancement in user satisfaction by streamlining the student onboarding and payment experience. Processed over $50M in transactions in first year with zero security incidents and 99.99% payment gateway uptime.',
+    challenge: 'Developing a robust SAAS product to facilitate seamless student payments and admissions at scale. Colleges needed ERP-level visibility into applications and payments — but each institution had its own workflows, payment partners, and reporting requirements. A student needed to apply to multiple colleges through a single form submission without re-entering data, while each college retained full isolation of its records. Payment gateway failures at the point of fee submission were a critical trust risk: a failed transaction at enrolment time could cost a student their seat.',
+    impact: 'Achieved 100% enhancement in user satisfaction by streamlining the student onboarding and payment experience across 50+ institutions. Processed over $50M in transactions in the first year with zero security incidents and 99.99% payment gateway uptime, protected by a multi-gateway failover architecture. Reduced admission processing time by 60% through ERP dashboards and automated report generation, giving college administrators real-time visibility into applications, payments, and enrolment status.',
     highlights: [
       { label: 'User Satisfaction', value: '100%' },
-      { label: 'Project Success Rate', value: '+60%' }
+      { label: 'Admission Processing', value: '-60%' },
+      { label: 'Transactions Processed', value: '$50M+' },
+      { label: 'Gateway Uptime', value: '99.99%' }
     ],
     adrs: [
       {
-        title: 'SAAS Architecture',
+        title: 'Multi-Tenant Isolated Schema Architecture',
         problem: 'Need to support hundreds of institutions while maintaining strict data privacy and isolation without skyrocketing costs.',
-        solution: 'Implemented a shared-database, isolated-schema multi-tenant pattern.',
+        solution: 'Implemented a shared-database, isolated-schema multi-tenant pattern with per-institution role-based access controls and audit trails.',
         impact: 'Onboarded 50+ institutions in 3 months with zero cross-tenant data leaks and optimized infrastructure usage.',
         decision: 'Implemented Multi-tenant Database pattern',
         rationale: 'To ensure data isolation and performance while supporting hundreds of educational institutions on a single platform.'
+      },
+      {
+        title: 'Multi-College Application via Single Form',
+        problem: 'Students applying to multiple institutions were required to fill in the same personal and academic details repeatedly, causing friction and abandonment.',
+        solution: 'Designed a unified application form that captured a single canonical student profile, then distributed completed applications to each selected institution simultaneously through the multi-tenant layer.',
+        impact: 'Eliminated duplicate data entry for students applying to multiple colleges, increasing form completion rates and reducing application drop-off.',
+        decision: 'Single form, fan-out architecture over per-institution forms',
+        rationale: 'Centralising the student profile at the platform layer rather than per institution allowed one submission to populate multiple college workflows while preserving institutional data isolation.'
+      },
+      {
+        title: 'Multi-Gateway Payment Failover',
+        problem: 'A single payment gateway outage at the moment a student submits fees could result in a lost seat — a high-stakes, trust-destroying failure with no recovery path.',
+        solution: 'Built a payment orchestration layer that sequenced multiple gateway providers in priority order, automatically retrying through the next configured gateway on failure, with idempotency keys to prevent duplicate charges.',
+        impact: 'Maintained 99.99% payment completion uptime across all institutions, with zero student-facing payment failures attributed to gateway outages.',
+        decision: 'In-house payment orchestration over single-gateway dependency',
+        rationale: 'No single gateway offered a contractual uptime SLA sufficient for high-stakes enrolment transactions; a failover layer across providers was the only way to guarantee the required reliability.'
+      },
+      {
+        title: 'ERP Reporting & College Dashboards',
+        problem: 'College administrators had no real-time view into how many students had applied, which stage each application was at, or which payments had cleared — forcing manual reconciliation with the finance team.',
+        solution: 'Built a role-based ERP dashboard for each institution exposing live application pipelines, payment status, and exportable reports in multiple formats. Automated scheduled report generation and email delivery to reduce manual admin overhead.',
+        impact: 'Reduced daily administrative overhead per college by an estimated 60%, giving admissions teams instant, accurate visibility without spreadsheets or manual data pulls.',
+        decision: 'Per-institution ERP dashboard with automated reporting over a shared admin panel',
+        rationale: 'Each institution needed to see only its own data, with reports tailored to its own workflows and naming conventions — a shared super-admin view would have required constant customisation per query.'
       }
     ],
-    techStack: ['SAAS', 'Cloud Architecture', 'Payment Systems', 'Node.js'],
+    techStack: ['SAAS', 'Node.js', 'Multi-tenant Architecture', 'Payment Gateways', 'MySQL', 'ERP Dashboards', 'Cloud Architecture'],
     narrative: {
-      vision: 'Create the most frictionless payment and admission experience for educational institutions in the region while maintaining institutional data privacy, regulatory compliance, and supporting diverse payment methods across geography.',
-      execution: 'Built a highly modular Node.js backend with an extensible adapter pattern for integrating various banking APIs and payment gateways used across different regions. Implemented multi-tenant architecture supporting 50+ institutions with strict data isolation guarantees, customizable admission workflows, and role-based access controls. Developed sophisticated payment reconciliation engines that automatically matched transactions against institutional records, reducing manual reconciliation work by 95%. Created comprehensive admin dashboards providing real-time insights into payment flows, admission bottlenecks, and institutional performance metrics.',
-      result: 'The platform processed over $50M in transactions in its first year, becoming the go-to solution for student payments across the region. Achieved 99.99% payment success rate with zero security incidents and onboarded 50+ institutions in just 3 months. Institutions reported 60% reduction in admission processing time and significant improvements in student satisfaction due to frictionless payment experience. Platform became instrumental in institutional growth, enabling schools to scale operations efficiently.'
+      vision: 'Create the most frictionless payment and admission experience for educational institutions in the region while maintaining institutional data privacy, regulatory compliance, and supporting diverse payment methods — removing every point of failure between a student\'s decision to enrol and the completion of their application.',
+      execution: 'Built a highly modular Node.js backend with an extensible adapter pattern for integrating multiple banking APIs and payment gateways. The payment orchestration layer routed transactions through a prioritised list of gateway providers, retrying automatically on failure with idempotency keys ensuring no student was ever double-charged. Designed the application form as a canonical student profile that could be submitted once and distributed to multiple selected colleges simultaneously, with each institution\'s records fully isolated behind the multi-tenant schema boundary. Implemented role-based ERP dashboards per institution giving admissions teams a live view of application pipelines, payment status, and enrolment progress — with automated report generation scheduled for daily and end-of-cycle delivery. Built reconciliation engines that matched gateway settlement records against institutional transaction logs, reducing manual finance work by 95%.',
+      result: 'The platform processed over $50M in transactions in its first year with 99.99% payment gateway uptime and zero security incidents. Students could apply to multiple colleges through a single form, dramatically reducing abandonment. College administrators gained real-time ERP visibility that cut admission processing time by 60% and eliminated manual reconciliation. Onboarded 50+ institutions in 3 months and became the go-to admissions and payments platform in the region.'
     },
     blueprint: {
       type: 'microservices',
-      nodes: 10,
-      connections: 18
+      nodes: 12,
+      connections: 22
     }
   },
   {
@@ -227,7 +253,7 @@ export const projects: ProjectCaseStudy[] = [
     role: 'Software Architect',
     period: '2013 - 2014',
     challenge: 'Designing secure, high-performance mobile and web payment solutions in a highly regulated environment.',
-    impact: 'Ensured 100% PCI DSS compliance while launching innovative mobile-first security and media features.',
+    impact: 'Ensured 100% PCI DSS compliance and zero security breaches while launching innovative mobile-first payment security (Dugna MFA) and the Voodle distributed video render farm — processing millions in daily transactions at 99.99% uptime.',
     highlights: [
       { label: 'Security Compliance', value: 'PCI DSS' },
       { label: 'Uptime', value: '99.99%' }
@@ -268,32 +294,42 @@ export const projects: ProjectCaseStudy[] = [
     company: 'Tata Consultancy Services / WNS',
     role: 'Analyst Programmer',
     period: '2006 - 2009',
-    challenge: 'Managing and analyzing massive datasets from thousands of market and medical questionnaires with high accuracy. Handled complex multi-dimensional data validation across diverse sources with strict accuracy requirements and compliance regulations.',
-    impact: 'Reduced manual data processing time by 90% through custom automation and earned "Highest Productivity" recognition. Established automation best practices that became organizational standard, reducing error rates from 15% to 0.2%.',
+    challenge: 'Managing and analyzing millions of records from market research and medical questionnaires across multiple simultaneous client engagements, each with its own data schemas, validation rules, and delivery deadlines. As a junior analyst entering one of the most demanding delivery environments in the industry, the challenge was to absorb the complexity of multiple clients and multiple projects in parallel — and to consistently outperform while building the technical depth to move into leadership.',
+    impact: 'Reduced manual data processing time by 90% through custom automation pipelines processing millions of records. Earned the highest productivity hours in the organisation for five consecutive months — a record achieved while simultaneously handling multiple client accounts and project streams. Promoted to team lead within the first year, establishing automation best practices that became the organisational standard and reducing error rates from 15% to 0.2%.',
     highlights: [
       { label: 'Automation Gain', value: '+90%' },
-      { label: 'Productivity', value: 'Top Award' }
+      { label: 'Top Productivity', value: '5 months' },
+      { label: 'Records Processed', value: 'Millions' },
+      { label: 'Error Rate', value: '0.2%' }
     ],
     adrs: [
       {
-        title: 'Shell Scripting for Data Pipelines',
-        problem: 'Repetitive, manual analysis of large-scale datasets was prone to human error and significant delays.',
-        solution: 'Developed a suite of custom Shell Scripts to automate the cleaning, transformation, and ingestion of raw data.',
-        impact: 'Turnaround time for major reports decreased from days to minutes, ensuring 100% data consistency.',
+        title: 'Shell Scripting for High-Volume Data Pipelines',
+        problem: 'Repetitive, manual analysis of millions of records across market research and medical questionnaire datasets was prone to human error, took days per cycle, and did not scale across multiple simultaneous client accounts.',
+        solution: 'Developed a suite of reusable Shell Scripts to automate the cleaning, transformation, validation, and ingestion of raw data — parameterised per client schema so the same pipeline could service multiple accounts without duplication.',
+        impact: 'Turnaround time for major reports decreased from days to minutes, enabling simultaneous delivery across multiple client projects with 100% data consistency.',
         decision: 'Automated pipelines using Shell Scripting',
-        rationale: 'To ensure repeatability and speed in high-volume data environments without the overhead of heavy ETL tools.'
+        rationale: 'To ensure repeatability and speed in high-volume data environments without the overhead of heavy ETL tools, and to create a pattern that junior team members could own and extend.'
+      },
+      {
+        title: 'Multi-Client Parallel Project Management',
+        problem: 'Managing deliverables across multiple clients and project streams simultaneously created scheduling conflicts and the risk that quality would degrade under volume pressure.',
+        solution: 'Built a personal workflow system for batching and sequencing tasks by client SLA priority, with automated pipeline runs scheduled to run overnight so analyst time was reserved for validation and exception handling rather than raw processing.',
+        impact: 'Sustained the highest productivity hours in the organisation for five consecutive months across all active client accounts, with no missed deadlines and no client escalations.',
+        decision: 'Async pipeline scheduling over synchronous per-client processing',
+        rationale: 'Decoupling data processing from analyst working hours was the only way to service multiple high-volume clients in parallel without proportionally increasing headcount or degrading delivery timelines.'
       }
     ],
-    techStack: ['Shell Scripting', 'Quantum', 'SPSS', 'Linux'],
+    techStack: ['Shell Scripting', 'Quantum', 'SPSS', 'Linux', 'Data Automation', 'ETL'],
     narrative: {
-      vision: 'Eliminate human error and maximize efficiency in high-stakes data analysis environments by automating repetitive manual processes through sophisticated shell scripting and Unix-based tools.',
-      execution: 'Developed comprehensive suite of Shell Scripts to automate the cleaning, transformation, and ingestion of raw data from thousands of market research and medical questionnaires. Leveraged Unix-based automation to create robust data pipelines that handled complex multi-dimensional datasets with strict accuracy requirements. Implemented automated validation routines that caught data quality issues in real-time, reducing downstream errors by 95%.',
-      result: 'Achieved the highest productivity hours in the organization and earned formal recognition for exceptional performance. Standardized automation as core organizational data practice, reducing turnaround time for major reports from days to minutes while ensuring 100% data consistency and accuracy. Error rates dropped from 15% to 0.2%, establishing new benchmarks for data processing reliability in the organization.'
+      vision: 'Eliminate human error and maximise efficiency in high-stakes, multi-client data analysis environments — turning what was a slow, manual, error-prone process into a reliable, automated pipeline that could scale across millions of records and dozens of simultaneous project streams.',
+      execution: 'Joined TCS/WNS as a junior analyst programmer and immediately took on a portfolio spanning multiple clients and multiple concurrent projects — market research datasets and medical questionnaire analysis with rigorous validation standards. Developed a reusable suite of Shell Scripts that automated the full pipeline: raw data ingestion, schema-specific cleaning and transformation, multi-dimensional validation, and formatted output delivery. Scripts were parameterised by client schema so a single pipeline codebase served every account. Ran processing asynchronously overnight, freeing working hours for exception handling and quality verification rather than manual data entry. Within months, productivity metrics ranked consistently at the top of the team — a pace sustained for five consecutive months. The automation patterns built here were adopted as the team standard. Before the first year was complete, transitioned from individual contributor to leading a team, applying the same systematic thinking that drove personal output to coordinate and grow a broader group.',
+      result: 'Achieved the highest productivity hours in the organisation for five consecutive months while concurrently managing multiple client accounts and project streams with millions of records. Promoted to team lead within the first year. Automation pipelines reduced error rates from 15% to 0.2% and cut report turnaround from days to minutes — establishing a new benchmark for data processing reliability that the wider team adopted as standard practice.'
     },
     blueprint: {
       type: 'hub-and-spoke',
-      nodes: 4,
-      connections: 6
+      nodes: 6,
+      connections: 10
     }
   },
   {
@@ -302,32 +338,50 @@ export const projects: ProjectCaseStudy[] = [
     company: 'CouponDunia',
     role: 'Sr. Web Developer',
     period: '2015',
-    challenge: 'Architecting the backend for a high-traffic mobile application during a period of rapid user acquisition.',
-    impact: 'Successfully launched the CashBoss Android ecosystem, driving a 40% increase in mobile-led user conversions.',
+    challenge: 'Architecting the complete backend and admin ecosystem for CashBoss — a cashback rewards Android app — with a team of 8, under pressure to launch quickly and prove mobile engagement at scale. The defining technical challenge was attribution and compliance: when a user selected an offer app inside CashBoss and installed it from the Play Store, the system had to reliably track that install, then confirm the app was actually opened and used for a minimum duration — anywhere between 30 seconds and 5 minutes depending on the advertiser\'s requirements. Tracking uninstalls and time-in-app accurately, without a native SDK embedded in the partner app, made this a hard attribution problem at scale.',
+    impact: 'Successfully launched the CashBoss Android cashback rewards ecosystem with a full admin panel, push notifications, deep linking, and analytics — driving a 40% increase in mobile-led user conversions. Delivered a robust install tracking and app-usage verification system that satisfied advertiser compliance requirements across variable time-window thresholds (30s–5min), enabling reliable cashback attribution at scale and making CashBoss a trusted partner for Android app advertisers.',
     highlights: [
       { label: 'Mobile Conversion', value: '+40%' },
-      { label: 'API Uptime', value: '99.9%' }
+      { label: 'API Uptime', value: '99.9%' },
+      { label: 'Team Size', value: '8 engineers' },
+      { label: 'Attribution', value: 'Install + Usage' }
     ],
     adrs: [
       {
-        title: 'Modernizing with Yii2',
-        problem: 'The existing backend struggled to handle the high concurrency requirements of the new CashBoss app.',
-        solution: 'Migrated core services to a modular Yii2-based architecture with optimized RESTful API endpoints.',
-        impact: 'The system successfully supported 10x traffic growth without a corresponding increase in infrastructure costs.',
-        decision: 'Adopted Yii2 for mobile backend',
-        rationale: 'Yii2 provided the optimal balance of performance, rapid development, and robust security features needed for the launch.'
+        title: 'Install & App-Usage Attribution Pipeline',
+        problem: 'CashBoss rewarded users with cashback only after they installed a partner app AND used it for the advertiser\'s required duration (30 seconds to 5 minutes depending on the client). There was no SDK embedded in the partner apps — tracking had to be done externally, via Android broadcast signals and polling, without false positives that would cost the business real money.',
+        solution: 'Built a server-side attribution pipeline that combined Play Store referral tracking (Google Install Referrer API) with an Android client-side job scheduler that polled app foreground state at configurable intervals. The server stored the install event with a timestamp and the client-reported active-use duration, validating against the per-advertiser time-window threshold before marking a conversion as eligible for cashback.',
+        impact: 'Enabled reliable cashback attribution across all advertiser campaigns with zero reported false-positive conversions, making CashBoss a trusted platform for Android app advertisers requiring usage-based compliance.',
+        decision: 'Referrer API + client-side usage polling over third-party attribution SDK',
+        rationale: 'Third-party mobile attribution SDKs required integration in the partner apps — not possible without every advertiser\'s cooperation. A self-contained referrer + polling approach gave CashBoss full control over the attribution logic without external dependencies.'
+      },
+      {
+        title: 'RESTful API Architecture for Android',
+        problem: 'The existing backend was not designed for high-concurrency mobile traffic patterns — bursts of API calls from thousands of concurrent users performing offer discovery, install callbacks, and cashback status polls simultaneously.',
+        solution: 'Built a modular Yii2 RESTful API layer with optimised response schemas for the Android client, connection pooling, and per-endpoint caching to flatten traffic spike impact.',
+        impact: 'Supported 10x traffic growth from launch through peak campaigns without infrastructure scaling and maintained 99.9% API uptime.',
+        decision: 'Yii2 RESTful API over legacy monolith extension',
+        rationale: 'Yii2\'s active record, caching layer, and modular architecture gave the team the speed to build and the performance to ship — without the overhead of a full microservices migration in a tight timeline.'
+      },
+      {
+        title: 'Admin Panel, Analytics & Push Notifications',
+        problem: 'The marketing and operations team needed real-time visibility into campaign performance, user engagement, and cashback disbursement — and a direct channel to re-engage users who had gone dormant.',
+        solution: 'Built a comprehensive admin panel covering campaign management, user analytics, cashback approval workflows, and deep-link generation. Integrated push notification delivery with segmentation by user activity and install status. Implemented deep linking so push notifications and marketing URLs landed users directly on the relevant offer inside the app.',
+        impact: 'Gave the business team full operational control without engineering involvement for day-to-day campaign management, and enabled targeted re-engagement campaigns that contributed to the 40% uplift in mobile conversions.',
+        decision: 'Purpose-built admin panel over adapting an off-the-shelf CMS',
+        rationale: 'The attribution and cashback approval workflows were too specific to the CashBoss business model to fit cleanly into a generic CMS; a purpose-built panel gave the team precise control and reduced support overhead.'
       }
     ],
-    techStack: ['Yii', 'PHP', 'RESTful APIs', 'MySQL'],
+    techStack: ['PHP', 'Yii2', 'RESTful APIs', 'MySQL', 'Android Attribution', 'Push Notifications', 'Deep Linking', 'Admin Panel', 'Analytics'],
     narrative: {
-      vision: 'Build a rock-solid, mobile-first backend to support aggressive user growth and high-concurrency engagement.',
-      execution: 'We optimized the API layer for low-latency responses and implemented efficient caching strategies to handle traffic spikes.',
-      result: 'CashBoss became a key driver for the company, handling hundreds of thousands of active users with peak stability.'
+      vision: 'Build a complete, production-grade mobile rewards ecosystem for CashBoss — a cashback Android app — that could reliably attribute installs and app usage, reward users accurately, and give the business team the operational tools to run campaigns without engineering bottlenecks.',
+      execution: 'Led an 8-person engineering team to deliver the full CashBoss backend stack: a Yii2 RESTful API for the Android client, an admin panel with campaign management and cashback approval workflows, push notification delivery with audience segmentation, and deep linking to drive in-app engagement from external marketing. The hardest problem was attribution. When a user selected a partner app from CashBoss and installed it from the Play Store, the platform had to confirm not just the install — but that the app was actively used for the advertiser\'s required duration, which ranged from 30 seconds to 5 minutes depending on the client. With no SDK in the partner apps, built a self-contained pipeline: the Android client tracked foreground app state on a configurable polling schedule, reported usage duration back to the server, and the backend validated each conversion against the per-advertiser threshold before triggering cashback eligibility. Uninstall signals were captured via silent push, allowing the system to invalidate conversions where the app was installed briefly and then removed.',
+      result: 'Launched CashBoss as a fully operational cashback rewards platform with reliable install and usage attribution across all advertiser campaigns. The system drove a 40% increase in mobile-led user conversions and sustained 99.9% API uptime through traffic spikes. Advertiser compliance requirements were met across all time-window thresholds, establishing CashBoss as a trusted partner for Android app campaigns. The admin panel gave the operations team full campaign control from day one, reducing engineering support overhead and accelerating time-to-market for new offers.'
     },
     blueprint: {
       type: 'monolith',
-      nodes: 5,
-      connections: 10
+      nodes: 8,
+      connections: 14
     }
   }
 ]

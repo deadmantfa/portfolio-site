@@ -357,7 +357,7 @@ const Navigation = () => {
         <div className="text-2xl font-serif italic font-bold tracking-tighter text-white">
           <Link
             href="/"
-            aria-label="Wenceslaus Dsilva - Home"
+            aria-label="W. D — Wenceslaus Dsilva, Home"
             className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg px-2"
             onMouseEnter={() => handleLogoHover(true)}
             onMouseLeave={() => handleLogoHover(false)}

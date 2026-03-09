@@ -243,7 +243,7 @@ export default function Home() {
                           <Link
                             href={`/work/${project.slug}`}
                             className="inline-flex items-center gap-2 group/btn pointer-events-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-full p-1 cursor-pointer"
-                            aria-label={`Read ${project.company} case study`}
+                            aria-label={`Read Case Study — ${project.company}`}
                             title={`View ${project.company} case study`}
                           >
                             <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">Read Case Study</span>
@@ -371,6 +371,11 @@ export default function Home() {
             <ContactForm />
             <SocialLinks />
           </div>
+          <p className="mt-12 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700">
+            <a href="/privacy" className="hover:text-zinc-500 transition-colors">Privacy Policy</a>
+            <span className="mx-3">·</span>
+            <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>
+          </p>
         </section>
       </div>
     </main>
