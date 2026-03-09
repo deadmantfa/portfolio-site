@@ -313,8 +313,8 @@ export default function Home() {
                 >
                   <p aria-hidden="true" className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Education</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">B.Sc Information Technology</h3>
-                  <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                  <p className="text-zinc-400 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
+                  <div aria-hidden="true" className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                  <p aria-hidden="true" className="text-zinc-400 text-xs uppercase tracking-tighter">St. Andrews College, Mumbai University</p>
                 </div>
 
                 <div
@@ -329,8 +329,8 @@ export default function Home() {
                 >
                   <p aria-hidden="true" className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">Elasticsearch Engineer</h3>
-                  <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                  <p className="text-zinc-400 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
+                  <div aria-hidden="true" className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                  <p aria-hidden="true" className="text-zinc-400 text-xs uppercase tracking-tighter">Elite specialized engineering certification.</p>
                 </div>
 
                 <div
@@ -345,8 +345,8 @@ export default function Home() {
                 >
                   <p aria-hidden="true" className="text-zinc-400 group-hover:text-primary transition-colors text-sm font-mono mb-2 uppercase tracking-widest">Certification</p>
                   <h3 className="text-2xl text-white font-serif italic mb-4">Google Cloud Professional</h3>
-                  <div className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
-                  <p className="text-zinc-400 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
+                  <div aria-hidden="true" className="h-px w-12 bg-white/10 mb-4 group-hover:w-full transition-all duration-500"></div>
+                  <p aria-hidden="true" className="text-zinc-400 text-xs uppercase tracking-tighter">Cloud Infrastructure & Solution Architecting.</p>
                 </div>
               </div>
             </div>
@@ -372,6 +372,10 @@ export default function Home() {
             <SocialLinks />
           </div>
           <p className="mt-12 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700">
+            <a href="/about" className="hover:text-zinc-500 transition-colors">About</a>
+            <span className="mx-3">·</span>
+            <a href="/contact" className="hover:text-zinc-500 transition-colors">Contact</a>
+            <span className="mx-3">·</span>
             <a href="/privacy" className="hover:text-zinc-500 transition-colors">Privacy Policy</a>
             <span className="mx-3">·</span>
             <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>

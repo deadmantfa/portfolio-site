@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Contact Wenceslaus Dsilva — CTO & Technical Architect',
     description:
       'Open to senior technology leadership roles, consulting, and strategic advisory. Reach out directly.',
-    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 800, height: 800 }],
+    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -47,11 +47,25 @@ export default function ContactPage() {
           Open to senior technology leadership roles — CTO, VP Engineering, and Principal Architect
           positions — as well as strategic consulting and advisory engagements.
         </p>
-        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+        <p className="text-zinc-600 text-sm mb-4 max-w-lg">
           I bring 20+ years of architectural depth across serverless, AI/ML, cloud infrastructure,
           and high-scale product engineering. If you are building something ambitious and need a
-          technology leader who has done it before — at Rooftop, IndieFolio, Food Darzee, and
-          beyond — use the form below or connect directly on LinkedIn or GitHub.
+          technology leader who has done it at scale — at Rooftop, IndieFolio, Food Darzee, and
+          EasyTech — use the form below or connect directly.
+        </p>
+        <p className="text-zinc-600 text-sm mb-4 max-w-lg">
+          My work spans the full technology leadership spectrum: defining architecture strategy,
+          building and scaling engineering teams, shipping products that grow from thousands to
+          millions of users, and creating the operational foundations that let a business scale
+          without service degradation. I have led teams through serverless migrations, AI/ML
+          pipeline delivery, mobile-first product launches, payment infrastructure hardening, and
+          zero-downtime platform rebuilds.
+        </p>
+        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+          Whether you are a startup preparing to scale, an established company modernising its
+          stack, or an organisation that needs a fractional CTO to drive a specific technical
+          transformation — I am happy to have that conversation. Response time is typically within
+          one business day.
         </p>
 
         <ContactForm />

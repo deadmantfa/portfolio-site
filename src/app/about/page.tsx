@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: { absolute: 'About | Wenceslaus Dsilva — CTO & Technical Architect' },
   description:
-    'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud, and high-scale product engineering. Currently at Rooftop. Open to senior leadership roles.',
+    'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud, and high-scale product engineering. Currently at Rooftop.',
   alternates: {
     canonical: 'https://w1d.pro/about',
   },
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: 'About Wenceslaus Dsilva — CTO & Technical Architect',
     description:
       'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
-    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 800, height: 800 }],
+    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',

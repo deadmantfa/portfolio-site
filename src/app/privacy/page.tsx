@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     url: 'https://w1d.pro/privacy',
     type: 'website',
-    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 800, height: 800 }],
+    images: [{ url: 'https://w1d.pro/images/hero/profile.jpg', width: 1200, height: 630 }],
   },
   robots: {
     index: true,
