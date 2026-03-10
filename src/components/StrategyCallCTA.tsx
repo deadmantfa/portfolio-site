@@ -1,8 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { PopupButton } from 'react-calendly'
+import { InlineWidget } from 'react-calendly'
 import { contactConfig } from '@/data/contact'
+
+const CALENDLY_STYLES = {
+  backgroundColor: '0d0d14',
+  textColor: 'f5f5fa',
+  primaryColor: '8b7cf8',
+  hideLandingPageDetails: true,
+  hideGdprBanner: true,
+}
 
 const StrategyCallCTA = () => {
   const isOpen = contactConfig.availabilityStatus === 'open'
@@ -26,27 +34,20 @@ const StrategyCallCTA = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0 }}
-          className="flex flex-col justify-center"
+          className="flex flex-col justify-center gap-6"
         >
-          <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-foreground/40 mb-4">
-            Direct Engagement
-          </p>
-          <h2 className="font-serif italic text-3xl md:text-4xl text-foreground mb-4 leading-tight">
-            Let&apos;s architect something significant.
-          </h2>
-          <p className="font-sans text-foreground/70 leading-relaxed text-sm">
-            A focused 30-minute conversation to explore how 20 years of architectural thinking applies to your next engineering chapter. No agenda required — just a conversation.
-          </p>
-        </motion.div>
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-foreground/40 mb-4">
+              Direct Engagement
+            </p>
+            <h2 className="font-serif italic text-3xl md:text-4xl text-foreground mb-4 leading-tight">
+              Let&apos;s architect something significant.
+            </h2>
+            <p className="font-sans text-foreground/70 leading-relaxed text-sm">
+              A focused 30-minute conversation to explore how 20 years of architectural thinking applies to your next engineering chapter. No agenda required — just a conversation.
+            </p>
+          </div>
 
-        {/* Right column — availability + CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="glass rounded-[2rem] p-6 flex flex-col justify-between gap-6"
-        >
           <div className="space-y-3">
             <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/40">
               Availability
@@ -60,35 +61,41 @@ const StrategyCallCTA = () => {
                 {isOpen ? 'Open to conversations' : 'Currently at capacity'}
               </span>
             </div>
-            <p className="font-sans text-foreground/50 text-sm leading-relaxed">
+            <p className="font-sans text-foreground/50 text-xs leading-relaxed">
               {contactConfig.availabilityNote}
             </p>
           </div>
 
-          <div className="flex flex-col items-start gap-3">
-            {isOpen ? (
-              <PopupButton
-                url={contactConfig.calendlyUrl}
-                rootElement={typeof document !== 'undefined' ? document.body : undefined!}
-                text="Book a Strategy Call"
-                pageSettings={{
-                  backgroundColor: '0d0d14',
-                  textColor: 'f5f5fa',
-                  primaryColor: '8b7cf8',
-                  hideLandingPageDetails: true,
-                  hideGdprBanner: true,
-                }}
-                className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
-              />
-            ) : (
-              <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
-                Currently Unavailable
-              </span>
-            )}
-            <p className="font-mono text-[9px] text-foreground/30 tracking-[0.2em] uppercase ml-2">
-              or scroll down to write
-            </p>
-          </div>
+          <p className="font-mono text-[9px] text-foreground/30 tracking-[0.2em] uppercase">
+            or scroll down to write
+          </p>
+        </motion.div>
+
+        {/* Right column — inline calendar */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          className="rounded-[1.5rem] overflow-hidden"
+        >
+          {isOpen ? (
+            <InlineWidget
+              url={contactConfig.calendlyUrl}
+              pageSettings={CALENDLY_STYLES}
+              styles={{ minWidth: '100%', height: '660px' }}
+            />
+          ) : (
+            <div className="glass rounded-[1.5rem] h-full min-h-[400px] flex flex-col items-center justify-center gap-3 p-8">
+              <span className="size-2 rounded-full bg-foreground/20" aria-hidden="true" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-foreground/40 text-center">
+                Scheduling paused
+              </p>
+              <p className="font-sans text-foreground/30 text-sm text-center">
+                Use the contact form below to reach out directly.
+              </p>
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.div>

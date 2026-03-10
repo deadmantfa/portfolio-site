@@ -11,8 +11,8 @@ vi.mock('framer-motion', () => ({
 }))
 
 vi.mock('react-calendly', () => ({
-  PopupButton: ({ text, className }: { text: string; className?: string; url: string; rootElement: Element }) => (
-    <button className={className}>{text}</button>
+  InlineWidget: ({ url }: { url: string }) => (
+    <div data-testid="calendly-inline" data-url={url} />
   ),
 }))
 
@@ -53,13 +53,14 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByText(/Typically responds within 24 hours/i)).toBeInTheDocument()
   })
 
-  it('renders the Book a Strategy Call button', () => {
+  it('renders the inline Calendly widget with correct url when open', () => {
     render(<StrategyCallCTA />)
-    const btn = screen.getByRole('button', { name: /Book a Strategy Call/i })
-    expect(btn).toBeInTheDocument()
+    const widget = screen.getByTestId('calendly-inline')
+    expect(widget).toBeInTheDocument()
+    expect(widget).toHaveAttribute('data-url', 'https://calendly.com/test/strategy-call')
   })
 
-  it('renders the "or scroll down to write" fallback label', () => {
+  it('renders the "or scroll down to write" label', () => {
     render(<StrategyCallCTA />)
     expect(screen.getByText(/or scroll down to write/i)).toBeInTheDocument()
   })
@@ -69,18 +70,5 @@ describe('StrategyCallCTA', () => {
     const container = screen.getByTestId('strategy-call-cta')
     expect(container.className).toMatch(/glass/)
     expect(container.className).toMatch(/rounded-\[2\.5rem\]/)
-  })
-
-  it('shows closed state text when availability is closed', () => {
-    vi.doMock('../data/contact', () => ({
-      contactConfig: {
-        calendlyUrl: 'https://calendly.com/test/strategy-call',
-        availabilityStatus: 'closed',
-        availabilityNote: 'Currently at capacity.',
-      },
-    }))
-    // Component reads from import, so we verify open state renders correctly
-    render(<StrategyCallCTA />)
-    expect(screen.getByText(/AVAILABILITY/i)).toBeInTheDocument()
   })
 })
