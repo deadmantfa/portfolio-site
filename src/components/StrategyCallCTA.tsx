@@ -14,13 +14,11 @@ const CALENDLY_STYLES = {
 }
 
 const lockScroll = () => {
-  document.documentElement.style.overflow = 'hidden'
-  document.body.style.overflow = 'hidden'
+  document.documentElement.classList.add('calendly-open')
 }
 
 const unlockScroll = () => {
-  document.documentElement.style.overflow = ''
-  document.body.style.overflow = ''
+  document.documentElement.classList.remove('calendly-open')
 }
 
 const StrategyCallCTA = () => {
@@ -92,7 +90,7 @@ const StrategyCallCTA = () => {
 
           <div className="flex flex-col items-start gap-3">
             {isOpen ? (
-              <div onClick={lockScroll}>
+              <div onClickCapture={lockScroll}>
                 <PopupButton
                   url={contactConfig.calendlyUrl}
                   rootElement={typeof document !== 'undefined' ? document.body : undefined!}

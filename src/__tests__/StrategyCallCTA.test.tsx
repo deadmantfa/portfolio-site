@@ -58,20 +58,19 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByRole('button', { name: /Book a Strategy Call/i })).toBeInTheDocument()
   })
 
-  it('locks scroll on button wrapper click', () => {
+  it('adds calendly-open class on button wrapper click', () => {
     render(<StrategyCallCTA />)
     const btn = screen.getByRole('button', { name: /Book a Strategy Call/i })
     fireEvent.click(btn.parentElement!)
-    expect(document.documentElement.style.overflow).toBe('hidden')
-    // cleanup
-    document.documentElement.style.overflow = ''
+    expect(document.documentElement.classList.contains('calendly-open')).toBe(true)
+    document.documentElement.classList.remove('calendly-open')
   })
 
-  it('unlocks scroll when calendly.popup_closed message received', () => {
+  it('removes calendly-open class when calendly.popup_closed message received', () => {
     render(<StrategyCallCTA />)
-    document.documentElement.style.overflow = 'hidden'
+    document.documentElement.classList.add('calendly-open')
     window.dispatchEvent(new MessageEvent('message', { data: { event: 'calendly.popup_closed' } }))
-    expect(document.documentElement.style.overflow).toBe('')
+    expect(document.documentElement.classList.contains('calendly-open')).toBe(false)
   })
 
   it('renders the "or scroll down to write" label', () => {
