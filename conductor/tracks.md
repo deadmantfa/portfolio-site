@@ -26,3 +26,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Deploy Portfolio to Vercel**
   *Link: [./tracks/deploy_portfolio_to_vercel_20260219/](./tracks/deploy_portfolio_to_vercel_20260219/)*
+
+---
+
+- [ ] **Track: CTO Engagement Features**
+  *Link: [./tracks/cto_engagement_features_20260311/](./tracks/cto_engagement_features_20260311/)*
