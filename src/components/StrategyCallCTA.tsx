@@ -1,7 +1,8 @@
 'use client'
 
+import { useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { PopupButton } from 'react-calendly'
+import { openPopupWidget } from 'react-calendly'
 import { contactConfig } from '@/data/contact'
 
 const CALENDLY_STYLES = {
@@ -12,8 +13,35 @@ const CALENDLY_STYLES = {
   hideGdprBanner: true,
 }
 
+const lockScroll = () => {
+  document.documentElement.style.overflow = 'hidden'
+  document.body.style.overflow = 'hidden'
+}
+
+const unlockScroll = () => {
+  document.documentElement.style.overflow = ''
+  document.body.style.overflow = ''
+}
+
 const StrategyCallCTA = () => {
   const isOpen = contactConfig.availabilityStatus === 'open'
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (typeof e.data?.event !== 'string') return
+      if (e.data.event === 'calendly.popup_closed') unlockScroll()
+    }
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+      unlockScroll()
+    }
+  }, [])
+
+  const handleOpen = useCallback(() => {
+    lockScroll()
+    openPopupWidget({ url: contactConfig.calendlyUrl, pageSettings: CALENDLY_STYLES })
+  }, [])
 
   return (
     <motion.div
@@ -68,13 +96,12 @@ const StrategyCallCTA = () => {
 
           <div className="flex flex-col items-start gap-3">
             {isOpen ? (
-              <PopupButton
-                url={contactConfig.calendlyUrl}
-                rootElement={typeof document !== 'undefined' ? document.body : undefined!}
-                text="Book a Strategy Call"
-                pageSettings={CALENDLY_STYLES}
+              <button
+                onClick={handleOpen}
                 className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
-              />
+              >
+                Book a Strategy Call
+              </button>
             ) : (
               <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
                 Currently Unavailable
@@ -86,7 +113,7 @@ const StrategyCallCTA = () => {
           </div>
         </motion.div>
 
-        {/* Right column — availability card */}
+        {/* Right column — context card */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}

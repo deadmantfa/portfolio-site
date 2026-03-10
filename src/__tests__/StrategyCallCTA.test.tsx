@@ -1,24 +1,23 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { StrategyCallCTA } from '../components/StrategyCallCTA'
 
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div {...props}>{children}</div>,
-    section: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => <section {...props}>{children}</section>,
   },
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('react-calendly', () => ({
-  PopupButton: ({ text, className }: { text: string; className?: string; url: string; rootElement: Element }) => (
-    <button className={className}>{text}</button>
-  ),
+  openPopupWidget: vi.fn(),
 }))
+
+import * as ReactCalendly from 'react-calendly'
 
 vi.mock('../data/contact', () => ({
   contactConfig: {
-    calendlyUrl: 'https://calendly.com/test',
+    calendlyUrl: 'https://calendly.com/test/30min',
     availabilityStatus: 'open',
     availabilityNote: 'Typically responds within 24 hours.',
   },
@@ -59,6 +58,21 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByRole('button', { name: /Book a Strategy Call/i })).toBeInTheDocument()
   })
 
+  it('calls openPopupWidget with correct url when button clicked', () => {
+    render(<StrategyCallCTA />)
+    fireEvent.click(screen.getByRole('button', { name: /Book a Strategy Call/i }))
+    expect(ReactCalendly.openPopupWidget).toHaveBeenCalledWith(
+      expect.objectContaining({ url: 'https://calendly.com/test/30min' })
+    )
+  })
+
+  it('unlocks scroll when calendly.popup_closed message received', () => {
+    render(<StrategyCallCTA />)
+    document.documentElement.style.overflow = 'hidden'
+    window.dispatchEvent(new MessageEvent('message', { data: { event: 'calendly.popup_closed' } }))
+    expect(document.documentElement.style.overflow).toBe('')
+  })
+
   it('renders the "or scroll down to write" label', () => {
     render(<StrategyCallCTA />)
     expect(screen.getByText(/or scroll down to write/i)).toBeInTheDocument()
@@ -71,7 +85,7 @@ describe('StrategyCallCTA', () => {
     expect(container.className).toMatch(/rounded-\[2\.5rem\]/)
   })
 
-  it('renders the right-column format and audience details', () => {
+  it('renders the right-column context details', () => {
     render(<StrategyCallCTA />)
     expect(screen.getByText(/30-minute video call/i)).toBeInTheDocument()
     expect(screen.getByText(/CEOs, boards/i)).toBeInTheDocument()
