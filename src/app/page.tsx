@@ -16,6 +16,7 @@ const OpenSourceShowcase = dynamic(() => import('@/components/OpenSourceShowcase
 const TestimonialsCarousel = dynamic(() => import('@/components/TestimonialsCarousel').then(m => m.TestimonialsCarousel), { ssr: false })
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false })
 const SocialLinks = dynamic(() => import('@/components/SocialLinks'), { ssr: false })
+const StrategyCallCTA = dynamic(() => import('@/components/StrategyCallCTA').then(m => m.StrategyCallCTA), { ssr: false })
 
 // Dynamically import the heavy 3D scene
 // loading: () => null prevents flash of unstyled content or heavy loading state, 
@@ -368,6 +369,7 @@ export default function Home() {
           </EditorialReveal>
           
           <div className="max-w-4xl w-full flex flex-col items-center gap-8">
+            <StrategyCallCTA />
             <ContactForm />
             <SocialLinks />
           </div>
