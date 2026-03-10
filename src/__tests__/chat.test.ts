@@ -1,16 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+const mockAnthropicCreate = vi.fn()
+const mockGeminiSendMessage = vi.fn()
+const mockStartChat = vi.fn(() => ({ sendMessage: mockGeminiSendMessage }))
+const mockGetGenerativeModel = vi.fn(() => ({ startChat: mockStartChat }))
+
 vi.mock('@anthropic-ai/sdk', () => ({
   default: vi.fn().mockImplementation(() => ({
-    messages: {
-      create: vi.fn().mockResolvedValue({
-        content: [{ type: 'text', text: 'Hello world' }],
-      }),
-    },
+    messages: { create: mockAnthropicCreate },
   })),
 }))
 
-// Mock Next.js request/response for route handler testing
+vi.mock('@google/generative-ai', () => ({
+  GoogleGenerativeAI: vi.fn().mockImplementation(() => ({
+    getGenerativeModel: mockGetGenerativeModel,
+  })),
+}))
+
 import { POST } from '../app/api/chat/route'
 
 const makeRequest = (body: unknown) =>
@@ -23,12 +29,36 @@ const makeRequest = (body: unknown) =>
 describe('POST /api/chat', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockAnthropicCreate.mockResolvedValue({
+      content: [{ type: 'text', text: 'Hello from Claude' }],
+    })
+    mockGeminiSendMessage.mockResolvedValue({
+      response: { text: () => 'Hello from Gemini' },
+    })
   })
 
-  it('returns 200 with a streaming response for valid messages', async () => {
+  it('returns 200 with Anthropic response when available', async () => {
     const res = await POST(makeRequest({ messages: [{ role: 'user', content: 'Hello' }] }))
     expect(res.status).toBe(200)
-    expect(res.body).not.toBeNull()
+    expect(res.headers.get('X-AI-Provider')).toBe('anthropic')
+    const text = await res.text()
+    expect(text).toBe('Hello from Claude')
+  })
+
+  it('falls back to Gemini when Anthropic fails', async () => {
+    mockAnthropicCreate.mockRejectedValue(new Error('credit balance is too low'))
+    const res = await POST(makeRequest({ messages: [{ role: 'user', content: 'Hello' }] }))
+    expect(res.status).toBe(200)
+    expect(res.headers.get('X-AI-Provider')).toBe('gemini')
+    const text = await res.text()
+    expect(text).toBe('Hello from Gemini')
+  })
+
+  it('returns 503 when both providers fail', async () => {
+    mockAnthropicCreate.mockRejectedValue(new Error('credit balance is too low'))
+    mockGeminiSendMessage.mockRejectedValue(new Error('Gemini unavailable'))
+    const res = await POST(makeRequest({ messages: [{ role: 'user', content: 'Hello' }] }))
+    expect(res.status).toBe(503)
   })
 
   it('returns 429 when messages array exceeds 10', async () => {

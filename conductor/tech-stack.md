@@ -20,7 +20,8 @@
 - **Framer Motion:** Powering shared layout transitions and high-end technical overlays (Blueprint Mode).
 
 ## AI Integration
-- **@anthropic-ai/sdk:** Claude API client used in the "Ask Wenceslaus" chat widget Server Action. Model: `claude-sonnet-4-6`. API key stored server-side only in `ANTHROPIC_API_KEY` env var — never exposed to client. Streaming responses via `anthropic.messages.stream()`.
+- **@anthropic-ai/sdk:** Claude API client for the "Ask Wenceslaus" chat widget. Model: `claude-sonnet-4-6`. Primary provider. API key: `ANTHROPIC_API_KEY` (server-side only).
+- **@google/generative-ai:** Gemini API client used as automatic fallback when Anthropic is unavailable. Model: `gemini-2.0-flash`. API key: `GEMINI_API_KEY` (server-side only). Fallback is transparent to the user — response header `X-AI-Provider` indicates which model served the request.
 
 ## Deployment & Hosting (\ Cost)
 - **Vercel (Hobby Plan):** Providing \ hosting for personal projects with global CDN, automatic SSL, and specialized optimizations for Next.js.
