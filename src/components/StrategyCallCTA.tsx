@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { InlineWidget } from 'react-calendly'
+import { PopupButton } from 'react-calendly'
 import { contactConfig } from '@/data/contact'
 
 const CALENDLY_STYLES = {
@@ -66,36 +66,50 @@ const StrategyCallCTA = () => {
             </p>
           </div>
 
-          <p className="font-mono text-[9px] text-foreground/30 tracking-[0.2em] uppercase">
-            or scroll down to write
-          </p>
+          <div className="flex flex-col items-start gap-3">
+            {isOpen ? (
+              <PopupButton
+                url={contactConfig.calendlyUrl}
+                rootElement={typeof document !== 'undefined' ? document.body : undefined!}
+                text="Book a Strategy Call"
+                pageSettings={CALENDLY_STYLES}
+                className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
+              />
+            ) : (
+              <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
+                Currently Unavailable
+              </span>
+            )}
+            <p className="font-mono text-[9px] text-foreground/30 tracking-[0.2em] uppercase ml-2">
+              or scroll down to write
+            </p>
+          </div>
         </motion.div>
 
-        {/* Right column — inline calendar */}
+        {/* Right column — availability card */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="rounded-[1.5rem] overflow-hidden"
+          className="glass rounded-[2rem] p-8 flex flex-col justify-center gap-8"
         >
-          {isOpen ? (
-            <InlineWidget
-              url={contactConfig.calendlyUrl}
-              pageSettings={CALENDLY_STYLES}
-              styles={{ minWidth: '100%', height: '660px' }}
-            />
-          ) : (
-            <div className="glass rounded-[1.5rem] h-full min-h-[400px] flex flex-col items-center justify-center gap-3 p-8">
-              <span className="size-2 rounded-full bg-foreground/20" aria-hidden="true" />
-              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-foreground/40 text-center">
-                Scheduling paused
-              </p>
-              <p className="font-sans text-foreground/30 text-sm text-center">
-                Use the contact form below to reach out directly.
-              </p>
-            </div>
-          )}
+          <div className="space-y-2">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30">Format</p>
+            <p className="font-sans text-foreground/80 text-sm">30-minute video call</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30">Who it&apos;s for</p>
+            <p className="font-sans text-foreground/80 text-sm">CEOs, boards, and technical founders evaluating senior engineering leadership</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30">What to expect</p>
+            <p className="font-sans text-foreground/80 text-sm">A candid conversation — not a sales call. We explore fit, context, and what exceptional looks like for your stage.</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30">Response time</p>
+            <p className="font-sans text-foreground/80 text-sm">{contactConfig.availabilityNote}</p>
+          </div>
         </motion.div>
       </div>
     </motion.div>

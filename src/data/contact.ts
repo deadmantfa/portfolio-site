@@ -7,7 +7,7 @@ export interface ContactConfig {
 }
 
 export const contactConfig: ContactConfig = {
-  calendlyUrl: 'https://calendly.com/wenceslausdsilva/strategy-call',
+  calendlyUrl: 'https://calendly.com/wenceslausdsilva',
   availabilityStatus: 'open',
   availabilityNote: 'Typically responds within 24 hours.',
 }

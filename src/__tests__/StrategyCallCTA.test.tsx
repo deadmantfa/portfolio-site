@@ -11,14 +11,14 @@ vi.mock('framer-motion', () => ({
 }))
 
 vi.mock('react-calendly', () => ({
-  InlineWidget: ({ url }: { url: string }) => (
-    <div data-testid="calendly-inline" data-url={url} />
+  PopupButton: ({ text, className }: { text: string; className?: string; url: string; rootElement: Element }) => (
+    <button className={className}>{text}</button>
   ),
 }))
 
 vi.mock('../data/contact', () => ({
   contactConfig: {
-    calendlyUrl: 'https://calendly.com/test/strategy-call',
+    calendlyUrl: 'https://calendly.com/test',
     availabilityStatus: 'open',
     availabilityNote: 'Typically responds within 24 hours.',
   },
@@ -43,21 +43,20 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByText(/AVAILABILITY/i)).toBeInTheDocument()
   })
 
-  it('renders availability dot when status is open', () => {
+  it('renders open to conversations status', () => {
     render(<StrategyCallCTA />)
     expect(screen.getByText(/Open to conversations/i)).toBeInTheDocument()
   })
 
   it('renders the availability note text', () => {
     render(<StrategyCallCTA />)
-    expect(screen.getByText(/Typically responds within 24 hours/i)).toBeInTheDocument()
+    const notes = screen.getAllByText(/Typically responds within 24 hours/i)
+    expect(notes.length).toBeGreaterThan(0)
   })
 
-  it('renders the inline Calendly widget with correct url when open', () => {
+  it('renders the Book a Strategy Call button when open', () => {
     render(<StrategyCallCTA />)
-    const widget = screen.getByTestId('calendly-inline')
-    expect(widget).toBeInTheDocument()
-    expect(widget).toHaveAttribute('data-url', 'https://calendly.com/test/strategy-call')
+    expect(screen.getByRole('button', { name: /Book a Strategy Call/i })).toBeInTheDocument()
   })
 
   it('renders the "or scroll down to write" label', () => {
@@ -70,5 +69,11 @@ describe('StrategyCallCTA', () => {
     const container = screen.getByTestId('strategy-call-cta')
     expect(container.className).toMatch(/glass/)
     expect(container.className).toMatch(/rounded-\[2\.5rem\]/)
+  })
+
+  it('renders the right-column format and audience details', () => {
+    render(<StrategyCallCTA />)
+    expect(screen.getByText(/30-minute video call/i)).toBeInTheDocument()
+    expect(screen.getByText(/CEOs, boards/i)).toBeInTheDocument()
   })
 })
