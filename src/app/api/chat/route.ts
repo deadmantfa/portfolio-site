@@ -12,6 +12,17 @@ interface ChatRequest {
   messages: ChatMessage[]
 }
 
+const userFacingError = (err: unknown): string => {
+  const message = err instanceof Error ? err.message : String(err)
+  if (message.includes('credit balance')) {
+    return 'The AI assistant is temporarily unavailable. Please try again later.'
+  }
+  if (message.includes('rate limit') || message.includes('429')) {
+    return 'Too many requests. Please wait a moment and try again.'
+  }
+  return 'Something went wrong. Please try again.'
+}
+
 export async function POST(request: Request): Promise<Response> {
   let body: ChatRequest
 
@@ -35,24 +46,29 @@ export async function POST(request: Request): Promise<Response> {
     apiKey: process.env.ANTHROPIC_API_KEY,
   })
 
-  const stream = client.messages.stream({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 1024,
-    system: buildSystemPrompt(),
-    messages,
-  })
+  // Collect full response first to catch API errors before streaming begins
+  let fullText = ''
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1024,
+      system: buildSystemPrompt(),
+      messages,
+      stream: false,
+    })
+    fullText = response.content
+      .filter((block) => block.type === 'text')
+      .map((block) => (block as { type: 'text'; text: string }).text)
+      .join('')
+  } catch (err) {
+    return new Response(userFacingError(err), { status: 503 })
+  }
 
+  // Stream the collected text back to the client
+  const encoder = new TextEncoder()
   const readable = new ReadableStream({
-    start: async (controller) => {
-      const encoder = new TextEncoder()
-      for await (const event of stream) {
-        if (
-          event.type === 'content_block_delta' &&
-          event.delta.type === 'text_delta'
-        ) {
-          controller.enqueue(encoder.encode(event.delta.text))
-        }
-      }
+    start(controller) {
+      controller.enqueue(encoder.encode(fullText))
       controller.close()
     },
   })
@@ -60,7 +76,6 @@ export async function POST(request: Request): Promise<Response> {
   return new Response(readable, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Transfer-Encoding': 'chunked',
       'Cache-Control': 'no-cache',
     },
   })

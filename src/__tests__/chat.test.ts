@@ -1,21 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-vi.mock('@anthropic-ai/sdk', () => {
-  const mockStream = {
-    async *[Symbol.asyncIterator]() {
-      yield { type: 'content_block_delta', delta: { type: 'text_delta', text: 'Hello' } }
-      yield { type: 'content_block_delta', delta: { type: 'text_delta', text: ' world' } }
+vi.mock('@anthropic-ai/sdk', () => ({
+  default: vi.fn().mockImplementation(() => ({
+    messages: {
+      create: vi.fn().mockResolvedValue({
+        content: [{ type: 'text', text: 'Hello world' }],
+      }),
     },
-  }
-
-  return {
-    default: vi.fn().mockImplementation(() => ({
-      messages: {
-        stream: vi.fn().mockReturnValue(mockStream),
-      },
-    })),
-  }
-})
+  })),
+}))
 
 // Mock Next.js request/response for route handler testing
 import { POST } from '../app/api/chat/route'
