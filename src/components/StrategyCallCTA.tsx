@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { openPopupWidget } from 'react-calendly'
+import { PopupButton } from 'react-calendly'
 import { contactConfig } from '@/data/contact'
 
 const CALENDLY_STYLES = {
@@ -38,10 +38,6 @@ const StrategyCallCTA = () => {
     }
   }, [])
 
-  const handleOpen = useCallback(() => {
-    lockScroll()
-    openPopupWidget({ url: contactConfig.calendlyUrl, pageSettings: CALENDLY_STYLES })
-  }, [])
 
   return (
     <motion.div
@@ -96,12 +92,15 @@ const StrategyCallCTA = () => {
 
           <div className="flex flex-col items-start gap-3">
             {isOpen ? (
-              <button
-                onClick={handleOpen}
-                className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
-              >
-                Book a Strategy Call
-              </button>
+              <div onClick={lockScroll}>
+                <PopupButton
+                  url={contactConfig.calendlyUrl}
+                  rootElement={typeof document !== 'undefined' ? document.body : undefined!}
+                  text="Book a Strategy Call"
+                  pageSettings={CALENDLY_STYLES}
+                  className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
+                />
+              </div>
             ) : (
               <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
                 Currently Unavailable

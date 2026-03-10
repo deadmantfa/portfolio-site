@@ -10,10 +10,10 @@ vi.mock('framer-motion', () => ({
 }))
 
 vi.mock('react-calendly', () => ({
-  openPopupWidget: vi.fn(),
+  PopupButton: ({ text, className }: { text: string; className?: string; url: string; rootElement: Element }) => (
+    <button className={className}>{text}</button>
+  ),
 }))
-
-import * as ReactCalendly from 'react-calendly'
 
 vi.mock('../data/contact', () => ({
   contactConfig: {
@@ -58,12 +58,13 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByRole('button', { name: /Book a Strategy Call/i })).toBeInTheDocument()
   })
 
-  it('calls openPopupWidget with correct url when button clicked', () => {
+  it('locks scroll on button wrapper click', () => {
     render(<StrategyCallCTA />)
-    fireEvent.click(screen.getByRole('button', { name: /Book a Strategy Call/i }))
-    expect(ReactCalendly.openPopupWidget).toHaveBeenCalledWith(
-      expect.objectContaining({ url: 'https://calendly.com/test/30min' })
-    )
+    const btn = screen.getByRole('button', { name: /Book a Strategy Call/i })
+    fireEvent.click(btn.parentElement!)
+    expect(document.documentElement.style.overflow).toBe('hidden')
+    // cleanup
+    document.documentElement.style.overflow = ''
   })
 
   it('unlocks scroll when calendly.popup_closed message received', () => {
