@@ -47,17 +47,6 @@
     height: 0;
   }
 
-  /* Lock scroll and hide scrollbar when Calendly popup is open */
-  html.calendly-open,
-  html.calendly-open body {
-    overflow: hidden !important;
-    scrollbar-width: none !important;
-  }
-
-  html.calendly-open::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-  }
 
   h1, h2, h3 { @apply font-serif italic; }
 

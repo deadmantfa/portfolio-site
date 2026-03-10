@@ -13,29 +13,54 @@ const CALENDLY_STYLES = {
   hideGdprBanner: true,
 }
 
-const lockScroll = () => {
-  document.documentElement.classList.add('calendly-open')
+const applyScrollLock = () => {
+  document.documentElement.style.setProperty('overflow', 'hidden', 'important')
+  document.documentElement.style.setProperty('scrollbar-width', 'none', 'important')
+  document.body.style.setProperty('overflow', 'hidden', 'important')
+  document.body.style.setProperty('padding-right', '0px', 'important')
 }
 
-const unlockScroll = () => {
-  document.documentElement.classList.remove('calendly-open')
+const removeScrollLock = () => {
+  document.documentElement.style.removeProperty('overflow')
+  document.documentElement.style.removeProperty('scrollbar-width')
+  document.body.style.removeProperty('overflow')
+  document.body.style.removeProperty('padding-right')
 }
 
 const StrategyCallCTA = () => {
   const isOpen = contactConfig.availabilityStatus === 'open'
 
   useEffect(() => {
+    // Watch for Calendly injecting its overlay into the DOM
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of Array.from(mutation.addedNodes)) {
+          if (node instanceof Element && node.classList.contains('calendly-overlay')) {
+            applyScrollLock()
+          }
+        }
+        for (const node of Array.from(mutation.removedNodes)) {
+          if (node instanceof Element && node.classList.contains('calendly-overlay')) {
+            removeScrollLock()
+          }
+        }
+      }
+    })
+
+    observer.observe(document.body, { childList: true })
+
     const handleMessage = (e: MessageEvent) => {
       if (typeof e.data?.event !== 'string') return
-      if (e.data.event === 'calendly.popup_closed') unlockScroll()
+      if (e.data.event === 'calendly.popup_closed') removeScrollLock()
     }
     window.addEventListener('message', handleMessage)
+
     return () => {
+      observer.disconnect()
       window.removeEventListener('message', handleMessage)
-      unlockScroll()
+      removeScrollLock()
     }
   }, [])
-
 
   return (
     <motion.div
@@ -90,15 +115,13 @@ const StrategyCallCTA = () => {
 
           <div className="flex flex-col items-start gap-3">
             {isOpen ? (
-              <div onClickCapture={lockScroll}>
-                <PopupButton
-                  url={contactConfig.calendlyUrl}
-                  rootElement={typeof document !== 'undefined' ? document.body : undefined!}
-                  text="Book a Strategy Call"
-                  pageSettings={CALENDLY_STYLES}
-                  className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
-                />
-              </div>
+              <PopupButton
+                url={contactConfig.calendlyUrl}
+                rootElement={typeof document !== 'undefined' ? document.body : undefined!}
+                text="Book a Strategy Call"
+                pageSettings={CALENDLY_STYLES}
+                className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
+              />
             ) : (
               <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
                 Currently Unavailable

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { StrategyCallCTA } from '../components/StrategyCallCTA'
 
@@ -58,19 +58,28 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByRole('button', { name: /Book a Strategy Call/i })).toBeInTheDocument()
   })
 
-  it('adds calendly-open class on button wrapper click', () => {
+  it('mounts a MutationObserver on document.body', () => {
+    const observeSpy = vi.spyOn(MutationObserver.prototype, 'observe')
     render(<StrategyCallCTA />)
-    const btn = screen.getByRole('button', { name: /Book a Strategy Call/i })
-    fireEvent.click(btn.parentElement!)
-    expect(document.documentElement.classList.contains('calendly-open')).toBe(true)
-    document.documentElement.classList.remove('calendly-open')
+    expect(observeSpy).toHaveBeenCalledWith(document.body, { childList: true })
+    observeSpy.mockRestore()
   })
 
-  it('removes calendly-open class when calendly.popup_closed message received', () => {
+  it('removes scroll lock when calendly-overlay is removed from DOM', () => {
     render(<StrategyCallCTA />)
-    document.documentElement.classList.add('calendly-open')
-    window.dispatchEvent(new MessageEvent('message', { data: { event: 'calendly.popup_closed' } }))
-    expect(document.documentElement.classList.contains('calendly-open')).toBe(false)
+    const overlay = document.createElement('div')
+    overlay.className = 'calendly-overlay'
+    act(() => { document.body.appendChild(overlay) })
+    act(() => { document.body.removeChild(overlay) })
+    expect(document.documentElement.style.getPropertyValue('overflow')).toBe('')
+  })
+
+  it('removes scroll lock on calendly.popup_closed message', () => {
+    render(<StrategyCallCTA />)
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', { data: { event: 'calendly.popup_closed' } }))
+    })
+    expect(document.documentElement.style.getPropertyValue('overflow')).toBe('')
   })
 
   it('renders the "or scroll down to write" label', () => {
