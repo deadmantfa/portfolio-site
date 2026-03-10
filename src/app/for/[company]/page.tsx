@@ -1,40 +1,22 @@
-'use client'
-
 import { redirect } from 'next/navigation'
-import { use, useState } from 'react'
 import { shares } from '@/data/shares'
-import { ShareOverlay } from '@/components/ShareOverlay'
-import Home from '@/app/page'
+import { ShareOverlayWrapper } from '@/components/ShareOverlayWrapper'
 
 interface Props {
   params: Promise<{ company: string }>
 }
 
-const generateStaticParams = () =>
-  Object.keys(shares).map((company) => ({ company }))
+export function generateStaticParams() {
+  return Object.keys(shares).map((company) => ({ company }))
+}
 
-const ForCompanyPage = ({ params }: Props) => {
-  const { company } = use(params)
+export default async function ForCompanyPage({ params }: Props) {
+  const { company } = await params
   const entry = shares[company.toLowerCase()]
 
   if (!entry) {
     redirect('/')
   }
 
-  const [overlayDismissed, setOverlayDismissed] = useState(false)
-
-  return (
-    <>
-      {!overlayDismissed && (
-        <ShareOverlay
-          entry={entry}
-          onDismiss={() => setOverlayDismissed(true)}
-        />
-      )}
-      <Home />
-    </>
-  )
+  return <ShareOverlayWrapper entry={entry} />
 }
-
-export { generateStaticParams }
-export default ForCompanyPage

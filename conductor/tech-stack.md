@@ -19,6 +19,9 @@
 - **GSAP:** Ring-tilt entrance animation with expo.out easing. Pattern: plain JS ref tweened by GSAP, read by R3F useFrame each frame.
 - **Framer Motion:** Powering shared layout transitions and high-end technical overlays (Blueprint Mode).
 
+## AI Integration
+- **@anthropic-ai/sdk:** Claude API client used in the "Ask Wenceslaus" chat widget Server Action. Model: `claude-sonnet-4-6`. API key stored server-side only in `ANTHROPIC_API_KEY` env var — never exposed to client. Streaming responses via `anthropic.messages.stream()`.
+
 ## Deployment & Hosting (\ Cost)
 - **Vercel (Hobby Plan):** Providing \ hosting for personal projects with global CDN, automatic SSL, and specialized optimizations for Next.js.
 

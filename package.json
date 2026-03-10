@@ -11,6 +11,7 @@
     "generate:cv": "tsx scripts/generate-cv-pdf.tsx"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/drei": "^10.7.7",
