@@ -10,6 +10,12 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
+vi.mock('react-calendly', () => ({
+  PopupButton: ({ text, className }: { text: string; className?: string; url: string; rootElement: Element }) => (
+    <button className={className}>{text}</button>
+  ),
+}))
+
 vi.mock('../data/contact', () => ({
   contactConfig: {
     calendlyUrl: 'https://calendly.com/test/strategy-call',
@@ -47,13 +53,10 @@ describe('StrategyCallCTA', () => {
     expect(screen.getByText(/Typically responds within 24 hours/i)).toBeInTheDocument()
   })
 
-  it('renders the Book a Strategy Call button as a link', () => {
+  it('renders the Book a Strategy Call button', () => {
     render(<StrategyCallCTA />)
-    const link = screen.getByRole('link', { name: /Book a Strategy Call/i })
-    expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', 'https://calendly.com/test/strategy-call')
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    const btn = screen.getByRole('button', { name: /Book a Strategy Call/i })
+    expect(btn).toBeInTheDocument()
   })
 
   it('renders the "or scroll down to write" fallback label', () => {

@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { PopupButton } from 'react-calendly'
 import { contactConfig } from '@/data/contact'
 
 const StrategyCallCTA = () => {
@@ -65,14 +66,18 @@ const StrategyCallCTA = () => {
           </div>
 
           <div className="flex flex-col items-start gap-3">
-            <a
-              href={contactConfig.calendlyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] inline-flex items-center justify-center"
-            >
-              Book a Strategy Call
-            </a>
+            {isOpen ? (
+              <PopupButton
+                url={contactConfig.calendlyUrl}
+                rootElement={typeof document !== 'undefined' ? document.body : undefined!}
+                text="Book a Strategy Call"
+                className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
+              />
+            ) : (
+              <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
+                Currently Unavailable
+              </span>
+            )}
             <p className="font-mono text-[9px] text-foreground/30 tracking-[0.2em] uppercase ml-2">
               or scroll down to write
             </p>
