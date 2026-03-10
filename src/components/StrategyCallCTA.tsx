@@ -71,6 +71,13 @@ const StrategyCallCTA = () => {
                 url={contactConfig.calendlyUrl}
                 rootElement={typeof document !== 'undefined' ? document.body : undefined!}
                 text="Book a Strategy Call"
+                pageSettings={{
+                  backgroundColor: '0d0d14',
+                  textColor: 'f5f5fa',
+                  primaryColor: '8b7cf8',
+                  hideLandingPageDetails: true,
+                  hideGdprBanner: true,
+                }}
                 className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
               />
             ) : (
