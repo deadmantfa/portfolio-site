@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, X, Send } from 'lucide-react'
-import { sendChatMessage, type ChatMessage as ChatMessageType } from '@/app/actions/chat'
+import type { ChatMessage as ChatMessageType } from '@/app/api/chat/route'
 import { ChatMessage } from '@/components/ChatMessage'
 import { STARTER_QUESTIONS } from '@/data/chatKnowledgeBase'
 
@@ -57,8 +57,17 @@ const AskWenceslaus = () => {
     setMessages((prev) => [...prev, { role: 'assistant', content: '' }])
 
     try {
-      const stream = await sendChatMessage(nextMessages)
-      const reader = stream.getReader()
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: nextMessages }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
+      }
+
+      const reader = response.body!.getReader()
       const decoder = new TextDecoder()
       let accumulated = ''
 

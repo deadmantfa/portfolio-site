@@ -1,5 +1,3 @@
-'use server'
-
 import Anthropic from '@anthropic-ai/sdk'
 import { buildSystemPrompt } from '@/data/chatKnowledgeBase'
 
@@ -10,13 +8,27 @@ export interface ChatMessage {
   content: string
 }
 
-const sendChatMessage = async (messages: ChatMessage[]): Promise<ReadableStream<Uint8Array>> => {
-  if (messages.length === 0) {
-    throw new Error('At least one message is required')
+interface ChatRequest {
+  messages: ChatMessage[]
+}
+
+export async function POST(request: Request): Promise<Response> {
+  let body: ChatRequest
+
+  try {
+    body = await request.json() as ChatRequest
+  } catch {
+    return new Response('Invalid JSON', { status: 400 })
+  }
+
+  const { messages } = body
+
+  if (!messages || messages.length === 0) {
+    return new Response('At least one message is required', { status: 400 })
   }
 
   if (messages.length > MAX_MESSAGES) {
-    throw new Error('Session rate limit reached — please refresh to start a new conversation')
+    return new Response('Session rate limit reached', { status: 429 })
   }
 
   const client = new Anthropic({
@@ -30,8 +42,8 @@ const sendChatMessage = async (messages: ChatMessage[]): Promise<ReadableStream<
     messages,
   })
 
-  return new ReadableStream({
-    async start(controller) {
+  const readable = new ReadableStream({
+    start: async (controller) => {
       const encoder = new TextEncoder()
       for await (const event of stream) {
         if (
@@ -44,6 +56,12 @@ const sendChatMessage = async (messages: ChatMessage[]): Promise<ReadableStream<
       controller.close()
     },
   })
-}
 
-export { sendChatMessage }
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Transfer-Encoding': 'chunked',
+      'Cache-Control': 'no-cache',
+    },
+  })
+}

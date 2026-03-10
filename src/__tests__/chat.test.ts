@@ -1,13 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-// Mock the Anthropic SDK before importing the action
 vi.mock('@anthropic-ai/sdk', () => {
   const mockStream = {
     async *[Symbol.asyncIterator]() {
       yield { type: 'content_block_delta', delta: { type: 'text_delta', text: 'Hello' } }
       yield { type: 'content_block_delta', delta: { type: 'text_delta', text: ' world' } }
     },
-    finalMessage: vi.fn().mockResolvedValue({ content: [{ text: 'Hello world' }] }),
   }
 
   return {
@@ -19,38 +17,51 @@ vi.mock('@anthropic-ai/sdk', () => {
   }
 })
 
-import { sendChatMessage } from '../app/actions/chat'
+// Mock Next.js request/response for route handler testing
+import { POST } from '../app/api/chat/route'
 
-describe('sendChatMessage', () => {
+const makeRequest = (body: unknown) =>
+  new Request('http://localhost/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+
+describe('POST /api/chat', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  it('returns a ReadableStream for valid messages', async () => {
-    const result = await sendChatMessage([
-      { role: 'user', content: 'Hello' },
-    ])
-    expect(result).toBeInstanceOf(ReadableStream)
+  it('returns 200 with a streaming response for valid messages', async () => {
+    const res = await POST(makeRequest({ messages: [{ role: 'user', content: 'Hello' }] }))
+    expect(res.status).toBe(200)
+    expect(res.body).not.toBeNull()
   })
 
-  it('throws when messages array exceeds 10', async () => {
-    const messages = Array.from({ length: 11 }, (_, i) => ({
-      role: 'user' as const,
-      content: `Message ${i}`,
-    }))
-    await expect(sendChatMessage(messages)).rejects.toThrow('rate limit')
+  it('returns 429 when messages array exceeds 10', async () => {
+    const messages = Array.from({ length: 11 }, (_, i) => ({ role: 'user', content: `Msg ${i}` }))
+    const res = await POST(makeRequest({ messages }))
+    expect(res.status).toBe(429)
   })
 
-  it('accepts exactly 10 messages without throwing', async () => {
-    const messages = Array.from({ length: 10 }, (_, i) => ({
-      role: 'user' as const,
-      content: `Message ${i}`,
-    }))
-    const result = await sendChatMessage(messages)
-    expect(result).toBeInstanceOf(ReadableStream)
+  it('accepts exactly 10 messages without error', async () => {
+    const messages = Array.from({ length: 10 }, (_, i) => ({ role: 'user', content: `Msg ${i}` }))
+    const res = await POST(makeRequest({ messages }))
+    expect(res.status).toBe(200)
   })
 
-  it('throws for empty messages array', async () => {
-    await expect(sendChatMessage([])).rejects.toThrow()
+  it('returns 400 for empty messages array', async () => {
+    const res = await POST(makeRequest({ messages: [] }))
+    expect(res.status).toBe(400)
+  })
+
+  it('returns 400 for invalid JSON', async () => {
+    const req = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: 'not json',
+    })
+    const res = await POST(req)
+    expect(res.status).toBe(400)
   })
 })

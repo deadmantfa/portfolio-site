@@ -11,16 +11,18 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
-vi.mock('../app/actions/chat', () => ({
-  sendChatMessage: vi.fn().mockResolvedValue(
-    new ReadableStream({
-      start(controller) {
-        controller.enqueue(new TextEncoder().encode('Hello, how can I help?'))
-        controller.close()
-      },
-    }),
-  ),
-}))
+const mockStream = new ReadableStream({
+  start(controller) {
+    controller.enqueue(new TextEncoder().encode('Hello, how can I help?'))
+    controller.close()
+  },
+})
+
+global.fetch = vi.fn().mockResolvedValue({
+  ok: true,
+  status: 200,
+  body: mockStream,
+} as unknown as Response)
 
 vi.mock('../data/chatKnowledgeBase', () => ({
   STARTER_QUESTIONS: [
@@ -103,12 +105,11 @@ describe('AskWenceslaus', () => {
   })
 
   it('sends a message when a starter chip is clicked', async () => {
-    const { sendChatMessage } = await import('../app/actions/chat')
     render(<AskWenceslaus />)
     fireEvent.click(screen.getByRole('button', { name: /Ask Wenceslaus/i }))
     fireEvent.click(screen.getByText("What's your approach?"))
     await waitFor(() => {
-      expect(sendChatMessage).toHaveBeenCalled()
+      expect(global.fetch).toHaveBeenCalledWith('/api/chat', expect.objectContaining({ method: 'POST' }))
     })
   })
 
