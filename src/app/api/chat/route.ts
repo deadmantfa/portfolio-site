@@ -42,7 +42,7 @@ const queryAnthropic = async (messages: ChatMessage[]): Promise<string> => {
 const queryGemini = async (messages: ChatMessage[]): Promise<string> => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
   const model = genAI.getGenerativeModel({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-flash-latest',
     systemInstruction: buildSystemPrompt(),
   })
 
