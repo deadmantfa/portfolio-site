@@ -296,27 +296,12 @@ const Navigation = () => {
     // Triggered at the START of the timeline for immediate feedback on load
     timeline.add(() => {
       if (!isDecodingRef.current) {
-        // Subtle expansion
-        gsap.to([firstWrapRef.current, lastWrapRef.current], {
-          width: 8,
-          duration: 0.4,
-          stagger: 0.1,
-          ease: 'power2.out',
-          onComplete: () => {
-            gsap.to([firstWrapRef.current, lastWrapRef.current], {
-              width: 0,
-              duration: 0.3,
-              delay: 0.5,
-              ease: 'power2.in',
-            })
-          }
-        })
-
-        // Primary color pulse on the dot
+        // Dot pulse only — avoids layout reflow from width changes
+        // (width animation on inline-block spans triggers ScrollTrigger.refresh
+        // which disrupts scroll-linked Three.js/GSAP animations)
         gsap.to(dotRef.current, {
           scale: 1.5,
           color: '#ffffff',
-          boxShadow: '0 0 20px var(--color-primary)',
           duration: 0.2,
           yoyo: true,
           repeat: 1,
