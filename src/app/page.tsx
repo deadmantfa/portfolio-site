@@ -354,8 +354,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TEMP: hidden to diagnose mobile flicker */}
-        {false && (
         <section
           id="signals"
           className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent"
@@ -364,7 +362,6 @@ export default function Home() {
             <TestimonialsCarousel />
           </div>
         </section>
-        )}
 
         <section id="contact" ref={contactSectionRef} className="min-h-screen flex flex-col items-center justify-center px-6 md:px-8 text-center bg-transparent relative pointer-events-auto py-16 md:py-12">  
           <EditorialReveal direction="up" className="mb-8">

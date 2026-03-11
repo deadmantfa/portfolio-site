@@ -6,7 +6,6 @@ import { useRef, useState, useCallback, useEffect } from 'react'
 import { motion, useAnimate, PanInfo } from 'framer-motion'
 import { Linkedin, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import Image from 'next/image'
-import { flushSync } from 'react-dom'
 
 export { TestimonialsCarousel }
 
@@ -127,8 +126,8 @@ function TestimonialsCarousel() {
         { duration: 0.22, ease: [0.4, 0, 1, 1] },
       )
 
-      // 2. Swap content synchronously — no DOM remount, just prop update
-      flushSync(() => setCurrentIndex(targetIndex))
+      // 2. Swap content — async, no forced layout reflow
+      setCurrentIndex(targetIndex)
 
       // 3. Snap to incoming side (still invisible)
       animate(
@@ -137,7 +136,12 @@ function TestimonialsCarousel() {
         { duration: 0 },
       )
 
-      // 4. Animate new card in
+      // 4. Wait two frames for React to flush and paint the new content
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      })
+
+      // 5. Animate new card in
       await animate(
         scope.current,
         { x: 0, opacity: 1, scale: 1 },
@@ -237,12 +241,12 @@ function TestimonialsCarousel() {
           <TestimonialCard testimonial={testimonials[currentIndex]} />
         </motion.div>
 
-        {/* Visual Progress Line */}
+        {/* Visual Progress Line — scaleX instead of width to avoid layout reflow */}
         <div className="absolute -bottom-10 md:-bottom-12 left-0 right-0 h-px bg-white/5 overflow-hidden rounded-full">
           <motion.div
-            className="h-full bg-primary shadow-[0_0_15px_rgba(99,102,241,0.6)]"
-            initial={{ width: '0%' }}
-            animate={{ width: `${((currentIndex + 1) / testimonials.length) * 100}%` }}
+            className="h-full w-full origin-left bg-primary shadow-[0_0_15px_rgba(99,102,241,0.6)]"
+            initial={{ scaleX: 1 / testimonials.length }}
+            animate={{ scaleX: (currentIndex + 1) / testimonials.length }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
         </div>
