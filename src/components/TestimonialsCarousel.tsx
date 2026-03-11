@@ -3,7 +3,7 @@
 import { testimonials } from '@/data/testimonials'
 import EditorialReveal from './EditorialReveal'
 import { useRef, useState, useCallback, useEffect } from 'react'
-import { motion, useAnimate, PanInfo } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Linkedin, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import Image from 'next/image'
 
@@ -21,11 +21,6 @@ function TestimonialCard({
   testimonial: (typeof testimonials)[0]
 }) {
   const [imageError, setImageError] = useState(false)
-
-  // Reset image error state when testimonial changes (no remount needed)
-  useEffect(() => {
-    setImageError(false)
-  }, [testimonial])
 
   return (
     <div
@@ -103,77 +98,41 @@ function TestimonialCard({
 
 function TestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const [scope, animate] = useAnimate()
-
-  const transitionTo = useCallback(
-    async (targetIndex: number, dir: number) => {
-      if (isAnimating) return
-
-      if (prefersReducedMotion()) {
-        setCurrentIndex(targetIndex)
-        return
-      }
-
-      setIsAnimating(true)
-
-      // 1. Animate current card out
-      await animate(
-        scope.current,
-        { x: dir > 0 ? '-40%' : '40%', opacity: 0, scale: 0.92 },
-        { duration: 0.22, ease: [0.4, 0, 1, 1] },
-      )
-
-      // 2. Swap content — async, no forced layout reflow
-      setCurrentIndex(targetIndex)
-
-      // 3. Snap to incoming side (still invisible)
-      animate(
-        scope.current,
-        { x: dir > 0 ? '40%' : '-40%', opacity: 0, scale: 0.92 },
-        { duration: 0 },
-      )
-
-      // 4. Wait two frames for React to flush and paint the new content
-      await new Promise<void>((resolve) => {
-        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-      })
-
-      // 5. Animate new card in
-      await animate(
-        scope.current,
-        { x: 0, opacity: 1, scale: 1 },
-        { type: 'spring', stiffness: 280, damping: 26 },
-      )
-
-      setIsAnimating(false)
-    },
-    [isAnimating, animate, scope],
-  )
+  const touchStartX = useRef<number | null>(null)
+  const reduced = prefersReducedMotion()
 
   const paginate = useCallback(
     (dir: number) => {
-      const target = (currentIndex + dir + testimonials.length) % testimonials.length
-      transitionTo(target, dir)
+      setCurrentIndex((prev) => (prev + dir + testimonials.length) % testimonials.length)
     },
-    [currentIndex, transitionTo],
+    [],
   )
 
+  const goTo = useCallback((idx: number) => {
+    setCurrentIndex(idx)
+  }, [])
+
   useEffect(() => {
-    if (isAutoPlaying && !prefersReducedMotion()) {
+    if (isAutoPlaying && !reduced) {
       timerRef.current = setInterval(() => paginate(1), 10000)
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
     }
-  }, [isAutoPlaying, paginate])
+  }, [isAutoPlaying, paginate, reduced])
 
-  const handleDragEnd = useCallback(
-    (_event: unknown, info: PanInfo) => {
-      if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -500) paginate(1)
-      else if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > 500) paginate(-1)
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }, [])
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (touchStartX.current === null) return
+      const diff = touchStartX.current - e.changedTouches[0].clientX
+      if (Math.abs(diff) > SWIPE_THRESHOLD) paginate(diff > 0 ? 1 : -1)
+      touchStartX.current = null
     },
     [paginate],
   )
@@ -223,25 +182,29 @@ function TestimonialsCarousel() {
         className="relative h-[480px] md:h-[500px] w-full"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/*
-          Single stable motion.div — never unmounts.
-          Content swaps via prop update (flushSync) between exit and enter animations.
-          No AnimatePresence = no DOM mounting/unmounting = no mobile compositor flicker.
+          All cards always in DOM — no React DOM mutations during transitions.
+          CSS opacity crossfade is compositor-only (GPU), no layout reflow,
+          no backdrop-filter re-render on the nav/chat glass elements.
         */}
-        <motion.div
-          ref={scope}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.1}
-          onDragEnd={handleDragEnd}
-          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y"
-          style={{ x: 0, opacity: 1, scale: 1 }}
-        >
-          <TestimonialCard testimonial={testimonials[currentIndex]} />
-        </motion.div>
+        {testimonials.map((testimonial, idx) => (
+          <div
+            key={idx}
+            className="absolute inset-0"
+            style={{
+              opacity: idx === currentIndex ? 1 : 0,
+              transition: reduced ? 'none' : 'opacity 0.6s ease',
+              pointerEvents: idx === currentIndex ? 'auto' : 'none',
+            }}
+          >
+            <TestimonialCard testimonial={testimonial} />
+          </div>
+        ))}
 
-        {/* Visual Progress Line — scaleX instead of width to avoid layout reflow */}
+        {/* Visual Progress Line — scaleX avoids layout reflow */}
         <div className="absolute -bottom-10 md:-bottom-12 left-0 right-0 h-px bg-white/5 overflow-hidden rounded-full">
           <motion.div
             className="h-full w-full origin-left bg-primary shadow-[0_0_15px_rgba(99,102,241,0.6)]"
@@ -257,10 +220,7 @@ function TestimonialsCarousel() {
         {testimonials.map((_, idx) => (
           <button
             key={idx}
-            onClick={() => {
-              const dir = idx > currentIndex ? 1 : -1
-              transitionTo(idx, dir)
-            }}
+            onClick={() => goTo(idx)}
             className={`h-0.5 transition-all duration-700 rounded-full cursor-pointer ${
               idx === currentIndex ? 'w-12 md:w-16 bg-primary' : 'w-4 md:w-6 bg-white/10 hover:bg-white/30'
             }`}

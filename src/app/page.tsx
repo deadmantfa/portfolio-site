@@ -356,7 +356,7 @@ export default function Home() {
 
         <section
           id="signals"
-          className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent will-change-transform"
+          className="relative py-32 md:py-24 px-6 md:px-8 flex flex-col items-center bg-transparent"
         >
           <div className="max-w-7xl w-full">
             <TestimonialsCarousel />

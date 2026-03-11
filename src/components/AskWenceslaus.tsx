@@ -110,7 +110,7 @@ const AskWenceslaus = () => {
       <motion.button
         aria-label="Ask Wenceslaus"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 glass size-14 rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-150 active:scale-[0.97] will-change-transform"
+        className="fixed bottom-6 right-6 z-50 glass size-14 rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-150 active:scale-[0.97]"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
       >
