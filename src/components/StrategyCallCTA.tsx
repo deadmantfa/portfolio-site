@@ -19,6 +19,7 @@ const StrategyCallCTA = () => {
         layout: 'month_view',
         cssVarsPerTheme: {
           dark: { 'cal-brand': '#8b7cf8' },
+          light: { 'cal-brand': '#8b7cf8' },
         },
       })
     })()
