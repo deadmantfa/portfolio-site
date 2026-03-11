@@ -229,7 +229,7 @@ function TestimonialsCarousel() {
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
-        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={page}
             custom={direction}
