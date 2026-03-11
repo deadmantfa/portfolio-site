@@ -27,21 +27,30 @@ function TestimonialCard({
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? '40%' : '-40%',
+      x: direction > 0 ? '50%' : '-50%',
       opacity: 0,
-      scale: 0.96,
+      scale: 0.85,
+      rotateY: direction > 0 ? 35 : -35,
+      z: -100,
+      filter: 'blur(10px)',
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
       scale: 1,
+      rotateY: 0,
+      z: 0,
+      filter: 'blur(0px)',
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? '40%' : '-40%',
+      x: direction < 0 ? '50%' : '-50%',
       opacity: 0,
-      scale: 0.96,
+      scale: 0.85,
+      rotateY: direction < 0 ? 35 : -35,
+      z: -100,
+      filter: 'blur(10px)',
     }),
   }
 
@@ -54,8 +63,10 @@ function TestimonialCard({
       exit="exit"
       transition={{
         x: { type: 'spring', stiffness: 260, damping: 25 },
-        opacity: { duration: 0.4 },
-        scale: { duration: 0.4 },
+        opacity: { duration: 0.5 },
+        scale: { duration: 0.5 },
+        rotateY: { duration: 0.6 },
+        filter: { duration: 0.4 }
       }}
       className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
       style={{
@@ -63,6 +74,9 @@ function TestimonialCard({
         backdropFilter: 'blur(12px)',
         border: '1px solid rgba(99, 102, 241, 0.25)',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
+        perspective: '1200px',
+        backfaceVisibility: 'hidden',
+        transformStyle: 'preserve-3d'
       }}
     >
       {/* Ink bloom — fades in once per card, no infinite animation */}
