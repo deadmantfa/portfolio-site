@@ -337,7 +337,7 @@ const Navigation = () => {
   }, [])
 
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-3rem)] max-w-7xl">
+    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-3rem)] max-w-7xl will-change-transform">
       <div className="glass px-6 py-4 rounded-full flex items-center justify-between">
         <div className="text-2xl font-serif italic font-bold tracking-tighter text-white">
           <Link
