@@ -7,7 +7,7 @@ import SceneCanvas from '@/components/SceneCanvas'
 import ArchitecturalGrid from '@/components/VisionaryScene'
 import BlueprintOverlay from '@/components/BlueprintOverlay'
 import BlueprintSchema from '@/components/BlueprintSchema'
-import ADRCard from '@/components/ADRCard'
+import { ADRCard } from '@/components/ADRCard'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface ProjectCaseStudyClientProps {
@@ -108,13 +108,13 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
                 </div>
                 <div className="group">
                   <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">02 / Execution</span>
-                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed">
+                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed text-justify hyphens-auto">
                     {project.narrative.execution}
                   </p>
                 </div>
                 <div className="group">
                   <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">03 / Result</span>
-                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed">
+                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed text-justify hyphens-auto">
                     {project.narrative.result}
                   </p>
                 </div>

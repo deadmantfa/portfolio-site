@@ -12,24 +12,24 @@ const ADRCard = ({ adr, index }: ADRCardProps) => {
         Architectural Decision Record #0{index + 1}
       </span>
       <h3 className="text-3xl md:text-4xl font-serif italic text-white mb-8">{adr.title}</h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
           <span className="text-[9px] font-mono text-primary uppercase tracking-widest mb-3 block opacity-70">The Problem</span>
-          <p className="text-sm text-zinc-400 leading-relaxed font-sans">{adr.problem}</p>
+          <p className="text-justify hyphens-auto text-sm font-sans leading-relaxed text-zinc-400">{adr.problem}</p>
         </div>
         <div>
           <span className="text-[9px] font-mono text-accent uppercase tracking-widest mb-3 block opacity-70">The Solution</span>
-          <p className="text-sm text-zinc-400 leading-relaxed font-sans">{adr.solution}</p>
+          <p className="text-justify hyphens-auto text-sm font-sans leading-relaxed text-zinc-400">{adr.solution}</p>
         </div>
       </div>
-      
+
       <div className="mt-8 pt-8 border-t border-white/5">
         <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest mb-3 block opacity-70">Measurable Impact</span>
-        <p className="text-sm text-zinc-200 font-mono italic">{adr.impact}</p>
+        <p className="text-sm font-mono italic text-zinc-200">{adr.impact}</p>
       </div>
     </div>
   )
 }
 
-export default ADRCard
+export { ADRCard }
