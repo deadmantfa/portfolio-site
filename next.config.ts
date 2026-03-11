@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' https://cal.com https://app.cal.com",
+              // worker-src must explicitly allow blob: — troika-three-text (3D text rendering)
+              // creates workers from blob URLs. Without this, worker-src falls back to
+              // script-src which lacks blob:, blocking the font worker and breaking BlueprintSchema.
+              "worker-src blob:",
               "style-src 'self' 'unsafe-inline' https://cal.com https://app.cal.com",
               "img-src 'self' data: https:",
               "font-src 'self' data: https://cal.com https://app.cal.com",
