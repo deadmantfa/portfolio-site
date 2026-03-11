@@ -16,11 +16,11 @@ const ADRCard = ({ adr, index }: ADRCardProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
           <span className="text-[9px] font-mono text-primary uppercase tracking-widest mb-3 block opacity-70">The Problem</span>
-          <p className="text-justify hyphens-auto text-sm font-sans leading-relaxed text-zinc-400">{adr.problem}</p>
+          <p className="text-justify hyphens-auto text-sm font-sans leading-loose text-zinc-400">{adr.problem}</p>
         </div>
         <div>
           <span className="text-[9px] font-mono text-accent uppercase tracking-widest mb-3 block opacity-70">The Solution</span>
-          <p className="text-justify hyphens-auto text-sm font-sans leading-relaxed text-zinc-400">{adr.solution}</p>
+          <p className="text-justify hyphens-auto text-sm font-sans leading-loose text-zinc-400">{adr.solution}</p>
         </div>
       </div>
 

@@ -108,15 +108,23 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
                 </div>
                 <div className="group">
                   <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">02 / Execution</span>
-                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed text-justify hyphens-auto">
-                    {project.narrative.execution}
-                  </p>
+                  <div className="space-y-6">
+                    {project.narrative.execution.map((para, i) => (
+                      <p key={i} className="text-lg md:text-xl text-zinc-400 font-sans leading-loose text-justify hyphens-auto">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
                 </div>
                 <div className="group">
                   <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">03 / Result</span>
-                  <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed text-justify hyphens-auto">
-                    {project.narrative.result}
-                  </p>
+                  <div className="space-y-6">
+                    {project.narrative.result.map((para, i) => (
+                      <p key={i} className="text-lg md:text-xl text-zinc-400 font-sans leading-loose text-justify hyphens-auto">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>

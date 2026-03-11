@@ -12,7 +12,7 @@ describe('Rooftop Strategic Enrichment', () => {
     expect(aiAdr?.solution.toLowerCase()).toContain('machine learning')
     
     // Check narrative for AI mentions
-    expect(rooftop?.narrative.execution.toLowerCase()).toContain('ai')
-    expect(rooftop?.narrative.result.toLowerCase()).toContain('personalization')
+    expect(rooftop?.narrative.execution.join(' ').toLowerCase()).toContain('ai')
+    expect(rooftop?.narrative.result.join(' ').toLowerCase()).toContain('personalization')
   })
 })
