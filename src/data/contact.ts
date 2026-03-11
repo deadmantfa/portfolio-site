@@ -1,13 +1,13 @@
 export type AvailabilityStatus = 'open' | 'closed'
 
 export interface ContactConfig {
-  calendlyUrl: string
+  calLink: string
   availabilityStatus: AvailabilityStatus
   availabilityNote: string
 }
 
 export const contactConfig: ContactConfig = {
-  calendlyUrl: 'https://calendly.com/wenceslausdsilva/30min?hide_event_type_details=1&hide_gdpr_banner=1',
+  calLink: 'wenceslaus-dsilva/strategy-call',
   availabilityStatus: 'open',
   availabilityNote: 'Typically responds within 24 hours.',
 }

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
+    "@calcom/embed-react": "^1.5.3",
     "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-pdf/renderer": "^4.3.2",
@@ -27,7 +28,6 @@
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
     "react": "19.2.3",
-    "react-calendly": "^4.4.0",
     "react-dom": "19.2.3",
     "resend": "^6.9.2",
     "tailwind-merge": "^3.5.0",

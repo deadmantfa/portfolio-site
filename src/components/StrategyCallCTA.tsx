@@ -2,64 +2,26 @@
 
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { PopupButton } from 'react-calendly'
+import { getCalApi } from '@calcom/embed-react'
 import { contactConfig } from '@/data/contact'
 
-const CALENDLY_STYLES = {
-  backgroundColor: '0d0d14',
-  textColor: 'f5f5fa',
-  primaryColor: '8b7cf8',
-  hideLandingPageDetails: true,
-  hideGdprBanner: true,
-}
-
-const applyScrollLock = () => {
-  document.documentElement.style.setProperty('overflow', 'hidden', 'important')
-  document.documentElement.style.setProperty('scrollbar-width', 'none', 'important')
-  document.body.style.setProperty('overflow', 'hidden', 'important')
-  document.body.style.setProperty('padding-right', '0px', 'important')
-}
-
-const removeScrollLock = () => {
-  document.documentElement.style.removeProperty('overflow')
-  document.documentElement.style.removeProperty('scrollbar-width')
-  document.body.style.removeProperty('overflow')
-  document.body.style.removeProperty('padding-right')
-}
+const CAL_NAMESPACE = 'strategy-call'
 
 const StrategyCallCTA = () => {
   const isOpen = contactConfig.availabilityStatus === 'open'
 
   useEffect(() => {
-    // Watch for Calendly injecting its overlay into the DOM
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of Array.from(mutation.addedNodes)) {
-          if (node instanceof Element && node.classList.contains('calendly-overlay')) {
-            applyScrollLock()
-          }
-        }
-        for (const node of Array.from(mutation.removedNodes)) {
-          if (node instanceof Element && node.classList.contains('calendly-overlay')) {
-            removeScrollLock()
-          }
-        }
-      }
-    })
-
-    observer.observe(document.body, { childList: true })
-
-    const handleMessage = (e: MessageEvent) => {
-      if (typeof e.data?.event !== 'string') return
-      if (e.data.event === 'calendly.popup_closed') removeScrollLock()
-    }
-    window.addEventListener('message', handleMessage)
-
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('message', handleMessage)
-      removeScrollLock()
-    }
+    ;(async () => {
+      const cal = await getCalApi({ namespace: CAL_NAMESPACE })
+      cal('ui', {
+        theme: 'dark',
+        hideEventTypeDetails: false,
+        layout: 'month_view',
+        cssVarsPerTheme: {
+          dark: { 'cal-brand': '#8b7cf8' },
+        },
+      })
+    })()
   }, [])
 
   return (
@@ -115,13 +77,14 @@ const StrategyCallCTA = () => {
 
           <div className="flex flex-col items-start gap-3">
             {isOpen ? (
-              <PopupButton
-                url={contactConfig.calendlyUrl}
-                rootElement={typeof document !== 'undefined' ? document.body : undefined!}
-                text="Book a Strategy Call"
-                pageSettings={CALENDLY_STYLES}
+              <button
+                data-cal-namespace={CAL_NAMESPACE}
+                data-cal-link={contactConfig.calLink}
+                data-cal-config='{"layout":"month_view"}'
                 className="bg-primary text-black font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full hover:bg-foreground hover:text-background transition-all active:scale-[0.98] cursor-pointer"
-              />
+              >
+                Book a Strategy Call
+              </button>
             ) : (
               <span className="bg-foreground/10 text-foreground/40 font-mono text-[11px] uppercase tracking-[0.4em] py-4 px-8 rounded-full cursor-not-allowed">
                 Currently Unavailable

@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { StrategyCallCTA } from '../components/StrategyCallCTA'
 
@@ -9,15 +9,13 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
-vi.mock('react-calendly', () => ({
-  PopupButton: ({ text, className }: { text: string; className?: string; url: string; rootElement: Element }) => (
-    <button className={className}>{text}</button>
-  ),
+vi.mock('@calcom/embed-react', () => ({
+  getCalApi: vi.fn().mockResolvedValue(vi.fn()),
 }))
 
 vi.mock('../data/contact', () => ({
   contactConfig: {
-    calendlyUrl: 'https://calendly.com/test/30min',
+    calLink: 'wenceslaus-dsilva/strategy-call',
     availabilityStatus: 'open',
     availabilityNote: 'Typically responds within 24 hours.',
   },
@@ -53,33 +51,12 @@ describe('StrategyCallCTA', () => {
     expect(notes.length).toBeGreaterThan(0)
   })
 
-  it('renders the Book a Strategy Call button when open', () => {
+  it('renders Book a Strategy Call button with cal data attributes', () => {
     render(<StrategyCallCTA />)
-    expect(screen.getByRole('button', { name: /Book a Strategy Call/i })).toBeInTheDocument()
-  })
-
-  it('mounts a MutationObserver on document.body', () => {
-    const observeSpy = vi.spyOn(MutationObserver.prototype, 'observe')
-    render(<StrategyCallCTA />)
-    expect(observeSpy).toHaveBeenCalledWith(document.body, { childList: true })
-    observeSpy.mockRestore()
-  })
-
-  it('removes scroll lock when calendly-overlay is removed from DOM', () => {
-    render(<StrategyCallCTA />)
-    const overlay = document.createElement('div')
-    overlay.className = 'calendly-overlay'
-    act(() => { document.body.appendChild(overlay) })
-    act(() => { document.body.removeChild(overlay) })
-    expect(document.documentElement.style.getPropertyValue('overflow')).toBe('')
-  })
-
-  it('removes scroll lock on calendly.popup_closed message', () => {
-    render(<StrategyCallCTA />)
-    act(() => {
-      window.dispatchEvent(new MessageEvent('message', { data: { event: 'calendly.popup_closed' } }))
-    })
-    expect(document.documentElement.style.getPropertyValue('overflow')).toBe('')
+    const btn = screen.getByRole('button', { name: /Book a Strategy Call/i })
+    expect(btn).toBeInTheDocument()
+    expect(btn).toHaveAttribute('data-cal-link', 'wenceslaus-dsilva/strategy-call')
+    expect(btn).toHaveAttribute('data-cal-namespace', 'strategy-call')
   })
 
   it('renders the "or scroll down to write" label', () => {

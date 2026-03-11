@@ -47,19 +47,6 @@
     height: 0;
   }
 
-  /* Hide scrollbar on Calendly popup overlay container (in our DOM, not the iframe) */
-  .calendly-overlay,
-  .calendly-popup-content {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-    overflow: hidden !important;
-  }
-
-  .calendly-overlay::-webkit-scrollbar,
-  .calendly-popup-content::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-  }
 
 
   h1, h2, h3 { @apply font-serif italic; }
