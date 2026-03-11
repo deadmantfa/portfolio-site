@@ -18,10 +18,10 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://cal.com",
-              "style-src 'self' 'unsafe-inline' https://cal.com",
+              "script-src 'self' 'unsafe-inline' https://cal.com https://app.cal.com",
+              "style-src 'self' 'unsafe-inline' https://cal.com https://app.cal.com",
               "img-src 'self' data: https:",
-              "font-src 'self' data: https://cal.com",
+              "font-src 'self' data: https://cal.com https://app.cal.com",
               "connect-src 'self' https:",
               "frame-src https://cal.com https://app.cal.com",
               "object-src 'none'",
