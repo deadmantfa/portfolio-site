@@ -2,10 +2,11 @@
 
 import { testimonials } from '@/data/testimonials'
 import EditorialReveal from './EditorialReveal'
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useRef, useState, useCallback, useEffect } from 'react'
+import { motion, useAnimate, PanInfo } from 'framer-motion'
 import { Linkedin, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import Image from 'next/image'
+import { flushSync } from 'react-dom'
 
 export { TestimonialsCarousel }
 
@@ -15,48 +16,20 @@ const prefersReducedMotion = () =>
 
 const SWIPE_THRESHOLD = 50
 
-function TestimonialCard({ 
-  testimonial, 
-  direction 
-}: { 
-  testimonial: (typeof testimonials)[0]; 
-  direction: number;
+function TestimonialCard({
+  testimonial,
+}: {
+  testimonial: (typeof testimonials)[0]
 }) {
   const [imageError, setImageError] = useState(false)
-  const isReduced = prefersReducedMotion()
 
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '50%' : '-50%',
-      opacity: 0,
-      scale: 0.85,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '50%' : '-50%',
-      opacity: 0,
-      scale: 0.85,
-    }),
-  }
+  // Reset image error state when testimonial changes (no remount needed)
+  useEffect(() => {
+    setImageError(false)
+  }, [testimonial])
 
   return (
-    <motion.div
-      custom={direction}
-      variants={isReduced ? {} : variants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={{
-        x: { type: 'spring', stiffness: 260, damping: 25 },
-        opacity: { duration: 0.5 },
-        scale: { duration: 0.5 },
-      }}
+    <div
       className="absolute inset-0 rounded-3xl p-6 md:p-12 flex flex-col justify-between overflow-hidden"
       style={{
         background: 'rgba(18, 18, 22, 0.96)',
@@ -64,13 +37,9 @@ function TestimonialCard({
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
       }}
     >
-      {/* Ink bloom — fades in once per card, no infinite animation */}
-      <motion.div
-        key={`bloom-${direction}`}
+      {/* Ink bloom */}
+      <div
         className="absolute inset-0 z-0 pointer-events-none"
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}
         style={{
           background:
             'radial-gradient(ellipse at 22% 18%, rgba(99,102,241,0.11) 0%, transparent 58%)',
@@ -108,7 +77,7 @@ function TestimonialCard({
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
           </div>
-          
+
           <div className="min-w-0">
             <p className="text-white font-serif text-base md:text-xl truncate leading-tight">{testimonial.name}</p>
             <p className="text-primary/70 font-mono text-[9px] md:text-xs uppercase tracking-widest truncate mt-0.5">
@@ -118,55 +87,92 @@ function TestimonialCard({
         </div>
 
         {testimonial.linkedinUrl && (
-          <motion.a
-            whileHover={{ scale: 1.1, backgroundColor: 'rgba(99, 102, 241, 0.25)', borderColor: 'rgba(99, 102, 241, 0.5)' }}
-            whileTap={{ scale: 0.95 }}
+          <a
             href={testimonial.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="size-9 md:size-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="size-9 md:size-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-primary hover:bg-primary/25 hover:border-primary/50 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50"
             aria-label={`${testimonial.name}'s LinkedIn profile`}
           >
             <Linkedin className="size-4 md:size-5" />
-          </motion.a>
+          </a>
         )}
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 function TestimonialsCarousel() {
-  const [[page, direction], setPage] = useState([0, 0])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const [scope, animate] = useAnimate()
 
-  const currentIndex = Math.abs(page % testimonials.length)
+  const transitionTo = useCallback(
+    async (targetIndex: number, dir: number) => {
+      if (isAnimating) return
 
-  const paginate = useCallback((newDirection: number) => {
-    setPage([page + newDirection, newDirection])
-  }, [page])
+      if (prefersReducedMotion()) {
+        setCurrentIndex(targetIndex)
+        return
+      }
+
+      setIsAnimating(true)
+
+      // 1. Animate current card out
+      await animate(
+        scope.current,
+        { x: dir > 0 ? '-40%' : '40%', opacity: 0, scale: 0.92 },
+        { duration: 0.22, ease: [0.4, 0, 1, 1] },
+      )
+
+      // 2. Swap content synchronously — no DOM remount, just prop update
+      flushSync(() => setCurrentIndex(targetIndex))
+
+      // 3. Snap to incoming side (still invisible)
+      animate(
+        scope.current,
+        { x: dir > 0 ? '40%' : '-40%', opacity: 0, scale: 0.92 },
+        { duration: 0 },
+      )
+
+      // 4. Animate new card in
+      await animate(
+        scope.current,
+        { x: 0, opacity: 1, scale: 1 },
+        { type: 'spring', stiffness: 280, damping: 26 },
+      )
+
+      setIsAnimating(false)
+    },
+    [isAnimating, animate, scope],
+  )
+
+  const paginate = useCallback(
+    (dir: number) => {
+      const target = (currentIndex + dir + testimonials.length) % testimonials.length
+      transitionTo(target, dir)
+    },
+    [currentIndex, transitionTo],
+  )
 
   useEffect(() => {
     if (isAutoPlaying && !prefersReducedMotion()) {
-      timerRef.current = setInterval(() => {
-        paginate(1)
-      }, 10000)
+      timerRef.current = setInterval(() => paginate(1), 10000)
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
     }
   }, [isAutoPlaying, paginate])
 
-  const handleDragEnd = (event: any, info: any) => {
-    const offset = info.offset.x
-    const velocity = info.velocity.x
-
-    if (offset < -SWIPE_THRESHOLD || velocity < -500) {
-      paginate(1)
-    } else if (offset > SWIPE_THRESHOLD || velocity > 500) {
-      paginate(-1)
-    }
-  }
+  const handleDragEnd = useCallback(
+    (_event: unknown, info: PanInfo) => {
+      if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -500) paginate(1)
+      else if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > 500) paginate(-1)
+    },
+    [paginate],
+  )
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 md:px-0">
@@ -183,7 +189,7 @@ function TestimonialsCarousel() {
             </p>
           </EditorialReveal>
         </div>
-        
+
         <div className="flex items-center justify-center md:justify-end gap-6">
           <div className="flex items-center gap-2 font-mono text-[10px] md:text-xs tracking-widest text-zinc-500">
             <span className="text-primary font-bold">{currentIndex + 1}</span>
@@ -214,30 +220,30 @@ function TestimonialsCarousel() {
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={page}
-            custom={direction}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={handleDragEnd}
-            className="absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y"
-          >
-            <TestimonialCard
-              testimonial={testimonials[currentIndex]}
-              direction={direction}
-            />
-          </motion.div>
-        </AnimatePresence>
+        {/*
+          Single stable motion.div — never unmounts.
+          Content swaps via prop update (flushSync) between exit and enter animations.
+          No AnimatePresence = no DOM mounting/unmounting = no mobile compositor flicker.
+        */}
+        <motion.div
+          ref={scope}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.1}
+          onDragEnd={handleDragEnd}
+          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y"
+          style={{ x: 0, opacity: 1, scale: 1 }}
+        >
+          <TestimonialCard testimonial={testimonials[currentIndex]} />
+        </motion.div>
 
         {/* Visual Progress Line */}
         <div className="absolute -bottom-10 md:-bottom-12 left-0 right-0 h-px bg-white/5 overflow-hidden rounded-full">
           <motion.div
             className="h-full bg-primary shadow-[0_0_15px_rgba(99,102,241,0.6)]"
-            initial={{ width: "0%" }}
+            initial={{ width: '0%' }}
             animate={{ width: `${((currentIndex + 1) / testimonials.length) * 100}%` }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
         </div>
       </div>
@@ -249,7 +255,7 @@ function TestimonialsCarousel() {
             key={idx}
             onClick={() => {
               const dir = idx > currentIndex ? 1 : -1
-              setPage([idx, dir])
+              transitionTo(idx, dir)
             }}
             className={`h-0.5 transition-all duration-700 rounded-full cursor-pointer ${
               idx === currentIndex ? 'w-12 md:w-16 bg-primary' : 'w-4 md:w-6 bg-white/10 hover:bg-white/30'
