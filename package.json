@@ -24,7 +24,7 @@
     "framer-motion": "^12.34.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.563.0",
-    "next": "16.1.6",
+    "next": "16.1.7",
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
     "react": "19.2.3",
