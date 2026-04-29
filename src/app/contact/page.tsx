@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import ContactForm from '@/components/ContactForm'
 import SocialLinks from '@/components/SocialLinks'
+import { PullQuote } from '@/components/PullQuote'
 
 export const metadata: Metadata = {
   title: { absolute: 'Contact | Wenceslaus Dsilva — CTO & Technical Architect' },
@@ -74,12 +75,18 @@ export default function ContactPage() {
           building a colour-based search engine to open a new acquisition channel, or designing
           a multi-gateway payment failover system to protect revenue at scale.
         </p>
-        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+        <p className="text-zinc-600 text-sm mb-8 max-w-lg">
           I write clearly, communicate priorities to non-technical stakeholders without dumbing
-          things down, and build engineering cultures grounded in ownership and craft. Every
-          successful technology engagement starts with a candid conversation about what you are
-          actually trying to achieve — not just the technical requirements on paper. If any of
-          that sounds like what your organisation needs — reach out below.
+          things down, and build engineering cultures grounded in ownership and craft.
+        </p>
+
+        <PullQuote
+          quote="Every successful technology engagement starts with a candid conversation about what you are actually trying to achieve — not just the technical requirements on paper."
+          className="my-10 max-w-lg"
+        />
+
+        <p className="text-zinc-600 text-sm mb-10 max-w-lg">
+          If any of that sounds like what your organisation needs — reach out below.
         </p>
 
         <ContactForm />

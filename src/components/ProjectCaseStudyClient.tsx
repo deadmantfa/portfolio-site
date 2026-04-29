@@ -8,6 +8,8 @@ import ArchitecturalGrid from '@/components/VisionaryScene'
 import BlueprintOverlay from '@/components/BlueprintOverlay'
 import BlueprintSchema from '@/components/BlueprintSchema'
 import { ADRCard } from '@/components/ADRCard'
+import { PullQuote } from '@/components/PullQuote'
+import { HighlightedParagraph } from '@/components/HighlightedParagraph'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface ProjectCaseStudyClientProps {
@@ -76,7 +78,7 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
         {/* Header Section */}
         <header className="mb-24">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-mono text-[11px] text-primary uppercase tracking-[0.4em]">Case Study / 0{projects.indexOf(project) + 1}</span>
+            <span className="font-mono text-[11px] text-primary uppercase tracking-[0.4em]">Case Study / 0{projects.findIndex((p) => p.slug === project.slug) + 1}</span>
             <div className="h-px w-12 bg-primary/30"></div>
             <span className="font-mono text-[11px] text-zinc-500 uppercase tracking-[0.4em]">{project.period}</span>
           </div>
@@ -101,18 +103,18 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
               </h3>
               <div className="space-y-16">
                 <div className="group">
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">01 / Vision</span>
-                  <p className="text-2xl md:text-3xl text-zinc-200 font-serif italic leading-relaxed">
-                    "{project.narrative.vision}"
-                  </p>
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-6 block">01 / Vision</span>
+                  <PullQuote quote={project.narrative.vision} />
                 </div>
                 <div className="group">
                   <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">02 / Execution</span>
                   <div className="space-y-6">
                     {project.narrative.execution.map((para, i) => (
-                      <p key={i} className="text-lg md:text-xl text-zinc-400 font-sans leading-loose text-justify hyphens-auto">
-                        {para}
-                      </p>
+                      <HighlightedParagraph
+                        key={i}
+                        text={para}
+                        className="text-lg md:text-xl text-zinc-400 font-sans leading-loose text-justify hyphens-auto"
+                      />
                     ))}
                   </div>
                 </div>
@@ -120,9 +122,11 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
                   <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 block">03 / Result</span>
                   <div className="space-y-6">
                     {project.narrative.result.map((para, i) => (
-                      <p key={i} className="text-lg md:text-xl text-zinc-400 font-sans leading-loose text-justify hyphens-auto">
-                        {para}
-                      </p>
+                      <HighlightedParagraph
+                        key={i}
+                        text={para}
+                        className="text-lg md:text-xl text-zinc-400 font-sans leading-loose text-justify hyphens-auto"
+                      />
                     ))}
                   </div>
                 </div>
@@ -172,7 +176,7 @@ export default function ProjectCaseStudyClient({ project }: ProjectCaseStudyClie
 
         {/* Next Project Cross-link */}
         {(() => {
-          const currentIndex = projects.indexOf(project)
+          const currentIndex = projects.findIndex((p) => p.slug === project.slug)
           const nextProject = projects[(currentIndex + 1) % projects.length]
           return (
             <div className="mt-32 pt-16 border-t border-white/5 flex items-center justify-between">

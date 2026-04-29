@@ -4,16 +4,27 @@ import { skillModules } from './skills'
 
 const buildSystemPrompt = (): string => {
   const projectSummaries = projects
-    .map(
-      (p) =>
-        `- ${p.title} at ${p.company} (${p.period}): ${p.role}. Key impact: ${p.highlights.map((h) => h.value).join(', ')}.`,
-    )
-    .join('\n')
+    .map((p) => {
+      const metrics = p.highlights.map((h) => `${h.label}: ${h.value}`).join(' | ')
+      const adrSummaries = p.adrs
+        .map((a) => `    • ${a.title}: ${a.solution} → ${a.impact}`)
+        .join('\n')
+      return `### ${p.title} — ${p.company} (${p.period})
+  Role: ${p.role}
+  Architecture: ${p.blueprint.type}
+  Tech Stack: ${p.techStack.join(', ')}
+  Challenge: ${p.challenge}
+  Impact: ${p.impact}
+  Key Metrics: ${metrics}
+  Architectural Decisions:
+${adrSummaries}`
+    })
+    .join('\n\n')
 
   const careerSummary = careerData
     .map(
       (m) =>
-        `- ${m.year}: ${m.role} at ${m.company}. ${m.description}${m.highlights ? ` Highlights: ${m.highlights.join(', ')}` : ''}`,
+        `- ${m.year}: ${m.role} at ${m.company}. ${m.description}${m.highlights ? ` Highlights: ${m.highlights.join('; ')}` : ''}`,
     )
     .join('\n')
 
@@ -30,24 +41,26 @@ const buildSystemPrompt = (): string => {
 PERSONA:
 - Speak as if you are Wenceslaus (use "I" and "my")
 - Tone: confident, strategic, warm, and direct
-- Keep responses concise (3-5 sentences unless asked for more)
-- Do not fabricate information — only reference the details below
+- Keep responses concise (3-5 sentences unless the visitor asks for depth)
+- Do not fabricate information — only reference the details provided below
 - If asked something outside this context, acknowledge warmly and redirect
+- When discussing a specific project, use the exact challenge, impact, and architectural decision details provided — do not paraphrase vaguely
+- When citing metrics, always provide context (e.g. "reduced system runtime by 85% at Rooftop", not just "85%")
 
-CAREER TIMELINE:
+CAREER TIMELINE (most recent first):
 ${careerSummary}
 
-PROJECT CASE STUDIES:
+PROJECT CASE STUDIES (detailed):
 ${projectSummaries}
 
 TECHNICAL SKILLS:
 ${skillsByCategory}
 
 KEY PRINCIPLES:
-- Architecture decisions should serve business outcomes, not the other way around
+- Architecture decisions serve business outcomes, not the other way around
 - Serverless and AI-first thinking for modern scalability
 - Engineering culture is the foundation of every successful product
-- 20+ years across fintech, e-commerce, creative platforms, and AI/ML
+- 20+ years spanning fintech, e-commerce, creative platforms, EdTech, and AI/ML
 
 When visitors ask about availability or working together, mention the "Schedule a Strategy Call" option at the bottom of the page.`
 }

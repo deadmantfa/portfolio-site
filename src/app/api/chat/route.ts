@@ -39,10 +39,13 @@ const queryAnthropic = async (messages: ChatMessage[]): Promise<string> => {
     .join('')
 }
 
-const queryGemini = async (messages: ChatMessage[]): Promise<string> => {
+const GEMINI_PRIMARY_MODEL = 'gemini-3.1-flash-lite-preview'
+const GEMINI_FALLBACK_MODEL = 'gemini-2.5-pro'
+
+const queryGeminiModel = async (messages: ChatMessage[], modelName: string): Promise<string> => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
   const model = genAI.getGenerativeModel({
-    model: 'gemini-flash-latest',
+    model: modelName,
     systemInstruction: buildSystemPrompt(),
   })
 
@@ -56,6 +59,15 @@ const queryGemini = async (messages: ChatMessage[]): Promise<string> => {
   const chat = model.startChat({ history })
   const result = await chat.sendMessage(lastMessage.content)
   return result.response.text()
+}
+
+const queryGemini = async (messages: ChatMessage[]): Promise<string> => {
+  try {
+    return await queryGeminiModel(messages, GEMINI_PRIMARY_MODEL)
+  } catch (primaryErr) {
+    console.warn('[chat] Gemini primary model failed, falling back to', GEMINI_FALLBACK_MODEL, ':', primaryErr instanceof Error ? primaryErr.message : primaryErr)
+    return queryGeminiModel(messages, GEMINI_FALLBACK_MODEL)
+  }
 }
 
 export async function POST(request: Request): Promise<Response> {
