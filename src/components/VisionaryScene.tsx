@@ -209,7 +209,7 @@ const ArchitecturalGrid = ({
 
   useFrame((state) => {
     if (!materialRef.current) return
-    const time = state.elapsed
+    const time = state.clock.getElapsedTime()
     materialRef.current.uniforms.uTime.value = time
     lineMaterialRef.current.uniforms.uTime.value = time
     materialRef.current.uniforms.uScroll.value = scrollProgress

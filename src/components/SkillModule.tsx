@@ -57,7 +57,7 @@ const SkillModuleComponent = ({ skill, startPos, endPos, progress }: SkillModule
     // Displacement on hover: pull significantly towards camera AND move slightly left to avoid the info card on the right
     const targetZOffset = hovered ? 10 : 0
     const targetXOffset = hovered ? -5 : 0
-    const targetRotation = hovered ? Math.sin(state.elapsed * 2) * 0.2 : 0
+    const targetRotation = hovered ? Math.sin(state.clock.elapsedTime * 2) * 0.2 : 0
     
     // Current position with organic lerping
     groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, bx + targetXOffset, 0.08) // Decreased lerp for smoother movement

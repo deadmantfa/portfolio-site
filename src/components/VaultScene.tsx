@@ -99,7 +99,7 @@ const Artifact = ({ position, color, id, shape = 'box', progress = 0, opacity = 
   }, [color])
 
   useFrame((state) => {
-    const time = state.elapsed
+    const time = state.clock.getElapsedTime()
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = time
       materialRef.current.uniforms.uOpacity.value = opacity
