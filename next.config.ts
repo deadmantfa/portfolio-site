@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://cal.com https://app.cal.com",
+              `script-src 'self' 'unsafe-inline' ${process.env.NODE_ENV !== 'production' ? "'unsafe-eval'" : ''} https://cal.com https://app.cal.com`,
               // worker-src must explicitly allow blob: — troika-three-text (3D text rendering)
               // creates workers from blob URLs. Without this, worker-src falls back to
               // script-src which lacks blob:, blocking the font worker and breaking BlueprintSchema.
