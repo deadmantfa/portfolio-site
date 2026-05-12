@@ -41,7 +41,7 @@ describe('Helix Vortex Calculation', () => {
     if (diff > Math.PI) diff = 2 * Math.PI - diff
     
     // For a double helix with alternating strands, the angle difference should be significant
-    // With 6 rotations over 20 skills, it's roughly 0.4*PI
-    expect(diff).toBeGreaterThan(Math.PI * 0.3)
+    // With 8 rotations over 20 skills, the gap between consecutive indices on alternating strands is 0.2*PI
+    expect(diff).toBeGreaterThan(Math.PI * 0.15)
   })
 })

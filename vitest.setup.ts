@@ -4,24 +4,14 @@ import * as matchers from 'jest-axe'
 
 expect.extend(matchers as any)
 
-class IntersectionObserver {
-
+class IntersectionObserverMock {
   observe = vi.fn()
-  disconnect = vi.fn()
   unobserve = vi.fn()
+  disconnect = vi.fn()
+  takeRecords = vi.fn()
 }
 
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: IntersectionObserver,
-})
-
-Object.defineProperty(global, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: IntersectionObserver,
-})
+vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
