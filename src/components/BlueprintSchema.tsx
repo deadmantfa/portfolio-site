@@ -53,8 +53,6 @@ export default function BlueprintSchema({ blueprint }: BlueprintSchemaProps) {
     groupRef.current.rotation.x = Math.sin(state.elapsed * 0.2) * 0.1
   })
 
-  })
-
   return (
     <group ref={groupRef}>
       {/* Central Hub if Hub-and-Spoke */}

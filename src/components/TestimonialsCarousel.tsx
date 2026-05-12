@@ -61,6 +61,7 @@ function TestimonialCard({
                 src={testimonial.imagePath}
                 alt={testimonial.name}
                 fill
+                sizes="(max-width: 768px) 48px, 64px"
                 className="object-cover"
                 onError={() => setImageError(true)}
               />
