@@ -3,9 +3,12 @@ import type { NextRequest } from 'next/server'
 
 export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+  const isDev = process.env.NODE_ENV === 'development'
+  const scriptSrc = `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ''} blob: https:;`
+  
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' blob: https:;
+    ${scriptSrc}
     worker-src 'self' blob:;
     style-src 'self' 'unsafe-inline' https:;
     img-src 'self' blob: data: https:;
