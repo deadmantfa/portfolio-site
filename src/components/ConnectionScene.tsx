@@ -16,7 +16,7 @@ function PulseRing({ phaseOffset }: { phaseOffset: number }) {
 
   useFrame((state) => {
     if (!meshRef.current) return
-    const t = ((state.clock.getElapsedTime() + phaseOffset) % CYCLE) / CYCLE
+    const t = ((state.elapsed + phaseOffset) % CYCLE) / CYCLE
     meshRef.current.scale.setScalar(t * 8)
     const mat = meshRef.current.material as THREE.MeshBasicMaterial
     mat.opacity = Math.max(0, 1 - t) * 0.55
@@ -42,7 +42,7 @@ function CentralNode() {
 
   useFrame((state) => {
     if (!meshRef.current) return
-    const pulse = 1 + Math.sin(state.clock.getElapsedTime() * 2.2) * 0.1
+    const pulse = 1 + Math.sin(state.elapsed * 2.2) * 0.1
     meshRef.current.scale.setScalar(pulse)
   })
 

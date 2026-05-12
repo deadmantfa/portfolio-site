@@ -92,7 +92,7 @@ export function OrbitalSkillMap({
     groupRef.current.rotation.x = tilt
 
     // Gentle floating motion
-    const floatY = Math.sin(state.clock.elapsedTime * 0.4) * 0.12
+    const floatY = Math.sin(state.elapsed * 0.4) * 0.12
     groupRef.current.position.y = floatY
 
     // Exit scaling
@@ -102,7 +102,7 @@ export function OrbitalSkillMap({
     // Center hub pulse animation
     if (centerHubRef.current?.material instanceof THREE.MeshStandardMaterial) {
       centerHubRef.current.material.emissiveIntensity =
-        2.0 + Math.sin(state.clock.elapsedTime * 1.5) * 0.5
+        2.0 + Math.sin(state.elapsed * 1.5) * 0.5
     }
   })
 

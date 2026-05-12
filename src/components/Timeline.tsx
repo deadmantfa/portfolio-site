@@ -25,7 +25,7 @@ const TimelineNode = ({ index, milestone, slug }: { index: number, milestone: an
 
     // Smooth movement
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.15)
-    groupRef.current.position.x = Math.sin(state.clock.elapsedTime * 0.3 + index) * 1.5
+    groupRef.current.position.x = Math.sin(state.elapsed * 0.3 + index) * 1.5
     groupRef.current.position.z = -10
     
     // Visibility: Show if within reasonable Y range

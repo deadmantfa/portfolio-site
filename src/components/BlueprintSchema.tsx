@@ -48,10 +48,11 @@ export default function BlueprintSchema({ blueprint }: BlueprintSchemaProps) {
   }, [nodes])
 
   useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.1
-      groupRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1
-    }
+    if (!groupRef.current) return
+    groupRef.current.rotation.y = state.elapsed * 0.1
+    groupRef.current.rotation.x = Math.sin(state.elapsed * 0.2) * 0.1
+  })
+
   })
 
   return (
