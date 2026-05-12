@@ -11,14 +11,13 @@ interface SceneCanvasProps {
 const SceneCanvas = ({ children }: SceneCanvasProps) => {
   return (
     <Canvas
-      gl={(canvas) => new THREE.WebGLRenderer({ 
-        canvas,
+      shadows={false}
+      camera={{ position: [0, 0, 20], fov: 50 }}
+      gl={{ 
         antialias: false, 
         alpha: true,
         powerPreference: 'high-performance'
-      })}
-      shadows={false}
-      camera={{ position: [0, 0, 20], fov: 50 }}
+      }} 
       dpr={[1, 1]} // Capped at 1 for maximum performance
       performance={{ min: 0.5 }} // Allow downscaling if frame rate drops
       style={{ pointerEvents: 'auto' }}
