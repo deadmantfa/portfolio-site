@@ -7,6 +7,7 @@ import ArchitecturalLoader from '@/components/ArchitecturalLoader'
 import { ScrollProvider } from '@/components/ScrollProvider'
 import { ArchitecturalScroll } from '@/components/ArchitecturalScroll'
 import { AskWenceslaus } from '@/components/AskWenceslaus'
+import { Analytics } from '@vercel/analytics/next'
 
 const archivo = Archivo({
   subsets: ['latin'],
@@ -92,6 +93,7 @@ export default function RootLayout({
           {children}
           <AskWenceslaus />
         </ScrollProvider>
+        <Analytics />
       </body>
     </html>
   )
