@@ -42,7 +42,6 @@ describe('OrbitalNode', () => {
 
   it('should render without crashing', () => {
     const { container } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalNode {...defaultProps} />,
     )
     expect(container).toBeTruthy()
@@ -50,7 +49,6 @@ describe('OrbitalNode', () => {
 
   it('should render Billboard wrapper', () => {
     const { getByTestId } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalNode {...defaultProps} />,
     )
     expect(getByTestId('mock-billboard')).toBeTruthy()
@@ -58,7 +56,6 @@ describe('OrbitalNode', () => {
 
   it('should render skill name in uppercase in text element', () => {
     const { getByTestId } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalNode {...defaultProps} />,
     )
     const textElement = getByTestId('mock-text')
@@ -68,7 +65,6 @@ describe('OrbitalNode', () => {
   it('should accept color prop', () => {
     const customColor = '#10b981'
     const { container } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalNode {...defaultProps} color={customColor} />,
     )
     expect(container).toBeTruthy()

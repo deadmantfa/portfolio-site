@@ -434,7 +434,8 @@ const Navigation = () => {
           </div>
 
           <a
-            href="/CV/Wenceslaus-Dsilva-2026.pdf"
+            href="/CV/Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf"
+            download="Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="CV - Curriculum Vitae"
@@ -448,4 +449,5 @@ const Navigation = () => {
   )
 }
 
+export default Navigation
 export { Navigation }

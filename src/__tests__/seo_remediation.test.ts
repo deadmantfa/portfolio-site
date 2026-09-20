@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 
 vi.mock('next/font/google', () => ({
-  Inter: () => ({ variable: 'var-inter' }),
-  Cormorant_Garamond: () => ({ variable: 'var-cormorant' }),
+  Archivo: () => ({ variable: 'var-archivo' }),
+  Space_Grotesk: () => ({ variable: 'var-space' }),
   JetBrains_Mono: () => ({ variable: 'var-jetbrains' }),
 }))
 
@@ -17,21 +17,20 @@ describe('Global Metadata Configuration', () => {
   })
 
   it('should include target keywords', () => {
-    // @ts-ignore - keywords is part of Metadata but might not be in the initial thin version
-    expect(metadata.keywords).toContain('CTO')
-    // @ts-ignore
-    expect(metadata.keywords).toContain('Software Architect')
+    const keywords = (metadata as any).keywords
+    expect(keywords).toContain('CTO')
+    expect(keywords).toContain('Software Architect')
   })
 
   it('should have OpenGraph configuration', () => {
     expect(metadata.openGraph).toBeDefined()
-    expect(metadata.openGraph?.type).toBe('website')
+    expect((metadata.openGraph as any)?.type).toBe('website')
     expect(metadata.openGraph?.siteName).toContain('Wenceslaus Dsilva')
   })
 
   it('should have Twitter configuration', () => {
     expect(metadata.twitter).toBeDefined()
-    expect(metadata.twitter?.card).toBe('summary_large_image')
+    expect((metadata.twitter as any)?.card).toBe('summary_large_image')
   })
 
   it('should define a canonical URL base', () => {

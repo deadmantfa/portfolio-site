@@ -40,8 +40,8 @@ describe('Home Page Dynamic Loading', () => {
     // Check for static content
     expect(screen.getByText(/The Visionary/i)).toBeInTheDocument();
     
-    // Check for dynamic component placeholder
+    // Check for dynamic component placeholders
     // This will pass only if Home uses dynamic import
-    expect(screen.queryByTestId('dynamic-scene')).toBeInTheDocument();
+    expect(screen.getAllByTestId('dynamic-scene').length).toBeGreaterThan(0);
   });
 });

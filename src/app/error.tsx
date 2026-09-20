@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Link from 'next/link'
 
 export default function Error({
   error,
@@ -38,7 +39,7 @@ export default function Error({
             <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-red-500/50 group-hover:text-red-500 transition-colors">Reinitialize Core</span>
           </button>
 
-          <a 
+          <Link 
             href="/"
             className="inline-flex items-center gap-4 group pointer-events-auto"
           >
@@ -46,7 +47,7 @@ export default function Error({
               ←
             </div>
             <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500 group-hover:text-zinc-300 transition-colors">Emergency Evacuation</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

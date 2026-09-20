@@ -31,7 +31,7 @@ async function generate() {
     console.log('✓ QR Code generated for w1d.pro');
 
     // 3. Define output path
-    const outputPath = path.resolve(process.cwd(), 'public/CV/Wenceslaus-Dsilva-2026.pdf');
+    const outputPath = path.resolve(process.cwd(), 'public/CV/Wenceslaus-Dsilva-generated.pdf');
     
     // 4. Ensure the output directory exists
     const outputDir = path.dirname(outputPath);

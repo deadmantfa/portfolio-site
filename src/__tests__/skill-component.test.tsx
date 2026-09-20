@@ -36,7 +36,14 @@ vi.mock('@react-three/drei', () => ({
 describe('SkillModule Component', () => {
   it('renders 3D components for a skill', () => {
     const mockSkill = { name: 'React', category: 'frontend', importance: 'Test' }
-    const { getByTestId } = render(<SkillModuleComponent skill={mockSkill as any} index={0} />)
+    const { getByTestId } = render(
+      <SkillModuleComponent
+        skill={mockSkill as any}
+        startPos={[0, 0, 0]}
+        endPos={[0, 0, 0]}
+        progress={1}
+      />
+    )
     expect(getByTestId('mock-billboard')).toBeInTheDocument()
   })
 })

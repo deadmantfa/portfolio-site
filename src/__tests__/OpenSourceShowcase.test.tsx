@@ -14,12 +14,6 @@ vi.mock('@/components/EditorialReveal', () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
-// Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
 
 describe('OpenSourceShowcase', () => {
   test('renders section title "Lab."', () => {

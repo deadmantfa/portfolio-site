@@ -4,13 +4,13 @@ import { expect, it, describe, vi } from 'vitest'
 
 // Mock next/font/google
 vi.mock('next/font/google', () => ({
-  Inter: () => ({
-    variable: '--font-sans',
-    className: 'inter-font',
-  }),
-  Cormorant_Garamond: () => ({
+  Archivo: () => ({
     variable: '--font-serif',
-    className: 'cormorant-font',
+    className: 'archivo-font',
+  }),
+  Space_Grotesk: () => ({
+    variable: '--font-sans',
+    className: 'space-font',
   }),
   JetBrains_Mono: () => ({
     variable: '--font-mono',
@@ -20,7 +20,8 @@ vi.mock('next/font/google', () => ({
 
 // Mock Navigation
 vi.mock('@/components/Navigation', () => ({
-  default: () => <div data-testid="mock-nav">Navigation</div>
+  Navigation: () => <div data-testid="mock-nav">Navigation</div>,
+  default: () => <div data-testid="mock-nav">Navigation</div>,
 }))
 
 describe('RootLayout', () => {

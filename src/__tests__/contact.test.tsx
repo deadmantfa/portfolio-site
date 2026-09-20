@@ -13,6 +13,10 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }))
 
+vi.mock('../app/actions/contact', () => ({
+  sendEmail: vi.fn().mockResolvedValue({ success: true }),
+}))
+
 describe('ContactForm Component', () => {
   it('renders all form fields', () => {
     render(<ContactForm />)
@@ -52,11 +56,15 @@ describe('SocialLinks Component', () => {
     expect(screen.getByLabelText(/LinkedIn/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/GitHub/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/Email/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/^CV$/i)).toBeInTheDocument()
   })
 
   it('has correct href attributes', () => {
     render(<SocialLinks />)
     expect(screen.getByLabelText(/LinkedIn/i)).toHaveAttribute('href', 'https://linkedin.com/in/wenceslaus-dsilva')
     expect(screen.getByLabelText(/GitHub/i)).toHaveAttribute('href', 'https://github.com/deadmantfa')
+    const cvLink = screen.getByLabelText(/^CV$/i)
+    expect(cvLink).toHaveAttribute('href', '/CV/Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf')
+    expect(cvLink).toHaveAttribute('download', 'Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf')
   })
 })

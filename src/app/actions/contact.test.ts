@@ -13,7 +13,9 @@ vi.mock('resend', () => {
     }
   }
   return {
-    Resend: vi.fn().mockImplementation(() => mockInstance)
+    Resend: vi.fn(function () {
+      return mockInstance
+    }),
   }
 })
 

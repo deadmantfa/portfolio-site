@@ -28,7 +28,7 @@ describe('GitHub Profile Sync Logic', () => {
         techStack: ['React', 'TypeScript']
       }
     ];
-    const result = mapProjectsToMarkdown(mockProjects);
+    const result = mapProjectsToMarkdown(mockProjects as any);
     expect(result).toContain('### Project Alpha');
     expect(result).toContain('**Impact:** Big impact.');
     expect(result).toContain('`React` `TypeScript`');
@@ -39,7 +39,7 @@ describe('GitHub Profile Sync Logic', () => {
       { name: 'React', category: 'frontend' },
       { name: 'Node.js', category: 'backend' }
     ];
-    const result = mapSkillsToMarkdown(mockSkills);
+    const result = mapSkillsToMarkdown(mockSkills as any);
     expect(result).toContain('React');
     expect(result).toContain('Node.js');
   });

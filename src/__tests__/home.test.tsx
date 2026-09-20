@@ -16,42 +16,29 @@ vi.mock('@/components/ScrollProvider', async (importOriginal) => {
   }
 })
 
-// Mock 3D components
-vi.mock('@/components/SceneCanvas', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-canvas">{children}</div>
-}))
-vi.mock('@/components/VisionaryScene', () => ({
-  default: () => <div data-testid="mock-scene" />
-}))
-vi.mock('@/components/SkillBackdrop', () => ({
-  SkillBackdrop: () => <div data-testid="mock-skill-backdrop" />
-}))
-vi.mock('@/components/SkillsGrid', () => ({
-  SkillsGrid: () => <div data-testid="mock-skills-grid" />
-}))
-vi.mock('@/components/VaultScene', () => ({
-  default: () => <div data-testid="mock-vault" />
-}))
-vi.mock('@/components/ConnectionScene', () => ({
-  default: () => <div data-testid="mock-connection" />
-}))
-vi.mock('@/components/BackgroundMarkers', () => ({
-  default: () => <div data-testid="mock-markers" />
-}))
-vi.mock('@/components/EditorialReveal', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-reveal">{children}</div>
-}))
-vi.mock('@/components/ContactForm', () => ({
-  default: () => <div data-testid="mock-contact-form" />
-}))
-vi.mock('@/components/SocialLinks', () => ({
-  default: () => <div data-testid="mock-social-links" />
-}))
-vi.mock('@/components/OpenSourceShowcase', () => ({
-  OpenSourceShowcase: () => <div data-testid="mock-opensource-showcase" />
-}))
-vi.mock('@/components/TestimonialsSection', () => ({
-  TestimonialsSection: () => <div data-testid="mock-testimonials-section" />
+// Mock next/dynamic
+vi.mock('next/dynamic', () => ({
+  default: (loader: any) => {
+    const fnStr = loader.toString()
+    if (fnStr.includes('HomeScene')) {
+      return function MockHomeScene() {
+        return (
+          <div data-testid="mock-canvas">
+            <div data-testid="mock-scene" />
+            <div data-testid="mock-skill-backdrop" />
+            <div data-testid="mock-vault" />
+            <div data-testid="mock-connection" />
+          </div>
+        )
+      }
+    }
+    if (fnStr.includes('SkillsGrid')) return function MockSkillsGrid() { return <div data-testid="mock-skills-grid" /> }
+    if (fnStr.includes('ContactForm')) return function MockContactForm() { return <div data-testid="mock-contact-form" /> }
+    if (fnStr.includes('SocialLinks')) return function MockSocialLinks() { return <div data-testid="mock-social-links" /> }
+    if (fnStr.includes('OpenSourceShowcase')) return function MockOpenSource() { return <div data-testid="mock-opensource-showcase" /> }
+    if (fnStr.includes('Testimonials')) return function MockTestimonials() { return <div data-testid="mock-testimonials-section" /> }
+    return function MockNull() { return null }
+  },
 }))
 
 describe('Home Page', () => {

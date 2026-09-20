@@ -19,12 +19,6 @@ vi.mock('@/components/ScrollProvider', () => ({
   }),
 }))
 
-// Mock IntersectionObserver
-global.IntersectionObserver = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-})) as any
 
 // Mock SkillCard component
 vi.mock('@/components/SkillCard', () => ({

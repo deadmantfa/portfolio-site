@@ -25,7 +25,7 @@ const SocialLinks = () => {
     },
     {
       name: 'CV',
-      url: '/CV/Wenceslaus-Dsilva-2026.pdf',
+      url: '/CV/Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf',
       icon: FileDown,
       label: 'Executive Summary'
     }
@@ -37,6 +37,7 @@ const SocialLinks = () => {
         <motion.a
           key={social.name}
           href={social.url}
+          download={social.name === 'CV' ? 'Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf' : undefined}
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, y: 10 }}

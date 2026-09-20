@@ -48,7 +48,6 @@ describe('OrbitalSkillMap', () => {
 
   it('should render without crashing', () => {
     const { container } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalSkillMap progress={0.5} exitProgress={0} />,
     )
     expect(container).toBeTruthy()
@@ -56,7 +55,6 @@ describe('OrbitalSkillMap', () => {
 
   it('should render particle system', () => {
     const { getByTestId } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalSkillMap progress={0.5} exitProgress={0} />,
     )
     expect(getByTestId('orbital-particles')).toBeTruthy()
@@ -64,7 +62,6 @@ describe('OrbitalSkillMap', () => {
 
   it('should render 4 orbital rings', () => {
     const { getAllByTestId } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalSkillMap progress={0.5} exitProgress={0} />,
     )
     const rings = getAllByTestId('orbital-ring')
@@ -73,7 +70,6 @@ describe('OrbitalSkillMap', () => {
 
   it('should pass correct colors to rings', () => {
     const { getAllByTestId } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalSkillMap progress={0.5} exitProgress={0} />,
     )
     const rings = getAllByTestId('orbital-ring')
@@ -87,7 +83,6 @@ describe('OrbitalSkillMap', () => {
 
   it('should accept progress prop', () => {
     const { container } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalSkillMap progress={0.8} exitProgress={0} />,
     )
     expect(container).toBeTruthy()
@@ -95,7 +90,6 @@ describe('OrbitalSkillMap', () => {
 
   it('should accept exitProgress prop', () => {
     const { container } = render(
-      // @ts-expect-error - Three.js context not available in test
       <OrbitalSkillMap progress={0.5} exitProgress={0.5} />,
     )
     expect(container).toBeTruthy()

@@ -6,15 +6,19 @@ const mockStartChat = vi.fn(() => ({ sendMessage: mockGeminiSendMessage }))
 const mockGetGenerativeModel = vi.fn(() => ({ startChat: mockStartChat }))
 
 vi.mock('@anthropic-ai/sdk', () => ({
-  default: vi.fn().mockImplementation(() => ({
-    messages: { create: mockAnthropicCreate },
-  })),
+  default: vi.fn(function () {
+    return {
+      messages: { create: mockAnthropicCreate },
+    }
+  }),
 }))
 
 vi.mock('@google/generative-ai', () => ({
-  GoogleGenerativeAI: vi.fn().mockImplementation(() => ({
-    getGenerativeModel: mockGetGenerativeModel,
-  })),
+  GoogleGenerativeAI: vi.fn(function () {
+    return {
+      getGenerativeModel: mockGetGenerativeModel,
+    }
+  }),
 }))
 
 import { POST } from '../app/api/chat/route'

@@ -1,25 +1,19 @@
 import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import { Navigation } from '@/components/Navigation'
 
-describe('Navigation Component', () => {
-  beforeEach(() => {
-    // Mock IntersectionObserver
-    global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-      observe: vi.fn(),
-      unobserve: vi.fn(),
-      disconnect: vi.fn(),
-    })) as unknown as typeof IntersectionObserver
+vi.mock('gsap', () => ({
+  default: {
+    to: vi.fn().mockReturnValue(Promise.resolve()),
+    timeline: vi.fn().mockReturnValue({
+      to: vi.fn().mockReturnThis(),
+      add: vi.fn().mockReturnThis(),
+      kill: vi.fn().mockReturnThis(),
+    }),
+  },
+}))
 
-    // Mock gsap
-    vi.mock('gsap', () => ({
-      default: {
-        to: vi.fn().mockReturnValue(Promise.resolve()),
-        timeline: vi.fn().mockReturnValue({
-          to: vi.fn().mockReturnThis(),
-        }),
-      },
-    }))
-  })
+describe('Navigation Component', () => {
 
   it('renders the main navigation links', () => {
     render(<Navigation />)
@@ -34,12 +28,13 @@ describe('Navigation Component', () => {
     render(<Navigation />)
     const cvLink = screen.getByLabelText(/Curriculum Vitae/i)
     expect(cvLink).toBeInTheDocument()
-    expect(cvLink).toHaveAttribute('href', '/CV/Wenceslaus-Dsilva-2026.pdf')
+    expect(cvLink).toHaveAttribute('href', '/CV/Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf')
+    expect(cvLink).toHaveAttribute('download', 'Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf')
   })
 
   it('renders logo with home link', () => {
     render(<Navigation />)
-    const homeLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const homeLink = screen.getByLabelText('Wenceslaus. Dsilva — Home')
     expect(homeLink).toBeInTheDocument()
     expect(homeLink).toHaveAttribute('href', '/')
   })
@@ -84,7 +79,7 @@ describe('Navigation Component', () => {
 
   it('logo link has rounded focus ring', () => {
     render(<Navigation />)
-    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const logoLink = screen.getByLabelText('Wenceslaus. Dsilva — Home')
     expect(logoLink).toHaveClass('rounded-lg')
     expect(logoLink).toHaveClass('focus-visible:ring-2')
   })
@@ -99,7 +94,7 @@ describe('Navigation Component', () => {
 
   it('logo dot has text-primary class', () => {
     render(<Navigation />)
-    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const logoLink = screen.getByLabelText('Wenceslaus. Dsilva — Home')
     const dot = logoLink.querySelector('.text-primary')
     expect(dot).toBeInTheDocument()
     expect(dot?.textContent).toBe('.')
@@ -107,7 +102,7 @@ describe('Navigation Component', () => {
 
   it('renders 9 first-name character spans', () => {
     render(<Navigation />)
-    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const logoLink = screen.getByLabelText('Wenceslaus. Dsilva — Home')
     const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
     const charSpans = wrappers[0]?.querySelectorAll('span[class*="inline-block"]') || []
     // 9 for 'enceslaus'
@@ -116,7 +111,7 @@ describe('Navigation Component', () => {
 
   it('renders 5 last-name character spans', () => {
     render(<Navigation />)
-    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const logoLink = screen.getByLabelText('Wenceslaus. Dsilva — Home')
     const wrappers = logoLink.querySelectorAll('[style*="width: 0"]')
     const lastNameSpans = wrappers[1]?.querySelectorAll('span[class*="inline-block"]') || []
     // 5 for 'silva'
@@ -125,7 +120,7 @@ describe('Navigation Component', () => {
 
   it('suffix wrappers start with width 0', () => {
     render(<Navigation />)
-    const logoLink = screen.getByLabelText('Wenceslaus Dsilva - Home')
+    const logoLink = screen.getByLabelText('Wenceslaus. Dsilva — Home')
     const wrappers = logoLink.querySelectorAll('[class*="overflow-hidden"]')
     // Should have 2 wrappers now (enceslaus and silva, no space wrapper)
     expect(wrappers).toHaveLength(2)

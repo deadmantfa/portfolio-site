@@ -64,6 +64,7 @@ const profilePageSchema = {
   mainEntity: { '@id': 'https://w1d.pro/#person' },
 }
 
+export default StructuredData
 export { StructuredData }
 
 function StructuredData() {

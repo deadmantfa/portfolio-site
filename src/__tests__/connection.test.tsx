@@ -30,13 +30,9 @@ describe('ConnectionScene Component', () => {
     // Expect the floating group
     expect(container.querySelector('group')).toBeDefined()
 
-    // Expect two Icosahedron meshes (the core and its inner part)
+    // Expect meshes for pulse rings and central node
     const meshes = container.querySelectorAll('mesh')
-    expect(meshes.length).toBe(2)
-
-    // Expect the particle system
-    expect(container.querySelector('points')).toBeDefined()
-    expect(container.querySelector('shaderMaterial')).toBeDefined()
+    expect(meshes.length).toBe(5)
   })
 
   it('is not visible when progress is zero', () => {
