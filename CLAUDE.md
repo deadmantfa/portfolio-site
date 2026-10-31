@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> **Single Source of Truth**: This file extends the universal engineering and architectural standards defined in [AGENTS.md](./AGENTS.md) with Claude Code specific workflows and tooling.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Commands
@@ -57,7 +59,7 @@ Tailwind CSS v4 with a **CSS-first** configuration in `globals.css`. Theme color
 
 1. **Index the repo** (first time or after large changes):
    ```
-   mcp__jcodemunch__index_folder path=/Users/deadmantfa/Projects/Personal/portfolio-site
+   mcp__jcodemunch__index_folder path=/home/deadmantfa/Projects/portfolio-site
    ```
 2. **Search symbols** before reading files:
    ```
