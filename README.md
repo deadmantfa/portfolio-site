@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Site Blueprint
 
-## Getting Started
+## System Overview
+Interactive executive engineering portfolio and architectural showcase built with Next.js 16 App Router, React 19, React Three Fiber (Three.js), GSAP, and Tailwind CSS v4. The system provides real-time 3D interactive visualizations, dynamic scroll-linked career epochs, server-side rendered case studies with OpenGraph/Schema.org metadata, server action inquiry delivery via Resend, and an AI conversational assistant with automated multi-provider failover.
 
-First, run the development server:
+## Local Interface & Invariants
+- `[proxy.ts:proxy]` - Edge middleware handling cryptographic CSP nonces, Content Security Policy headers, Referrer-Policy, HSTS, frame isolation, and route path matching.
+- `[next.config.ts:nextConfig]` - Next.js application configuration enabling React Compiler, production browser source maps, Bundle Analyzer integration, and response header security policies.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Subdirectories & System Boundaries
+- [scripts](./scripts/README.md) - Automated build, document generation, and profile synchronization scripts supporting the portfolio site, including PDF CV generation and GitHub profile sync.
+- [src](./src/README.md) - Core application source tree containing the Next.js App Router routes, frontend presentation components, domain datasets, custom React hooks, styling helpers, and math/data utilities.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Global Invariants
+- **Scroll & State Synchronization**: `ScrollProvider` serves as the single source of truth for viewport progress (0–1), active career epoch, and selected skills without mutating server state.
+- **Defense-in-Depth Header Policies**: Enforces strict CSP with explicit `worker-src blob:` allowances for Troika 3D font rasterization workers and `object-src 'none'`.
+- **Fault-Tolerant Conversational Assistant**: `/api/chat` enforces a session-bound 10-message rate limit and hierarchical provider fallback (`claude-sonnet-4-6` -> `gemini-3.1-flash-lite-preview` -> `gemini-2.5-pro`).
+- **Domain-Driven Content**: All dynamic routes (`/work/[slug]`, `/for/[company]`) and 3D scenes validate against and project from static data models in `src/data/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Global Side Effects
+- **External Email Delivery**: Next.js Server Action (`sendEmail`) issues outbound HTTPS requests to the Resend API to deliver contact inquiries.
+- **External AI Assistant Streaming**: `/api/chat` dispatches outbound HTTPS requests to Anthropic and Google Gemini APIs.
+- **Client DOM & Storage Mutations**: `AskWenceslaus` writes session counters to browser `sessionStorage`; `useFaviconProgress` replaces `<link rel="icon">` in `document.head` with canvas data URLs.
+- **Build-Time PDF Generation**: Scripts in `scripts/` render and write binary PDF files to `public/CV/`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## System Verification
+- Run: `npm test`
