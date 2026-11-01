@@ -23,13 +23,31 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contact Wenceslaus Dsilva — CTO & Technical Architect',
     description: 'Open to senior technology leadership roles, consulting, and strategic advisory. Reach out directly.',
-    images: ['https://w1d.pro/images/hero/profile.jpg'],
+    creator: '@deadmantfa',
+    site: '@deadmantfa',
   },
 }
+
+const contactPageJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': 'https://w1d.pro/contact#contactpage',
+  url: 'https://w1d.pro/contact',
+  name: 'Contact Wenceslaus Dsilva — CTO & Technical Architect',
+  description:
+    'Contact Wenceslaus Dsilva — CTO open to senior leadership roles, consulting, and strategic advisory. Reach out to discuss technology leadership opportunities.',
+  inLanguage: 'en-US',
+  isPartOf: { '@id': 'https://w1d.pro/#website' },
+  mainEntity: { '@id': 'https://w1d.pro/#person' },
+}).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
 
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-black text-zinc-300 px-6 py-24 md:py-32 flex flex-col items-center justify-center">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: contactPageJsonLd }}
+      />
       <div className="w-full max-w-2xl">
         <Link
           href="/"
@@ -38,12 +56,13 @@ export default function ContactPage() {
           ← Back to Portfolio
         </Link>
 
-        <h1 className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 mb-3">
+        <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 mb-3" aria-hidden="true">
           Contact
-        </h1>
-        <h2 className="text-4xl font-serif italic font-light text-white mb-3">
+        </p>
+        <h1 className="text-4xl font-serif italic font-light text-white mb-3">
           Let&apos;s <span className="text-primary">Connect.</span>
-        </h2>
+          <span className="sr-only"> — Contact Wenceslaus Dsilva, CTO &amp; Technical Architect</span>
+        </h1>
         <p className="text-zinc-500 text-sm mb-4 max-w-lg">
           Open to senior technology leadership roles — CTO, VP Engineering, and Principal Architect
           positions — as well as strategic consulting and advisory engagements.

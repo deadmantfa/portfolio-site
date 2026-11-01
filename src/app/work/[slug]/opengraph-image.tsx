@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { projects } from '@/data/projects'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export const alt = 'Project Case Study'
 export const size = {

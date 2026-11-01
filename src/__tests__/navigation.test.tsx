@@ -45,9 +45,9 @@ describe('Navigation Component', () => {
     const ecosystemLink = screen.getByText('Ecosystem').closest('a')
     const contactLink = screen.getByText('Contact').closest('a')
 
-    expect(epochsLink).toHaveAttribute('href', '#epochs')
-    expect(ecosystemLink).toHaveAttribute('href', '#skills')
-    expect(contactLink).toHaveAttribute('href', '#contact')
+    expect(epochsLink).toHaveAttribute('href', '/#epochs')
+    expect(ecosystemLink).toHaveAttribute('href', '/#skills')
+    expect(contactLink).toHaveAttribute('href', '/#contact')
   })
 
   it('navigation links have focus-visible ring styles', () => {

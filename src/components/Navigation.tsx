@@ -417,7 +417,7 @@ const Navigation = () => {
             {(Object.keys(sectionLabels) as Section[]).map((section) => (
               <Link
                 key={section}
-                href={`#${section}`}
+                href={`/#${section}`}
                 ref={(el) => {
                   linkRefs.current[section] = el
                 }}

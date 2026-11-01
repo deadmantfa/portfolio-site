@@ -7,16 +7,15 @@ import Link from 'next/link'
 import EditorialReveal from '@/components/EditorialReveal'
 import BackgroundMarkers from '@/components/BackgroundMarkers'
 import { useScroll } from '@/components/ScrollProvider'
-import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { ProfileGlitch } from '@/components/ProfileGlitch'
 
-const SkillsGrid = dynamic(() => import('@/components/SkillsGrid').then(m => m.SkillsGrid), { ssr: false })
-const OpenSourceShowcase = dynamic(() => import('@/components/OpenSourceShowcase').then(m => m.OpenSourceShowcase), { ssr: false })
-const TestimonialsCarousel = dynamic(() => import('@/components/TestimonialsCarousel').then(m => m.TestimonialsCarousel), { ssr: false })
-const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false })
-const SocialLinks = dynamic(() => import('@/components/SocialLinks'), { ssr: false })
-const StrategyCallCTA = dynamic(() => import('@/components/StrategyCallCTA').then(m => m.StrategyCallCTA), { ssr: false })
+const SkillsGrid = dynamic(() => import('@/components/SkillsGrid').then(m => m.SkillsGrid))
+const OpenSourceShowcase = dynamic(() => import('@/components/OpenSourceShowcase').then(m => m.OpenSourceShowcase))
+const TestimonialsCarousel = dynamic(() => import('@/components/TestimonialsCarousel').then(m => m.TestimonialsCarousel))
+const ContactForm = dynamic(() => import('@/components/ContactForm'))
+const SocialLinks = dynamic(() => import('@/components/SocialLinks'))
+const StrategyCallCTA = dynamic(() => import('@/components/StrategyCallCTA').then(m => m.StrategyCallCTA))
 
 // Dynamically import the heavy 3D scene
 // loading: () => null prevents flash of unstyled content or heavy loading state, 
@@ -24,6 +23,21 @@ const StrategyCallCTA = dynamic(() => import('@/components/StrategyCallCTA').the
 const HomeScene = dynamic(() => import('@/components/HomeScene'), { 
   ssr: false,
 })
+
+const profilePageJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': 'https://w1d.pro/#profilepage',
+  url: 'https://w1d.pro',
+  name: 'Wenceslaus Dsilva | CTO & Technical Architect',
+  description:
+    'Wenceslaus Dsilva is a CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
+  dateCreated: '2024-01-01T00:00:00Z',
+  dateModified: new Date().toISOString(),
+  inLanguage: 'en-US',
+  isPartOf: { '@id': 'https://w1d.pro/#website' },
+  mainEntity: { '@id': 'https://w1d.pro/#person' },
+}).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
 
 export default function Home() {
   const { setActiveCredential } = useScroll()
@@ -178,6 +192,7 @@ export default function Home() {
               />
             </div>
             <h1 className="text-[15vw] md:text-[12rem] leading-[0.8] tracking-tighter font-serif italic mb-12">
+              <span className="sr-only">Wenceslaus Dsilva — CTO & Technical Architect. </span>
               The Visionary <br/> 
               <span className="text-primary pr-4">Architect.</span>
             </h1>
@@ -221,7 +236,10 @@ export default function Home() {
                       <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.3em]">{milestone.company}</span>
                     </div>
                     <EditorialReveal direction="up" className="relative z-10">
-                      <h2 className="text-5xl md:text-8xl font-serif italic text-white mb-10 leading-[0.9] tracking-tighter">{milestone.role}</h2>
+                      <h2 className="text-5xl md:text-8xl font-serif italic text-white mb-10 leading-[0.9] tracking-tighter">
+                        {milestone.role}
+                        <span className="sr-only"> at {milestone.company}</span>
+                      </h2>
                     </EditorialReveal>
                     <EditorialReveal direction="up" delay={0.2} className="relative z-10">
                       <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed mb-12 max-w-2xl font-sans font-light">{milestone.description}</p>
@@ -247,7 +265,9 @@ export default function Home() {
                             aria-label={`Read Case Study — ${project.company}`}
                             title={`View ${project.company} case study`}
                           >
-                            <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">Read Case Study</span>
+                            <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400 group-hover/btn:text-primary transition-colors">
+                              <span className="sr-only">{project.company}: </span>Read Case Study
+                            </span>
                             <div aria-hidden="true" className="size-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-primary/50 transition-colors text-zinc-400 group-hover/btn:text-primary">→</div>
                           </Link>
                         )
@@ -374,16 +394,20 @@ export default function Home() {
             <SocialLinks />
           </div>
           <p className="mt-12 font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-700">
-            <a href="/about" className="hover:text-zinc-300 transition-colors">About</a>
+            <Link href="/about" className="hover:text-zinc-300 transition-colors">About</Link>
             <span className="mx-3">·</span>
-            <a href="/contact" className="hover:text-zinc-300 transition-colors">Contact</a>
+            <Link href="/contact" className="hover:text-zinc-300 transition-colors">Contact</Link>
             <span className="mx-3">·</span>
-            <a href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy Policy</a>
+            <Link href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy Policy</Link>
             <span className="mx-3">·</span>
             <span>© {new Date().getFullYear()} Wenceslaus Dsilva</span>
           </p>
         </section>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: profilePageJsonLd }}
+      />
     </main>
   )
 }

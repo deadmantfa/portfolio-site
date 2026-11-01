@@ -1,9 +1,17 @@
 import { redirect } from 'next/navigation'
+import { Metadata } from 'next'
 import { shares } from '@/data/shares'
 import { ShareOverlayWrapper } from '@/components/ShareOverlayWrapper'
 
 interface Props {
   params: Promise<{ company: string }>
+}
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export function generateStaticParams() {

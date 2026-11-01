@@ -1,0 +1,323 @@
+# Wenceslaus Dsilva — Full Architectural & Technical Dossier
+
+> Comprehensive background, career trajectory, architectural decision records (ADRs), and technical leadership credentials of Wenceslaus Dsilva (CTO & Technical Architect).
+
+## Primary Identity & Canonical Endpoints
+- Full Name: Wenceslaus Dsilva
+- Professional Role: Chief Technology Officer (CTO) & Technical Architect
+- Canonical URL: https://w1d.pro
+- LinkedIn: https://linkedin.com/in/wenceslaus-dsilva
+- GitHub: https://github.com/deadmantfa
+- Twitter/X: https://x.com/deadmantfa
+- Direct Email: wenceslausdsilva@gmail.com
+- Resume / CV: https://w1d.pro/CV/Wenceslaus_Dsilva_CTO_VP_Engineering_Resume.pdf
+
+## Executive Profile
+Wenceslaus Dsilva brings 20+ years of engineering and architectural leadership across distributed systems, serverless paradigms, AI/ML operationalization, and high-growth platform engineering. Currently serving as CTO at Rooftop, he leads technology strategy, system design, platform infrastructure, and engineering team operations.
+
+## Career History & Epochs
+### Chief Technology Officer — Rooftop (2022 - Present)
+Directed technology strategy and innovation, implementing AI solutions and modern architectures (e.g., serverless) to drive project success and operational efficiency.
+Key Milestones:
+- Reduced system runtime by 85%
+- Increased user engagement by 60%
+- Boosting customer satisfaction rates by 90%
+- Integrated secure payment gateways and expanded application capabilities
+
+### Chief Technology Officer — Food Darzee (3CAD Hospitality LLP) (2019 - 2021)
+Spearheaded the creation of new product verticals and ERP systems, automating processes and enhancing operational efficiency by 75%.
+Key Milestones:
+- Led multiple teams, both in-house and outsourced
+- Integrated DevOps using GitHub Actions
+- Integrated PayTM, PhonePe, and Axis Bank gateways
+- Automated end-to-end supply chain via custom ERP
+
+### Chief Technology Officer — EasyTech Innovations (2019)
+Handled client delivery for multiple ERP systems and managed the SAAS product OnFees.
+Key Milestones:
+- Enhanced user satisfaction by 100% (OnFees)
+- Improved project success rates by 60%
+- Streamlined management and delivery issues for multi-tenant SAAS
+
+### Chief Technology Officer — IndieFolio Network (2015 - 2018)
+Architected and maintained 20+ online properties without downtime, enhancing system reliability and performance.
+Key Milestones:
+- Created serverless image handler (AWS Lambda)
+- Architected Creative Field CQ algorithm for user discovery
+- Developed real-time messaging with WebSockets and RBAC
+- Improved user satisfaction by 90%
+
+### Sr. Web Developer — CouponDunia (2015)
+Architected and developed CashBoss Android App and backend, enhancing user engagement and operational efficiency.
+Key Milestones:
+- Implemented Restful APIs for Android
+- Developed Yii2 based backend
+- Streamlined processes and boosting productivity
+
+### Software Architect — ePaisa Services (2013 - 2014)
+Managed and designed web and mobile applications, ensuring PCI DSS compliance and optimal performance.
+Key Milestones:
+- Architected Voodle: AWS-based Blender render farm
+- Implemented Dugna Security (MFA) for payment integrity
+- Aligned technology with market trends
+
+### Computer Programmer — MADAR International School (2009 - 2012)
+Developed and maintained school management systems using Yii framework, enhancing system reliability.
+Key Milestones:
+- Created scripts to configure servers and publish code
+- Automated deployment processes across servers
+- Improved deployment efficiency
+
+### Analyst Programmer — Tata Consultancy Services (2008 - 2009)
+Delivered analyzed data using Quantum, SPSS, and other tools, enhancing data-driven decision-making.
+Key Milestones:
+- Automated market questionnaire analysis via Shell Scripts
+- Automated data analysis processes
+- Reducing manual effort
+
+### Analyst Programmer — WNS (2007 - 2008)
+Conducted data analysis using Quantum and SPSS, enhancing data-driven decision-making and improving project outcomes.
+Key Milestones:
+- Automated repetitive tasks using Shell Scripts
+- Demonstrating strong project management skills
+
+### Junior Analyst — WNS (2006 - 2007)
+Worked on Data Analysis using Quantum, SPSS and other tools.
+Key Milestones:
+- Earned highest productivity hours award
+- Effectively managing multiple projects simultaneously
+
+## Architectural Decision Records (ADRs) & Case Studies
+
+### Case Study: Rooftop — Architecting for Exponential Growth
+- Role: Chief Technology Officer (2022 - Present)
+- Canonical Link: https://w1d.pro/work/rooftop
+- Tech Stack: AWS, Serverless, AI/ML, SageMaker, Next.js, Angular, Python, PHP, TensorFlow.js, Computer Vision, Azure Voice AI, Google Translate, GSAP, Canvas, Flutter, Raspberry Pi, DevOps
+- Challenge: Directing technology strategy to drive project success and operational efficiency during a period of rapid scale. Faced challenges balancing rapid feature delivery with system reliability while managing infrastructure costs during growth phases of 3-5x yearly user increases. A key creative challenge was bridging the gap between static artwork listings and emotionally resonant storytelling — enabling Rooftop's artist catalogue to speak to buyers across language and cultural boundaries.
+- Impact: Reduced system runtime by 85% and increased user engagement by 60% through modern serverless architectures and AI solutions. Established sustainable cloud cost savings of 40% YoY while maintaining 99.9% uptime SLA. Shipped Lift — an AI-powered multimedia storytelling platform — bringing 300+ artworks to life with animated presentations and multilingual audio narration across 10+ languages, generating 10,000+ views.
+
+Key Metrics:
+- System Runtime: -85%
+- User Engagement: +60%
+- Artworks on Lift: 300+
+- Customer Satisfaction: 90%
+
+Architectural Decisions (ADRs):
+#### Serverless Transformation
+- Problem: Legacy monolithic architecture struggled with variable traffic spikes and high infrastructure overhead.
+- Solution: Migrated core compute to event-driven AWS Lambda functions and managed SQS/SNS for communication.
+- Impact: Achieved $0 idle cost and near-infinite scalability, handling a 10x traffic spike with zero downtime.
+
+#### AI-Driven Content Personalization
+- Problem: Generic user experiences led to high bounce rates and lower than optimal conversion for art workshops.
+- Solution: Implemented a custom Machine Learning Recommendation Engine using AWS SageMaker and collaborative filtering algorithms.
+- Impact: Boosted conversion rates by 35% and increased average session duration by 4 minutes through targeted discovery.
+
+#### Lift — Multilingual AI Storytelling for Art
+- Problem: Static artwork listings failed to communicate the emotional and cultural narrative behind each piece, limiting buyer connection and cross-market reach. Art Inspiration, the original proof-of-concept, validated the format but lacked the editorial tooling and audio infrastructure to scale.
+- Solution: Architected Lift — a full-stack multimedia platform evolved from Art Inspiration. Built a web-based custom editor allowing curators to compose animated presentations combining video and image sequences, with GSAP and Canvas powering frame-accurate animation on the frontend. A Python and PHP backend processed media through asynchronous queues, invoking Azure Cognitive Services for text-to-speech synthesis and Google Translate for dynamic multilingual narration across 10+ languages.
+- Impact: Delivered 300+ artist artworks as immersive, narrated reels with 10,000+ views. Unlocked international buyer segments through on-demand language switching, extending each artwork's reach without additional editorial cost.
+
+#### Gallery Kiosk — Flutter on Raspberry Pi
+- Problem: Physical gallery visitors had no structured way to explore the context and story behind each art form on display, and no tangible takeaway to reinforce their connection to the artwork after leaving the space.
+- Solution: Delivered a self-contained gallery kiosk in 4 weeks using Flutter for a fluid, touch-first UI running on a Raspberry Pi that also drove the display and acted as the hardware bridge to a colour postcard printer. Visitors browsed art forms, surfaced rich contextual content from a custom internal Art Wiki API, then selected and printed a branded, full-colour postcard of their chosen artwork — all without staff intervention.
+- Impact: Deployed across 2 gallery locations with no architectural ceiling on further rollout. Transformed passive gallery visits into interactive, personalised experiences with a physical branded keepsake — extending Rooftop's presence beyond the screen and into visitors' hands.
+
+#### Seller Liveness Verification — TensorFlow Computer Vision
+- Problem: Onboarding fraud and impersonation risk among sellers and service providers required a trust layer beyond static document uploads. A purely passive photo check could be spoofed; a manual video review process would not scale.
+- Solution: Built a real-time liveness verification system in Angular using TensorFlow.js and computer vision. The system randomly selects 3 challenges from a set — blink, smile, turn head left, turn head right, look up, look down — and instructs the user via synthesised voice in both English and Hindi, with simultaneous on-screen text as a fallback. TensorFlow models evaluated facial landmark responses live in the browser, capturing a verified image and video recording on successful completion.
+- Impact: Delivered in 8 days. Established a robust, scalable anti-spoofing layer for seller onboarding — reducing impersonation risk without adding manual review overhead. Bilingual voice guidance removed the literacy barrier for Hindi-speaking providers, widening the verified seller base.
+
+### Case Study: Food Darzee — ERP Modernization & Vertical Growth
+- Role: Chief Technology Officer (2019 - 2021)
+- Canonical Link: https://w1d.pro/work/food-darzee
+- Tech Stack: PHP, Yii, GitHub Actions, Payment Gateways, ERP
+- Challenge: Spearheading new product verticals and automating manual processes across a complex supply chain. Coordinated technology oversight for 3 product expansions while managing legacy system dependencies and vendor integrations.
+- Impact: Improved operational efficiency by 75% through custom ERP systems and seamless third-party integrations. Reduced data entry errors by 90% and enabled company scaling from 1,000 to 10,000+ daily active subscribers.
+
+Key Metrics:
+- Ops Efficiency: +75%
+- Delivery Uptime: 99.9%
+
+Architectural Decisions (ADRs):
+#### CI/CD Implementation
+- Problem: Deployment bottlenecks and regression issues due to lack of automated testing and manual release cycles.
+- Solution: Standardized on GitHub Actions with integrated Vitest suites and staging environments.
+- Impact: Deployment frequency increased from weekly to multiple times daily, with a 90% reduction in production hotfixes.
+
+### Case Study: EasyTech Innovations — SAAS Transformation for Education
+- Role: Chief Technology Officer (2019)
+- Canonical Link: https://w1d.pro/work/onfees
+- Tech Stack: SAAS, Node.js, Multi-tenant Architecture, Payment Gateways, MySQL, ERP Dashboards, Cloud Architecture
+- Challenge: Developing a robust SAAS product to facilitate seamless student payments and admissions at scale. Colleges needed ERP-level visibility into applications and payments — but each institution had its own workflows, payment partners, and reporting requirements. A student needed to apply to multiple colleges through a single form submission without re-entering data, while each college retained full isolation of its records. Payment gateway failures at the point of fee submission were a critical trust risk: a failed transaction at enrolment time could cost a student their seat.
+- Impact: Achieved 100% enhancement in user satisfaction by streamlining the student onboarding and payment experience across 50+ institutions. Processed over $50M in transactions in the first year with zero security incidents and 99.99% payment gateway uptime, protected by a multi-gateway failover architecture. Reduced admission processing time by 60% through ERP dashboards and automated report generation, giving college administrators real-time visibility into applications, payments, and enrolment status.
+
+Key Metrics:
+- User Satisfaction: 100%
+- Admission Processing: -60%
+- Transactions Processed: $50M+
+- Gateway Uptime: 99.99%
+
+Architectural Decisions (ADRs):
+#### Multi-Tenant Isolated Schema Architecture
+- Problem: Need to support hundreds of institutions while maintaining strict data privacy and isolation without skyrocketing costs.
+- Solution: Implemented a shared-database, isolated-schema multi-tenant pattern with per-institution role-based access controls and audit trails.
+- Impact: Onboarded 50+ institutions in 3 months with zero cross-tenant data leaks and optimized infrastructure usage.
+
+#### Multi-College Application via Single Form
+- Problem: Students applying to multiple institutions were required to fill in the same personal and academic details repeatedly, causing friction and abandonment.
+- Solution: Designed a unified application form that captured a single canonical student profile, then distributed completed applications to each selected institution simultaneously through the multi-tenant layer.
+- Impact: Eliminated duplicate data entry for students applying to multiple colleges, increasing form completion rates and reducing application drop-off.
+
+#### Multi-Gateway Payment Failover
+- Problem: A single payment gateway outage at the moment a student submits fees could result in a lost seat — a high-stakes, trust-destroying failure with no recovery path.
+- Solution: Built a payment orchestration layer that sequenced multiple gateway providers in priority order, automatically retrying through the next configured gateway on failure, with idempotency keys to prevent duplicate charges.
+- Impact: Maintained 99.99% payment completion uptime across all institutions, with zero student-facing payment failures attributed to gateway outages.
+
+#### ERP Reporting & College Dashboards
+- Problem: College administrators had no real-time view into how many students had applied, which stage each application was at, or which payments had cleared — forcing manual reconciliation with the finance team.
+- Solution: Built a role-based ERP dashboard for each institution exposing live application pipelines, payment status, and exportable reports in multiple formats. Automated scheduled report generation and email delivery to reduce manual admin overhead.
+- Impact: Reduced daily administrative overhead per college by an estimated 60%, giving admissions teams instant, accurate visibility without spreadsheets or manual data pulls.
+
+### Case Study: IndieFolio Network — Architecting a Creative Ecosystem
+- Role: Chief Technology Officer (2015 - 2018)
+- Canonical Link: https://w1d.pro/work/indiefolio
+- Tech Stack: AWS, Serverless, Elasticsearch, WebSockets, PHP, Nginx
+- Challenge: Scaling a creative community platform to 20+ properties while ensuring high-performance discovery and zero downtime. Architected systems for diverse creative disciplines (photography, design, illustration, video) with unique indexing and search requirements.
+- Impact: Established a highly reliable, serverless-first architecture that supported 100,000+ creatives with hyper-personalized discovery tools. Achieved 100% platform uptime across 3 years and pioneered color-based search enabling first-of-its-kind discovery experience.
+
+Key Metrics:
+- Platform Uptime: 100%
+- Creative Fields: 110+
+- User Satisfaction: 90%
+
+Architectural Decisions (ADRs):
+#### Serverless Image Management
+- Problem: Dynamic image resizing for thousands of creative portfolios was taxing core application servers and increasing latency.
+- Solution: Decoupled image processing to AWS Lambda, creating a self-scaling, event-driven image handler.
+- Impact: Reduced image processing costs by 70% and eliminated CPU bottlenecks on core web servers.
+
+#### Color-Based Discovery & Color Search Engine
+- Problem: Creatives needed a way to browse portfolios by aesthetic and color palette, which was impossible with standard text search.
+- Solution: Integrated Elasticsearch with custom color extraction logic to pick and index dominant palettes from uploaded images.
+- Impact: Enabled a first-of-its-kind "Color Search" feature, significantly increasing user time-on-site and discovery accuracy.
+
+### Case Study: ePaisa Services — High-Integrity Payment Architecture
+- Role: Software Architect (2013 - 2014)
+- Canonical Link: https://w1d.pro/work/epaisa
+- Tech Stack: AWS, EC2, Blender, PCI DSS, PHP, Node.js
+- Challenge: Designing secure, high-performance mobile and web payment solutions in a highly regulated environment.
+- Impact: Ensured 100% PCI DSS compliance and zero security breaches while launching innovative mobile-first payment security (Dugna MFA) and the Voodle distributed video render farm — processing millions in daily transactions at 99.99% uptime.
+
+Key Metrics:
+- Security Compliance: PCI DSS
+- Uptime: 99.99%
+
+Architectural Decisions (ADRs):
+#### Dugna Security Framework
+- Problem: Need for a highly secure, frictionless Multi-Factor Authentication (MFA) system for payment verification.
+- Solution: Developed a custom MFA service utilizing unique mobile callback and SMS-based verification layers.
+- Impact: Reduced unauthorized transaction attempts by 95% while maintaining a seamless user login experience.
+
+#### Voodle: Distributed Render Farm
+- Problem: Users needed to generate high-quality video summaries of their images, requiring significant compute power.
+- Solution: Architected a distributed render farm using AWS EC2 instances and Blender to process video transitions asynchronously.
+- Impact: Allowed users to generate professional-grade videos in under 60 seconds from a mobile device.
+
+### Case Study: Tata Consultancy Services / WNS — Foundational Data Automation
+- Role: Analyst Programmer (2006 - 2009)
+- Canonical Link: https://w1d.pro/work/tcs-wns
+- Tech Stack: Shell Scripting, Quantum, SPSS, Linux, Data Automation, ETL
+- Challenge: Managing and analyzing millions of records from market research and medical questionnaires across multiple simultaneous client engagements, each with its own data schemas, validation rules, and delivery deadlines. As a junior analyst entering one of the most demanding delivery environments in the industry, the challenge was to absorb the complexity of multiple clients and multiple projects in parallel — and to consistently outperform while building the technical depth to move into leadership.
+- Impact: Reduced manual data processing time by 90% through custom automation pipelines processing millions of records. Earned the highest productivity hours in the organisation for five consecutive months — a record achieved while simultaneously handling multiple client accounts and project streams. Promoted to team lead within the first year, establishing automation best practices that became the organisational standard and reducing error rates from 15% to 0.2%.
+
+Key Metrics:
+- Automation Gain: +90%
+- Top Productivity: 5 months
+- Records Processed: Millions
+- Error Rate: 0.2%
+
+Architectural Decisions (ADRs):
+#### Shell Scripting for High-Volume Data Pipelines
+- Problem: Repetitive, manual analysis of millions of records across market research and medical questionnaire datasets was prone to human error, took days per cycle, and did not scale across multiple simultaneous client accounts.
+- Solution: Developed a suite of reusable Shell Scripts to automate the cleaning, transformation, validation, and ingestion of raw data — parameterised per client schema so the same pipeline could service multiple accounts without duplication.
+- Impact: Turnaround time for major reports decreased from days to minutes, enabling simultaneous delivery across multiple client projects with 100% data consistency.
+
+#### Multi-Client Parallel Project Management
+- Problem: Managing deliverables across multiple clients and project streams simultaneously created scheduling conflicts and the risk that quality would degrade under volume pressure.
+- Solution: Built a personal workflow system for batching and sequencing tasks by client SLA priority, with automated pipeline runs scheduled to run overnight so analyst time was reserved for validation and exception handling rather than raw processing.
+- Impact: Sustained the highest productivity hours in the organisation for five consecutive months across all active client accounts, with no missed deadlines and no client escalations.
+
+### Case Study: CouponDunia — Scaling Mobile Engagement
+- Role: Sr. Web Developer (2015)
+- Canonical Link: https://w1d.pro/work/coupon-dunia
+- Tech Stack: PHP, Yii2, RESTful APIs, MySQL, Android Attribution, Push Notifications, Deep Linking, Admin Panel, Analytics
+- Challenge: Architecting the complete backend and admin ecosystem for CashBoss — a cashback rewards Android app — with a team of 8, under pressure to launch quickly and prove mobile engagement at scale. The defining technical challenge was attribution and compliance: when a user selected an offer app inside CashBoss and installed it from the Play Store, the system had to reliably track that install, then confirm the app was actually opened and used for a minimum duration — anywhere between 30 seconds and 5 minutes depending on the advertiser's requirements. Tracking uninstalls and time-in-app accurately, without a native SDK embedded in the partner app, made this a hard attribution problem at scale.
+- Impact: Successfully launched the CashBoss Android cashback rewards ecosystem with a full admin panel, push notifications, deep linking, and analytics — driving a 40% increase in mobile-led user conversions. Delivered a robust install tracking and app-usage verification system that satisfied advertiser compliance requirements across variable time-window thresholds (30s–5min), enabling reliable cashback attribution at scale and making CashBoss a trusted partner for Android app advertisers.
+
+Key Metrics:
+- Mobile Conversion: +40%
+- API Uptime: 99.9%
+- Team Size: 8 engineers
+- Attribution: Install + Usage
+
+Architectural Decisions (ADRs):
+#### Install & App-Usage Attribution Pipeline
+- Problem: CashBoss rewarded users with cashback only after they installed a partner app AND used it for the advertiser's required duration (30 seconds to 5 minutes depending on the client). There was no SDK embedded in the partner apps — tracking had to be done externally, via Android broadcast signals and polling, without false positives that would cost the business real money.
+- Solution: Built a server-side attribution pipeline that combined Play Store referral tracking (Google Install Referrer API) with an Android client-side job scheduler that polled app foreground state at configurable intervals. The server stored the install event with a timestamp and the client-reported active-use duration, validating against the per-advertiser time-window threshold before marking a conversion as eligible for cashback.
+- Impact: Enabled reliable cashback attribution across all advertiser campaigns with zero reported false-positive conversions, making CashBoss a trusted platform for Android app advertisers requiring usage-based compliance.
+
+#### RESTful API Architecture for Android
+- Problem: The existing backend was not designed for high-concurrency mobile traffic patterns — bursts of API calls from thousands of concurrent users performing offer discovery, install callbacks, and cashback status polls simultaneously.
+- Solution: Built a modular Yii2 RESTful API layer with optimised response schemas for the Android client, connection pooling, and per-endpoint caching to flatten traffic spike impact.
+- Impact: Supported 10x traffic growth from launch through peak campaigns without infrastructure scaling and maintained 99.9% API uptime.
+
+#### Admin Panel, Analytics & Push Notifications
+- Problem: The marketing and operations team needed real-time visibility into campaign performance, user engagement, and cashback disbursement — and a direct channel to re-engage users who had gone dormant.
+- Solution: Built a comprehensive admin panel covering campaign management, user analytics, cashback approval workflows, and deep-link generation. Integrated push notification delivery with segmentation by user activity and install status. Implemented deep linking so push notifications and marketing URLs landed users directly on the relevant offer inside the app.
+- Impact: Gave the business team full operational control without engineering involvement for day-to-day campaign management, and enabled targeted re-engagement campaigns that contributed to the 40% uplift in mobile conversions.
+
+## Technical Ecosystem & Competencies
+
+### INFRASTRUCTURE
+- AWS: Architecting near-infinite scalability and global distribution networks.
+- Serverless: Optimizing for cost-efficiency and auto-scaling modularity.
+- DevOps: Standardizing delivery through automated CI/CD and system monitoring.
+- Elasticsearch: Powering high-performance discovery with custom color search algorithms.
+- Shell Scripting: 15+ year legacy of automating complex data and server workflows.
+- PCI DSS: Ensuring rigorous security standards for global payment ecosystems.
+- MySQL: Foundational mastery of relational data modeling and optimization.
+- SageMaker: Deploying custom ML models to drive AI-first user personalization.
+- Docker: Containerizing applications for consistent, portable deployment environments.
+- Kubernetes: Orchestrating containerized workloads for resilient, auto-scaling production systems.
+- Redis: Powering sub-millisecond caching and real-time pub/sub for high-throughput systems.
+- PostgreSQL: Mastering advanced relational modeling, JSONB, and full-text search at scale.
+
+### BACKEND
+- Python: The backbone for high-performance automation and AI-driven logic.
+- PHP: Legacy of building robust, battle-tested enterprise ERP systems.
+- TypeScript: Enforcing architectural integrity through strict type-safe foundations.
+- Yii Framework: Architecting robust, enterprise-grade ERP systems and SAAS products.
+- Laravel: Building modern, elegant web applications with architectural integrity.
+- WebSockets: Enabling real-time, low-latency communication for collaborative tools.
+- Node.js: Building scalable, event-driven backends for modern SAAS products.
+
+### FRONTEND
+- React: Building immersive, high-fidelity interfaces with reactive state.
+- Three.js: Pushing web boundaries with high-end architectural 3D visualizations.
+- Next.js: Ensuring top-tier SEO performance and production-grade reliability.
+- Angular: Engineering enterprise-scale SPAs with modular and reactive patterns.
+- Flutter: Crafting high-performance, native-feeling mobile experiences.
+
+### LEADERSHIP
+- Leadership: 20+ years of mentoring teams and aligning tech with business vision.
+- AI Strategy: Orchestrating AI adoption and strategic integration for business growth.
+- Design Thinking: Solving complex problems through user-centric architectural empathy.
+- Team Building: Cultivating high-performance engineering cultures through mentorship.
+- Critical Thinking: Evaluating deep-tech trade-offs with strategic architectural foresight.
+
+## Education & Certifications
+- B.Sc Information Technology, St. Andrews College, Mumbai University
+- Elasticsearch Certified Engineer
+- Google Cloud Professional Architect
+

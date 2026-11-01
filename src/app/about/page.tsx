@@ -20,13 +20,31 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'About Wenceslaus Dsilva — CTO & Technical Architect',
     description: 'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
-    images: ['https://w1d.pro/images/hero/profile.jpg'],
+    creator: '@deadmantfa',
+    site: '@deadmantfa',
   },
 }
+
+const aboutPageJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': 'https://w1d.pro/about#aboutpage',
+  url: 'https://w1d.pro/about',
+  name: 'About Wenceslaus Dsilva — CTO & Technical Architect',
+  description:
+    'CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud, and high-scale product engineering. Currently at Rooftop.',
+  inLanguage: 'en-US',
+  isPartOf: { '@id': 'https://w1d.pro/#website' },
+  mainEntity: { '@id': 'https://w1d.pro/#person' },
+}).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-black text-zinc-300 px-6 py-24 md:py-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: aboutPageJsonLd }}
+      />
       <div className="mx-auto max-w-2xl">
         <Link
           href="/"
@@ -35,10 +53,12 @@ export default function AboutPage() {
           ← Back to Portfolio
         </Link>
 
-        <h1 className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 mb-3">
+        <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-zinc-500 mb-3" aria-hidden="true">
           About
+        </p>
+        <h1 className="text-3xl font-light text-white mb-8">
+          Wenceslaus Dsilva <span className="text-zinc-500 text-xl block md:inline font-mono text-[14px] tracking-normal">/ CTO &amp; Technical Architect</span>
         </h1>
-        <h2 className="text-3xl font-light text-white mb-8">Wenceslaus Dsilva</h2>
 
         <div className="space-y-6 text-[15px] leading-relaxed">
           <p>

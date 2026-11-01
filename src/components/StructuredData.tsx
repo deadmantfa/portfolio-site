@@ -8,6 +8,7 @@ const personSchema = {
   '@type': 'Person',
   '@id': 'https://w1d.pro/#person',
   name: 'Wenceslaus Dsilva',
+  alternateName: ['Wence Dsilva', 'deadmantfa'],
   jobTitle: 'Chief Technology Officer',
   url: 'https://w1d.pro',
   image: 'https://w1d.pro/images/hero/profile.jpg',
@@ -16,6 +17,7 @@ const personSchema = {
   sameAs: [
     'https://linkedin.com/in/wenceslaus-dsilva',
     'https://github.com/deadmantfa',
+    'https://x.com/deadmantfa',
   ],
   alumniOf: {
     '@type': 'CollegeOrUniversity',
@@ -24,7 +26,20 @@ const personSchema = {
   worksFor: {
     '@type': 'Organization',
     name: 'Rooftop',
+    url: 'https://rooftopapp.com',
   },
+  hasOccupation: [
+    {
+      '@type': 'Occupation',
+      name: 'Chief Technology Officer',
+      description: 'Executive technology leadership, system architecture, engineering scaling',
+    },
+    {
+      '@type': 'Occupation',
+      name: 'Software Architect',
+      description: 'High-scale distributed systems, serverless architectures, and AI/ML pipelines',
+    },
+  ],
   hasCredential: [
     {
       '@type': 'EducationalOccupationalCredential',
@@ -49,21 +64,6 @@ const websiteSchema = {
   publisher: { '@id': 'https://w1d.pro/#person' },
 }
 
-const profilePageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
-  '@id': 'https://w1d.pro/#profilepage',
-  url: 'https://w1d.pro',
-  name: 'Wenceslaus Dsilva | CTO & Technical Architect',
-  description:
-    'Wenceslaus Dsilva is a CTO with 20+ years of architectural leadership across serverless, AI/ML, cloud infrastructure, and high-scale product engineering.',
-  dateCreated: '2024-01-01T00:00:00Z',
-  dateModified: '2026-03-10T00:00:00Z',
-  inLanguage: 'en-US',
-  isPartOf: { '@id': 'https://w1d.pro/#website' },
-  mainEntity: { '@id': 'https://w1d.pro/#person' },
-}
-
 export default StructuredData
 export { StructuredData }
 
@@ -77,10 +77,6 @@ function StructuredData() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteSchema as Record<string, unknown>) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJsonLd(profilePageSchema as Record<string, unknown>) }}
       />
     </>
   )

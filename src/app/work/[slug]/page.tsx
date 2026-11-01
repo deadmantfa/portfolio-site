@@ -18,6 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ? project.impact.substring(0, 157) + '...'
     : project.impact
 
+  const url = `https://w1d.pro/work/${slug}`
+
   return {
     title: {
       absolute: (() => {
@@ -28,9 +30,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: shortDescription,
     keywords: [...project.techStack, project.role, project.company, 'Software Architecture', 'Case Study'],
     alternates: {
-      canonical: `https://w1d.pro/work/${slug}`,
+      canonical: url,
     },
     openGraph: {
+      url,
       title: `${project.company} - Case Study`,
       description: shortDescription,
       type: 'article',
@@ -41,6 +44,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: 'summary_large_image',
       title: `${project.company} | CTO`,
       description: project.impact.length > 120 ? project.impact.substring(0, 117) + '...' : project.impact,
+      creator: '@deadmantfa',
+      site: '@deadmantfa',
     }
   }
 }
@@ -63,11 +68,35 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     ],
   }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
 
+  const articleJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    '@id': `https://w1d.pro/work/${slug}#article`,
+    headline: `${project.company} Case Study: ${project.title}`,
+    description: project.impact,
+    image: `https://w1d.pro/work/${slug}/opengraph-image`,
+    url: `https://w1d.pro/work/${slug}`,
+    author: { '@id': 'https://w1d.pro/#person' },
+    publisher: { '@id': 'https://w1d.pro/#person' },
+    about: {
+      '@type': 'Organization',
+      name: project.company,
+    },
+    keywords: project.techStack.join(', '),
+    inLanguage: 'en-US',
+    isPartOf: { '@id': 'https://w1d.pro/#website' },
+    mainEntityOfPage: `https://w1d.pro/work/${slug}`,
+  }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: articleJsonLd }}
       />
       <ProjectCaseStudyClient project={project} />
     </>

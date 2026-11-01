@@ -1,0 +1,35 @@
+# Wenceslaus Dsilva — CTO & Technical Architect
+
+> Visionary Chief Technology Officer with 20+ years of architectural leadership across serverless platforms, AI/ML pipelines, high-scale cloud infrastructure, and enterprise systems engineering. Currently CTO at Rooftop.
+
+## Canonical Profiles & Identity
+- Website: https://w1d.pro
+- GitHub: https://github.com/deadmantfa
+- LinkedIn: https://linkedin.com/in/wenceslaus-dsilva
+- Twitter/X: https://x.com/deadmantfa
+- Contact: wenceslausdsilva@gmail.com
+- Full Documentation: https://w1d.pro/llms-full.txt
+
+## Executive Summary
+Wenceslaus Dsilva has spent two decades at the forefront of digital engineering and technology leadership. His track record includes:
+- Scaling consumer, enterprise, and fintech applications from early prototype to millions of active users.
+- Migrating monolithic systems to serverless and event-driven microservices architectures, delivering up to 85% reduction in execution latency and 40-60% cloud cost reductions.
+- Pioneering applied AI/ML in production: Computer vision for authentication, multilingual speech synthesis, automated content pipelines, and semantic search.
+- Leading cross-functional engineering organizations across distributed topologies.
+
+## Architectural Case Studies
+- [Rooftop Case Study](https://w1d.pro/work/rooftop): Serverless transformation, computer vision seller verification, and AI-driven multilingual storytelling delivering 85% runtime reduction and 60% engagement uplift.
+- [Food Darzee Case Study](https://w1d.pro/work/food-darzee): Scalable ERP modernization, automated kitchen routing, and logistics optimization for a high-volume custom nutrition platform.
+- [OnFees Case Study](https://w1d.pro/work/onfees): High-throughput educational fee processing platform with bank reconciliation and zero-downtime ledger consistency.
+- [IndieFolio Case Study](https://w1d.pro/work/indiefolio): Color-quantization search engine and high-concurrency creative network scaled across India's design community.
+- [ePaisa Case Study](https://w1d.pro/work/epaisa): PCI DSS-compliant mobile POS payment engine with offline transaction queuing and hardware peripheral abstraction.
+- [TCS & WNS Case Study](https://w1d.pro/work/tcs-wns): Enterprise data automation, ETL pipeline engineering, and legacy modernization.
+- [CouponDunia Case Study](https://w1d.pro/work/coupon-dunia): High-velocity coupon syndication platform serving millions of monthly shoppers.
+
+## Core Technical Competencies
+- Architecture: Serverless, Microservices, Event-Driven Architecture, High-Scale Distributed Systems, System Design.
+- Cloud & Infrastructure: AWS (Lambda, ECS, S3, DynamoDB, SageMaker), Google Cloud Platform, Docker, Kubernetes, Terraform, CI/CD.
+- Languages & Frameworks: TypeScript, Node.js, Python, PHP, Next.js, React, Angular, Flutter, Go.
+- Data & Storage: PostgreSQL, MySQL, Redis, Elasticsearch, DynamoDB, MongoDB.
+- Machine Learning & AI: Computer Vision (TensorFlow.js), SageMaker, NLP, Multilingual Voice AI, LLM System Integration.
+- Leadership: Technical Strategy, Team Mentorship, Agile/Kanban Governance, Budget Management, Vendor Negotiation, Executive Stakeholder Alignment.
